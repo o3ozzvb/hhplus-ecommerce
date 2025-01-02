@@ -2,7 +2,8 @@
 
 ### 프로젝트 설계 문서
 [**1. MileStone**](https://github.com/users/o3ozzvb/projects/3) 프로젝트 요구사항에 대한 Task 별 일정 수립  
-[**2. Sequence Diagram**](docs/SequenceDiagram.md) 시퀀스 다이어그램
+[**2. Sequence Diagram**](docs/SequenceDiagram.md) 시퀀스 다이어그램  
+[**3. ERD**](docs/ERD.md) ERD(Entity Relationship Diagram)  
 
 
 ---

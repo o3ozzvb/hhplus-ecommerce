@@ -1,4 +1,4 @@
-## 시퀀스 다이어그램 
+# 시퀀스 다이어그램 
 
 ### 1. 잔액 조회
    ![img.png](image/balance_charge.png)
