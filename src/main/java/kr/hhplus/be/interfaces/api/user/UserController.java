@@ -25,7 +25,7 @@ public class UserController {
     /**
      * 잔액 충전
      */
-    @PostMapping("/user/{userId}/charge")
+    @PostMapping("/users/{userId}/charge")
     public ApiResponse<ChargeResponse> charge(@RequestBody @Valid ChargeRequest request) {
         log.debug("request ; {}" , request);
         ChargeResponse response = ChargeResponse.builder()
@@ -37,7 +37,7 @@ public class UserController {
     /**
      * 잔액 조회
      */
-    @GetMapping("/user/{userId}/balance")
+    @GetMapping("/users/{userId}/balance")
     public ApiResponse<BalanceResponse> getUserBalance(@PathVariable("userId") long userId) {
         BalanceResponse response = BalanceResponse.builder()
                 .userId(userId)
@@ -49,7 +49,7 @@ public class UserController {
     /**
      * 보유 쿠폰 목록 조회
      */
-    @GetMapping("/user/{userId}/coupons")
+    @GetMapping("/users/{userId}/coupons")
     public ApiResponse<CouponResponse> getUserCoupons(CouponRequest request) {
         List<CouponInfo> couponList = new ArrayList<>();
 

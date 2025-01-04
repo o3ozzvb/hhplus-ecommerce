@@ -14,7 +14,7 @@ public class PaymentController {
     /**
      * 결제 요청
      */
-    @PostMapping("/payment")
+    @PostMapping("/payments")
     public ApiResponse<Void> payment(@RequestBody @Valid PaymentRequest request) {
         return ApiResponse.success(null);
     }

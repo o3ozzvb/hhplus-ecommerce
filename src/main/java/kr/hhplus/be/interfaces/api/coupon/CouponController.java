@@ -17,7 +17,7 @@ public class CouponController {
     /**
      * 쿠폰 발급 요청
      */
-    @PostMapping("/coupon/publish")
+    @PostMapping("/coupons/publish")
     public ApiResponse<CouponPublishResponse> publishCoupon(@RequestBody CouponPublishRequest request) {
         log.debug("CouponController publishCoupon - request: {}", request);
 

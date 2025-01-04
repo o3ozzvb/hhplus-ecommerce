@@ -1,6 +1,6 @@
 # API 명세서
 
-## 1. POST /api/v1/user/{userId}/charge - 잔액 충전 
+## 1. POST /api/v1/users/{userId}/charge - 잔액 충전 
  - **Path Variable**
     - userId(`Long`): 사용자 ID  
  - **Request Body**   
@@ -16,7 +16,7 @@
 }
 ```
     
-## 2. GET /api/v1/user/{userId}/balance - 잔액 조회
+## 2. GET /api/v1/users/{userId}/balance - 잔액 조회
  - **Path Variable**
    - userId(`Long`): 사용자 ID  
  - **Response Body**
@@ -31,7 +31,7 @@
 }
 ```
 
-## 3. GET /api/v1/user/{userId}/coupons - 보유 쿠폰목록 조회
+## 3. GET /api/v1/users/{userId}/coupons - 보유 쿠폰목록 조회
  - **Path Variable**
    - userId(`Long`): 사용자 ID
  - **Request Params**
@@ -104,7 +104,7 @@
 }
 ```
 
-## 4. POST /api/v1/coupon/publish - 쿠폰 발급
+## 4. POST /api/v1/coupons/publish - 쿠폰 발급
  - **Request Body**
    - couponId(`long`): 쿠폰 ID `(필수)`
    - userId(`long`): 사용자 ID `(필수)`
@@ -183,7 +183,7 @@ EXAMPLE)
 }
 ```   
 
-## 6. POST /api/v1/order - 주문 요청
+## 6. POST /api/v1/orders - 주문 요청
 - **Request Body**
   - userId(`long`): 사용자 ID `(필수)`
   - couponPublishId(`long`): 사용할 쿠폰의 발행 ID `(필수)`
@@ -223,7 +223,7 @@ EXAMPLE)
     }
 }
 ```   
-## 7. POST /api/v1/payment - 결제 요청
+## 7. POST /api/v1/payments - 결제 요청
 - **Request Body**
   - userId(`long`): 사용자 ID `(필수)`
   - orderId(`long`): 주문 ID `(필수)`

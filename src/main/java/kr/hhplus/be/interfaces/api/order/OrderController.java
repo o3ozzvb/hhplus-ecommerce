@@ -20,7 +20,7 @@ public class OrderController {
     /**
      * 주문 요청
      */
-    @PostMapping("/order")
+    @PostMapping("/orders")
     public ApiResponse<OrderResponse> order(@RequestBody @Valid OrderRequest request) {
         log.debug("OrderController order - request: {}", request);
 
