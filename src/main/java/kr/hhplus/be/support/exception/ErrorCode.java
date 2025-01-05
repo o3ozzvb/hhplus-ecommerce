@@ -6,6 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    INSUFFICIENT_BALANCE("INSUFFICIENT_BALANCE", "잔액이 충분하지 않습니다."),
+    CHARGE_AMOUNT_NOT_VALID("CHARGE_AMOUNT_NOT_VALID", "충전금액이 유효하지 않습니다."),
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "서버 에러 입니다."),
     VALIDATION_ERROR("VALIDATION_ERROR", "필수값이 누락되었습니다.");
 
