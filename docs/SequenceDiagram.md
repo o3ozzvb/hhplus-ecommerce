@@ -1,4 +1,4 @@
-## 시퀀스 다이어그램 
+# 시퀀스 다이어그램 
 
 ### 1. 잔액 조회
    ![img.png](image/balance_charge.png)
@@ -10,7 +10,7 @@
    ![img.png](image/product_get.png)
 
 ### 4. 쿠폰 발급
-   ![img.png](image/couponlist_get.png)
+   ![img.png](image/coupon_publish.png)
 
 ### 5. 보유 쿠폰 목록 조회
    ![img.png](image/couponlist_get.png)

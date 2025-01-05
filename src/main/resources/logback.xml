@@ -1,0 +1,16 @@
+<configuration>
+    <!-- 콘솔 출력 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 기본 로그 레벨 -->
+    <root level="DEBUG"> <!-- DEBUG로 변경 -->
+        <appender-ref ref="CONSOLE" />
+    </root>
+
+    <!-- 특정 패키지의 로그 레벨 -->
+    <logger name="com.example.hhplus_lecture" level="DEBUG" />
+</configuration>
