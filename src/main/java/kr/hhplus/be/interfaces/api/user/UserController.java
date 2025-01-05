@@ -2,7 +2,7 @@ package kr.hhplus.be.interfaces.api.user;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
-import kr.hhplus.be.domain.coupon.CouponStatus;
+import kr.hhplus.be.domain.coupon.CouponPublishStatus;
 import kr.hhplus.be.domain.coupon.DiscountType;
 import kr.hhplus.be.interfaces.dto.common.ApiResponse;
 import kr.hhplus.be.interfaces.dto.coupon.CouponInfo;
@@ -57,11 +57,11 @@ public class UserController {
     public ApiResponse<CouponResponse> getUserCoupons(CouponRequest request) {
         List<CouponInfo> couponList = new ArrayList<>();
 
-        couponList.add(new CouponInfo(1L, "쿠폰1", LocalDate.of(2024,12,31), DiscountType.FIXED_AMOUNT, 20000, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponStatus.AVAILABLE));
-        couponList.add(new CouponInfo(2L, "쿠폰2", LocalDate.of(2024,12,31), DiscountType.FIXED_AMOUNT, 5000, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponStatus.EXPIRED));
-        couponList.add(new CouponInfo(3L, "쿠폰3", LocalDate.of(2024,12,25), DiscountType.FIXED_AMOUNT, 10000, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponStatus.REDEEMED));
-        couponList.add(new CouponInfo(4L, "쿠폰4", LocalDate.of(2024,12,30), DiscountType.FIXED_RATE, 15, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponStatus.AVAILABLE));
-        couponList.add(new CouponInfo(5L, "쿠폰5", LocalDate.of(2025,1,1), DiscountType.FIXED_RATE, 10, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponStatus.AVAILABLE));
+        couponList.add(new CouponInfo(1L, "쿠폰1", LocalDate.of(2024,12,31), DiscountType.FIXED_AMOUNT, 20000, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponPublishStatus.AVAILABLE));
+        couponList.add(new CouponInfo(2L, "쿠폰2", LocalDate.of(2024,12,31), DiscountType.FIXED_AMOUNT, 5000, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponPublishStatus.EXPIRED));
+        couponList.add(new CouponInfo(3L, "쿠폰3", LocalDate.of(2024,12,25), DiscountType.FIXED_AMOUNT, 10000, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponPublishStatus.REDEEMED));
+        couponList.add(new CouponInfo(4L, "쿠폰4", LocalDate.of(2024,12,30), DiscountType.FIXED_RATE, 15, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponPublishStatus.AVAILABLE));
+        couponList.add(new CouponInfo(5L, "쿠폰5", LocalDate.of(2025,1,1), DiscountType.FIXED_RATE, 10, LocalDate.of(2025,1,1), LocalDate.of(2025,1,31), CouponPublishStatus.AVAILABLE));
 
         return ApiResponse.success(new CouponResponse(couponList));
     }

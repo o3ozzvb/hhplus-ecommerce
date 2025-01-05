@@ -1,24 +1,31 @@
-package kr.hhplus.be.domain.product;
+package kr.hhplus.be.domain.coupon;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class Product {
+public class CouponPublish {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName;
+    private Long refCouponId;
 
-    private Category category;
+    private Long refUserId;
 
-    private int price;
+    private LocalDate publishDate;
+
+    private LocalDate validStartDate;
+
+    private LocalDate validEndDate;
+
+    private CouponStatus status;
 
     private LocalDateTime createdAt;
 

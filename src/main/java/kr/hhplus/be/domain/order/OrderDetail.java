@@ -1,26 +1,24 @@
-package kr.hhplus.be.domain.product;
+package kr.hhplus.be.domain.order;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.time.LocalDateTime;
-
 @Entity
-public class Product {
+public class OrderDetail {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String productName;
+    private Long refOrderId;
 
-    private Category category;
+    private Long refProductId;
+
+    private int quantity;
 
     private int price;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private int totalAmount;
 }

@@ -8,17 +8,12 @@ import jakarta.persistence.Id;
 import java.time.LocalDateTime;
 
 @Entity
-public class Product {
+public class ProductInventory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long refProductId;
 
-    private String productName;
-
-    private Category category;
-
-    private int price;
+    private int inventory;
 
     private LocalDateTime createdAt;
 
