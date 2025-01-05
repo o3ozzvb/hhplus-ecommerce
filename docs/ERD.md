@@ -34,7 +34,20 @@
 |status	|varchar| 	NOT NULL     |	쿠폰 상태 (AVAILABLE, EXPIRED, REDEEMED)|
 | created_at      | LocalDateTime | NOT NULL                        | 생성 일시                            |
 | updated_at      | LocalDateTime | NOT NULL                        | 수정 일시                            |
-### 4. ORDER (주문)
+### 4. COUPON_PUBLISH_HISTORY (발행 쿠폰 히스토리)
+| 컬럼명                   | 데이터 타입        | 제약 조건                   | 설명                                    |
+|-----------------------|---------------|-------------------------|:--------------------------------------|
+| id	                   |Long| 	PRIMARY KEY   | 	히스토리 ID                              |                       |
+| ref_coupon_publish_id |	Long| 	FOREIGN KEY , NOT NULL	 | 발행 쿠폰 ID (coupon_publish 테이블 참조)      |
+| ref_coupon_id         |	Long| 	FOREIGN KEY , NOT NULL	 | 쿠폰 ID (coupon 테이블 참조)                 |
+| ref_user_id	          |Long| 	FOREIGN KEY, NOT NULL  | 	쿠폰을 발행받은 사용자의 ID (user 테이블 참조)       |
+| publish_date          | LocalDate | NOT NULL | 쿠폰 발행일자                               |
+| valid_start_date      |	LocalDate	| NOT NULL                | 	 유효 시작 날짜                            |
+| valid_end_date	       |LocalDate| NOT NULL                | 	 유효 종료 날짜                            |
+| status	               |varchar| 	NOT NULL     | 	쿠폰 상태 (AVAILABLE, EXPIRED, REDEEMED) |
+| created_at            | LocalDateTime | NOT NULL                        | 생성 일시                                 |
+| updated_at            | LocalDateTime | NOT NULL                        | 수정 일시                                 |
+### 5. ORDER (주문)
 | 컬럼명                   | 데이터 타입        | 제약 조건                    | 설명                                      |
 |-----------------------|---------------|--------------------------|:----------------------------------------|
 | id                    |	Long|	PRIMARY KEY	| 주문 ID                                   |
@@ -46,7 +59,7 @@
 | status                |	varchar	|	NOT NULL| 주문 상태 (PENDING, COMPLETED, CANCELED)    |
 | created_at            | LocalDateTime |    NOT NULL                      | 생성 일시                                   |
 | updated_at            | LocalDateTime |  NOT NULL                        | 수정 일시                                   |
-### 5. ORDER_DETAIL (주문 상세)
+### 6. ORDER_DETAIL (주문 상세)
 | 컬럼명             | 데이터 타입        | 제약 조건                   | 설명                          |
 |-----------------|---------------|-------------------------|:----------------------------|
 |id	|Long	|PRIMARY KEY| 	주문 상세 ID                   |
@@ -55,17 +68,16 @@
 |quantity|	int	|NOT NULL	| 상품 수량                       |
 |price	|Number|	NOT NULL	| 상품 단가                       |
 |total_amount|	Number|	NOT NULL	| 상품 총액 (quantity * price)    |
-### 6. PRODUCT (상품)
+### 7. PRODUCT (상품)
 |컬럼명|데이터 타입| 제약 조건 | 설명                                |
 |---|---|------------|-----------------------------------|
 |id|Long| PRIMARY KEY | 상품 ID                             |
 |product_name|	varchar| NOT NULL   | 	상품 이름                            |
 |category|	varchar	|    NOT NULL        | 	상품 카테고리 (OUTER, TOP, PANTS, ETC) |
-|inventory|	int	|    NOT NULL        | 	재고 수량                            |
 |price|	Number	|  NOT NULL          | 상품 가격                             |
 |created_at|LocalDateTime|     NOT NULL       | 생성 일시                             |
 |updated_at|LocalDateTime|   NOT NULL         | 수정 일시                             |
-### 7. PAYMENT (결제)
+### 8. PAYMENT (결제)
 | 컬럼명           | 데이터 타입        | 제약 조건                                                               | 설명                        |
 |---------------|---------------|---------------------------------------------------------------------|:--------------------------|
 |id	|Long| 	PRIMARY KEY	                                                       | 결제 고유 ID                  |
@@ -78,16 +90,21 @@
 |transaction_id	|varchar| 		                                                                  | 결제 거래 ID                  |
 |created_at     | LocalDateTime | NOT NULL                  | 생성 일시                                |
 |updated_at     | LocalDateTime | NOT NULL                                                            | 수정 일시                     |
-### 8. DAILY_ORDER_STATS (주문 통계)
-| 컬럼명             | 데이터 타입        | 제약 조건                    | 설명                                  |
-|-----------------|---------------|--------------------------|:------------------------------------|
-|id|Long|	PRIMARY KEY	| 통계 레코드 ID                           |
-|product_id	|Long|	FOREIGN KEY, NOT NULL|	관련 상품의 ID (product 테이블 참조)|
-|sale_date	|LocalDate	|NOT NULL	|판매 날짜|
-|sold_quantity|	int	|NOT NULL	|판매 수량|
-|total_amount|	Number|NOT NULL		|총 매출액|
-| created_at      | LocalDateTime |    NOT NULL                      | 생성 일시                               |
-| updated_at      | LocalDateTime |  NOT NULL                        | 수정 일시                               |
+### 9. PRODUCT_INVENTORY (상품 재고)
+| 컬럼명            | 데이터 타입        | 제약 조건 | 설명       |
+|----------------|---------------|------------|----------|
+| ref_product_id | Long          | PRIMARY KEY | 상품 ID    |
+| inventory      | int	          |  NOT NULL          | 상품 재고 수량 |
+| created_at     | LocalDateTime |     NOT NULL       | 생성 일시    |
+| updated_at     | LocalDateTime |   NOT NULL         | 수정 일시    |
+### 10. PRODUCT_INVENTORY_HISTORY (상품 재고 히스토리)
+| 컬럼명           | 데이터 타입        | 제약 조건 | 설명            |
+|---------------|---------------|------------|---------------|
+| id | Long          | PRIMARY KEY | 상품 재고 히스토리 ID |
+| ref_product_id | Long          | PRIMARY KEY | 상품 ID         |
+| inventory     | int	          |  NOT NULL          | 상품 재고 수량      |
+| created_at    | LocalDateTime |     NOT NULL       | 생성 일시         |
+| updated_at    | LocalDateTime |   NOT NULL         | 수정 일시         |
 
 ## 주요 관계
 **1. User <-> CouponPublish (1:N)**
@@ -108,8 +125,14 @@
 **6. Product <-> OrderDetail (1:N)**
  - 하나의 상품이 여러 주문에서 사용될 수 있음.
 
-**7. Order <-> Payment (1:N)**
- - 하나의 주문에 대해 여러 번 결제가 이루어질 수 있음. (결제 실패 또는 부분 결제)
+**7. Order <-> Payment (1:1)**
+ - 하나의 주문에 대해 한 번의 결제만 이루어질 수 있음.
 
-**8. Product <-> DailyOrderStats (1:N)**
- - 특정 상품의 일일 판매 통계가 여러 날에 걸쳐 기록될 수 있음.
+**8. CouponPublish <-> CouponPublishHistory (1:N)**
+- 발행 쿠폰 내역의 상태 변경에 따라 여러 내역이 발생할 수 있음.
+
+**9. Product <-> ProductInventory (1:1)**
+- 상품의 재고가 1:1 관계로 관리됨.
+
+**10. ProductInventory <-> ProductInventoryHistory (1:N)**
+- 상품 재고의 변경에 따라 여러 내역이 발생할 수 있음
