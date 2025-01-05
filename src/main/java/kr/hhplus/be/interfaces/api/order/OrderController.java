@@ -1,5 +1,6 @@
 package kr.hhplus.be.interfaces.api.order;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kr.hhplus.be.interfaces.dto.common.ApiResponse;
 import kr.hhplus.be.interfaces.dto.order.OrderItemInfo;
@@ -20,6 +21,7 @@ public class OrderController {
     /**
      * 주문 요청
      */
+    @Operation(summary = "주문 요청", description = "선택 상품에 대한 주문을 요청합니다.")
     @PostMapping("/orders")
     public ApiResponse<OrderResponse> order(@RequestBody @Valid OrderRequest request) {
         log.debug("OrderController order - request: {}", request);

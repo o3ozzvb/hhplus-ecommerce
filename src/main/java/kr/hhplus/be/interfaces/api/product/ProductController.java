@@ -1,5 +1,6 @@
 package kr.hhplus.be.interfaces.api.product;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kr.hhplus.be.domain.product.Category;
 import kr.hhplus.be.interfaces.dto.common.ApiResponse;
 import kr.hhplus.be.interfaces.dto.product.ProductInfo;
@@ -20,6 +21,7 @@ public class ProductController {
     /**
      * 상품 목록 조회
      */
+    @Operation(summary = "상품 목록 조회", description = "상품 목록을 조회합니다.")
     @GetMapping("/products")
     public ApiResponse<List<ProductInfo>> getProducts(ProductSelectRequest request) {
         List<ProductInfo> productInfos = new ArrayList<>();
@@ -36,6 +38,7 @@ public class ProductController {
     /**
      * 상위 상품 목록 조회 (3일 기준, 상위 5개)
      */
+    @Operation(summary = "상위 상품 목록 조회", description = "3일 기준 판매량 상위 5개의 상품을 조회합니다.")
     @GetMapping("/products/top-sales")
     public ApiResponse<TopSalesProducts> getTopProducts() {
         List<TopSalesProduct> topSalesProductList = new ArrayList<>();

@@ -1,5 +1,6 @@
 package kr.hhplus.be.interfaces.api.coupon;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kr.hhplus.be.interfaces.dto.common.ApiResponse;
 import kr.hhplus.be.interfaces.dto.coupon.CouponPublishRequest;
 import kr.hhplus.be.interfaces.dto.coupon.CouponPublishResponse;
@@ -17,6 +18,7 @@ public class CouponController {
     /**
      * 쿠폰 발급 요청
      */
+    @Operation(summary = "쿠폰 발급 요청", description = "쿠폰 발급을 요청합니다.")
     @PostMapping("/coupons/publish")
     public ApiResponse<CouponPublishResponse> publishCoupon(@RequestBody CouponPublishRequest request) {
         log.debug("CouponController publishCoupon - request: {}", request);

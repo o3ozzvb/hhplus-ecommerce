@@ -38,6 +38,9 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:1.18.28")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
+	// Swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
+
 	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
 

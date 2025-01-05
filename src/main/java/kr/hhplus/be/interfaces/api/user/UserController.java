@@ -1,5 +1,6 @@
 package kr.hhplus.be.interfaces.api.user;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import kr.hhplus.be.domain.coupon.CouponStatus;
 import kr.hhplus.be.domain.coupon.DiscountType;
@@ -25,6 +26,7 @@ public class UserController {
     /**
      * 잔액 충전
      */
+    @Operation(summary = "잔액 충전", description = "사용자의 잔액을 충전합니다.")
     @PostMapping("/users/{userId}/charge")
     public ApiResponse<ChargeResponse> charge(@RequestBody @Valid ChargeRequest request) {
         log.debug("request ; {}" , request);
@@ -37,6 +39,7 @@ public class UserController {
     /**
      * 잔액 조회
      */
+    @Operation(summary = "잔액 조회", description = "사용자의 잔액을 조회합니다.")
     @GetMapping("/users/{userId}/balance")
     public ApiResponse<BalanceResponse> getUserBalance(@PathVariable("userId") long userId) {
         BalanceResponse response = BalanceResponse.builder()
@@ -49,6 +52,7 @@ public class UserController {
     /**
      * 보유 쿠폰 목록 조회
      */
+    @Operation(summary = "보유 쿠폰 목록 조회", description = "사용자가 보유한 쿠폰 목록을 조회합니다.")
     @GetMapping("/users/{userId}/coupons")
     public ApiResponse<CouponResponse> getUserCoupons(CouponRequest request) {
         List<CouponInfo> couponList = new ArrayList<>();
