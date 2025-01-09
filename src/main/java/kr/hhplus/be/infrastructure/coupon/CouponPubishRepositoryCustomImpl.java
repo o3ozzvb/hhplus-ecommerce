@@ -3,9 +3,13 @@ package kr.hhplus.be.infrastructure.coupon;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.LockModeType;
 import kr.hhplus.be.domain.coupon.dto.CouponSearchDTO;
+import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.entity.QCoupon;
 import kr.hhplus.be.domain.coupon.entity.QCouponPublish;
+import kr.hhplus.be.domain.product.entity.ProductInventory;
+import kr.hhplus.be.domain.product.entity.QProductInventory;
 import kr.hhplus.be.domain.user.dto.UserCouponDTO;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.ObjectUtils;
@@ -14,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class CouponPubishRepositoryCustomImpl implements CouponPubishRepositoryCustom {
@@ -74,5 +79,17 @@ public class CouponPubishRepositoryCustomImpl implements CouponPubishRepositoryC
                 .fetch().size();
 
         return new PageImpl<>(coupons, pageable, total);
+    }
+
+    @Override
+    public Optional<Coupon> findByIdForUpdate(Long couponId) {
+        QCoupon coupon = QCoupon.coupon;
+
+        return Optional.ofNullable(
+                queryFactory.selectFrom(coupon)
+                .where(coupon.id.eq(couponId))
+                .setLockMode(LockModeType.PESSIMISTIC_WRITE)  // 비관적 락 설정
+                .fetchOne()
+        );
     }
 }

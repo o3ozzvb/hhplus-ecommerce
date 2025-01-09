@@ -36,4 +36,8 @@ public class Coupon {
 
     private LocalDateTime updatedAt;
 
+    public void publish() {
+        this.remainQuantity = this.remainQuantity - 1;
+        this.updatedAt = LocalDateTime.now();
+    }
 }
