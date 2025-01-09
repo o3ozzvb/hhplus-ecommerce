@@ -1,5 +1,6 @@
 package kr.hhplus.be.interfaces.dto.coupon;
 
+import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import lombok.*;
 
 @Getter
@@ -8,4 +9,8 @@ import lombok.*;
 @AllArgsConstructor
 public class CouponPublishResponse {
     private long couponPublishId;
+
+    public static CouponPublishResponse from(CouponPublish couponPublish) {
+        return new CouponPublishResponse(couponPublish.getId());
+    }
 }
