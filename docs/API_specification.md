@@ -1,5 +1,8 @@
 # API 명세서
 
+## Swagger API Docs
+![api_swagger.png](image%2Fapi_swagger.png)
+
 ## 1. POST /api/v1/users/{userId}/charge - 잔액 충전 
  - **Path Variable**
     - userId(`Long`): 사용자 ID  
