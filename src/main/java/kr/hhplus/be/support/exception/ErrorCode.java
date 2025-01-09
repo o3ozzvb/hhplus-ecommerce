@@ -21,7 +21,9 @@ public enum ErrorCode {
     // ORDER
     ORDER_NOT_EXIST("ORDER_NOT_EXIST", "존재하지 않는 주문입니다."),
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "서버 에러 입니다."),
-    VALIDATION_ERROR("VALIDATION_ERROR", "필수값이 누락되었습니다.");
+    VALIDATION_ERROR("VALIDATION_ERROR", "필수값이 누락되었습니다."),
+    // PAYMENT
+    PAYMENT_NOT_EXIST("PAYMENT_NOT_EXIST", "존재하지 않는 결제입니다.");
 
     private final String code;
     private final String message;
