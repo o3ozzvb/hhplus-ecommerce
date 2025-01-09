@@ -1,4 +1,4 @@
-package kr.hhplus.be.domain.user;
+package kr.hhplus.be.domain.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -6,11 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import kr.hhplus.be.support.exception.BusinessException;
 import kr.hhplus.be.support.exception.ErrorCode;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "Users")
 public class User {
 
