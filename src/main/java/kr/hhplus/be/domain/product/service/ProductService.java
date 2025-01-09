@@ -20,4 +20,13 @@ public interface ProductService {
      */
     void increaseInventory(long productId, int quantity);
 
+    /**
+     * 상품 목록 조회
+     */
+    Page<Product> getProducts(ProductSearchDTO searchDTO, Pageable pageable);
+
+    /**
+     * 상위 상품 목록 조회
+     */
+    List<TopSalesProductDTO> getTopSalesProducts();
 }

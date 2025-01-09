@@ -1,7 +1,9 @@
-package kr.hhplus.be.domain.product;
+package kr.hhplus.be.domain.product.enumtype;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum Category {
     OUTER("아우터"),
