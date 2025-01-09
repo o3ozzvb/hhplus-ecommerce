@@ -44,4 +44,20 @@ public class ProductServiceImpl implements ProductService {
         // 재고 추가
         productInventory.increaseInventory(quantity);
     }
+
+    /**
+     * 상품 목록 조회
+     */
+    @Override
+    public Page<Product> getProducts(ProductSearchDTO searchDTO, Pageable pageable) {
+        return productRepository.findProductsBySearchDTO(searchDTO, pageable);
+    }
+
+    /**
+     * 상위 상품 목록 조회
+     */
+    @Override
+    public List<TopSalesProductDTO> getTopSalesProducts() {
+        return productRepository.findTopSalesProducts();
+    }
 }
