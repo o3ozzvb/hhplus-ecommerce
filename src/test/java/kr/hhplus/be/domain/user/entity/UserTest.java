@@ -1,4 +1,4 @@
-package kr.hhplus.be.domain.user;
+package kr.hhplus.be.domain.user.entity;
 
 import kr.hhplus.be.support.exception.BusinessException;
 import kr.hhplus.be.support.exception.ErrorCode;
