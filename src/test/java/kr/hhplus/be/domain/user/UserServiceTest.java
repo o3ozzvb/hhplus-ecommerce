@@ -1,5 +1,10 @@
 package kr.hhplus.be.domain.user;
 
+import kr.hhplus.be.domain.coupon.dto.CouponSearchDTO;
+import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
+import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
+import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
+import kr.hhplus.be.domain.user.dto.UserCouponDTO;
 import kr.hhplus.be.domain.user.entity.User;
 import kr.hhplus.be.domain.user.repository.UserRepository;
 import kr.hhplus.be.domain.user.service.UserServiceImpl;
@@ -11,11 +16,19 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,6 +39,9 @@ class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private CouponPublishRepository couponPublishRepository;
 
     @Test
     @DisplayName("잔액충전 시 충전금액이 0이면 BusinessException이 발생한다")
@@ -109,5 +125,39 @@ class UserServiceTest {
         assertThat(findUser.getBalance()).isEqualTo(balance - useAmount);
     }
 
+    @Test
+    @DisplayName("사용자가 보유한 쿠폰목록이 조회된다.")
+    void getUserCouponList() {
+        // given
+        long userId = 1L;
+        UserCouponDTO userCoupon1 = new UserCouponDTO(1L, 1L, "10% 할인 쿠폰", DiscountType.FIXED_RATE, 10, LocalDate.now(), LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
+        UserCouponDTO userCoupon2 = new UserCouponDTO(2L, 2L, "10000원 할인 쿠폰", DiscountType.FIXED_AMOUNT, 10000, LocalDate.now(), LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
+        UserCouponDTO userCoupon3 = new UserCouponDTO(3L, 3L, "20% 할인 쿠폰", DiscountType.FIXED_RATE, 20, LocalDate.now(), LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
+        UserCouponDTO userCoupon4 = new UserCouponDTO(4L, 4L, "5000원 할인 쿠폰", DiscountType.FIXED_AMOUNT, 5000, LocalDate.now(), LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
+        int page = 0;
+        int size = 2;
+        List<UserCouponDTO> mockResult = Arrays.asList(userCoupon1, userCoupon2, userCoupon3, userCoupon4);
+        CouponSearchDTO searchDTO;
+
+        Pageable pageable = PageRequest.of(0,2);
+
+        when(couponPublishRepository.findUserCouponsBySearchDTO(any(CouponSearchDTO.class), any(Pageable.class)))
+                .thenReturn(new PageImpl<>(mockResult.subList(0, 2), pageable, mockResult.size()));
+
+        // When
+        searchDTO = CouponSearchDTO.builder()
+                .userId(userId)
+                .build();
+        Page<UserCouponDTO> result = userService.getUserCoupons(searchDTO, PageRequest.of(0,2));
+
+        // Then
+        assertThat(result).isNotNull();
+        assertThat(result.getTotalElements()).isEqualTo(4);  // 전체 쿠폰 수: 4개
+        assertThat(result.getTotalPages()).isEqualTo(2);  // 페이지 수: 2페이지
+        assertThat(result.getNumber()).isEqualTo(0);  // 현재 페이지 번호: 0
+        assertThat(result.getSize()).isEqualTo(2);  // 한 페이지 크기: 2개
+        assertThat(result.getContent().size()).isEqualTo(2);  // 실제 조회된 데이터 수: 2개
+        assertThat(result.getContent()).containsExactly(userCoupon1, userCoupon2);  // 조회된 데이터 검증
+    }
 }
