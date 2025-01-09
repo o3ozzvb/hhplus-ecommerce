@@ -1,12 +1,16 @@
-package kr.hhplus.be.domain.coupon;
+package kr.hhplus.be.domain.coupon.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import kr.hhplus.be.domain.coupon.enumtype.CouponStatus;
+import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 @Entity
 public class Coupon {
 
@@ -16,14 +20,16 @@ public class Coupon {
 
     private String couponName;
 
+    @Enumerated(EnumType.STRING)
     private DiscountType discountType;
 
     private int discountValue;
 
     private int maxQuantity;
 
-    private int remainQunatity;
+    private int remainQuantity;
 
+    @Enumerated(EnumType.STRING)
     private CouponStatus status;
 
     private LocalDateTime createdAt;

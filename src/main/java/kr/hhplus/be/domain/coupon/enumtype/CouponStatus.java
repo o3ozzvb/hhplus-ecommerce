@@ -1,4 +1,4 @@
-package kr.hhplus.be.domain.coupon;
+package kr.hhplus.be.domain.coupon.enumtype;
 
 public enum CouponStatus {
     ACTIVE, /* 활성화 */
