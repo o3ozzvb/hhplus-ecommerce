@@ -1,14 +1,17 @@
-package kr.hhplus.be.domain.order;
+package kr.hhplus.be.domain.order.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import kr.hhplus.be.domain.order.enumtype.OrderStatus;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
+@Builder
 @Entity(name = "Orders")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class Order {
 
     @Id
@@ -19,16 +22,18 @@ public class Order {
 
     private Long refCouponPublishId;
 
-    private LocalDate orderDate;
+    private LocalDateTime orderedAt;
 
     private int totalAmount;
 
+    private int discountAmount;
+
     private int finalAmount;
 
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
-
 }

@@ -1,10 +1,15 @@
-package kr.hhplus.be.domain.order;
+package kr.hhplus.be.domain.order.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.*;
 
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class OrderDetail {
 
@@ -21,4 +26,8 @@ public class OrderDetail {
     private int price;
 
     private int totalAmount;
+
+    public void setRefOrderId(Long refOrderId) {
+        this.refOrderId = refOrderId;
+    }
 }
