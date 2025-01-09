@@ -2,22 +2,26 @@ package kr.hhplus.be.interfaces.api.order;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
+import kr.hhplus.be.application.order.OrderFacade;
+import kr.hhplus.be.application.order.dto.OrderInfo;
 import kr.hhplus.be.interfaces.dto.common.ApiResponse;
-import kr.hhplus.be.interfaces.dto.order.OrderItemInfo;
 import kr.hhplus.be.interfaces.dto.order.OrderRequest;
 import kr.hhplus.be.interfaces.dto.order.OrderResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class OrderController {
+
+    private final OrderFacade orderFacade;
+
     /**
      * 주문 요청
      */
@@ -26,17 +30,7 @@ public class OrderController {
     public ApiResponse<OrderResponse> order(@RequestBody @Valid OrderRequest request) {
         log.debug("OrderController order - request: {}", request);
 
-        int totalAmount = 0;
-        for(OrderItemInfo item : request.getOrderItemList()) {
-            totalAmount += item.getQuantity() * item.getPrice();
-        }
-
-        OrderResponse response = OrderResponse.builder()
-                .orderId(1)
-                .totalAmount(totalAmount)
-                .orderDateTime(LocalDateTime.now())
-                .build();
-
-        return ApiResponse.success(response);
+        OrderInfo orderInfo = orderFacade.order(request.toCommand());
+        return ApiResponse.success(OrderResponse.from(orderInfo));
     }
 }

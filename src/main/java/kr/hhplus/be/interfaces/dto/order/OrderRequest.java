@@ -1,8 +1,12 @@
 package kr.hhplus.be.interfaces.dto.order;
 
 import jakarta.validation.constraints.NotNull;
+import kr.hhplus.be.application.order.dto.OrderCreateCommand;
+import kr.hhplus.be.application.order.dto.OrderItemInfo;
+import kr.hhplus.be.application.order.dto.OrderItems;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -17,6 +21,18 @@ public class OrderRequest {
     private Long couponPublishId; // 사용할 발행쿠폰 ID
 
     @NotNull(message = "주문 상품 리스트는 필수값 입니다.")
-    private List<OrderItemInfo> orderItemList;
+    private List<OrderItemRequest> orderItemList;
 
+    public OrderCreateCommand toCommand() {
+        // 주문 상품 리스트 변환
+        List<OrderItemInfo> orderItemInfos = new ArrayList<>();
+        for (OrderItemRequest itemRequest : orderItemList) {
+            orderItemInfos.add(itemRequest.toOrderItemInfo());
+        }
+
+        return OrderCreateCommand.builder()
+                .userId(this.userId)
+                .couponPublishId(this.couponPublishId)
+                .orderItems(new OrderItems(orderItemInfos)).build();
+    }
 }
