@@ -1,6 +1,7 @@
 package kr.hhplus.be.interfaces.dto.payment;
 
 import jakarta.validation.constraints.NotNull;
+import kr.hhplus.be.application.payment.dto.PaymentCommand;
 import lombok.*;
 
 @Getter
@@ -17,5 +18,7 @@ public class PaymentRequest {
     @NotNull(message = "결제금액은 필수값 입니다.")
     private Integer payAmount;
 
-    private String pg;
+    public PaymentCommand toPaymentCommand() {
+        return new PaymentCommand(this.userId, this.orderId, this.payAmount);
+    }
 }
