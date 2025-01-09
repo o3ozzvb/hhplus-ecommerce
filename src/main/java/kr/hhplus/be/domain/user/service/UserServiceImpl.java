@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public BalanceDTO charge(long userId, int chargeAmount) {
-        User user = userRepository.findById(userId);
+        User user = userRepository.findByIdForUpdate(userId);
         user.charge(chargeAmount);
         userRepository.save(user);
         return new BalanceDTO(userId, user.getBalance());
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public BalanceDTO useBalance(long userId, int useAmount) {
-        User user = userRepository.findById(userId);
+        User user = userRepository.findByIdForUpdate(userId);
         user.useBalance(useAmount);
         userRepository.save(user);
         return new BalanceDTO(userId, user.getBalance());
