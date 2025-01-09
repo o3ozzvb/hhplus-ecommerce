@@ -1,10 +1,9 @@
-package kr.hhplus.be.server;
+package kr.hhplus.be;
 
 import jakarta.annotation.PreDestroy;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -23,6 +22,13 @@ class TestcontainersConfiguration {
 		System.setProperty("spring.datasource.url", MYSQL_CONTAINER.getJdbcUrl() + "?characterEncoding=UTF-8&serverTimezone=UTC");
 		System.setProperty("spring.datasource.username", MYSQL_CONTAINER.getUsername());
 		System.setProperty("spring.datasource.password", MYSQL_CONTAINER.getPassword());
+	}
+
+	@DynamicPropertySource
+	static void registerProperties(DynamicPropertyRegistry registry) {
+		registry.add("spring.datasource.url", MYSQL_CONTAINER::getJdbcUrl);
+		registry.add("spring.datasource.username", MYSQL_CONTAINER::getUsername);
+		registry.add("spring.datasource.password", MYSQL_CONTAINER::getPassword);
 	}
 
 	@PreDestroy
