@@ -67,16 +67,18 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
         return queryFactory
                 .select(Projections.constructor(TopSalesProductDTO.class,
+                        product.id,
                         product.productName,
                         product.category,
-                        orderDetail.quantity.sum().as("totalQuantity"),
-                        orderDetail.totalAmount.sum().as("totalSalesAmount")
+                        product.price,
+                        orderDetail.quantity.sum().as("soldQuantity"),
+                        orderDetail.totalAmount.sum().as("totalAmount")
                 ))
                 .from(orderDetail)
                 .join(product).on(orderDetail.refProductId.eq(product.id))
                 .join(order).on(orderDetail.refOrderId.eq(order.id))
                 .where(order.orderedAt.after(LocalDateTime.now().minusDays(3)))
-                .groupBy(product.id, product.productName, product.category)
+                .groupBy(product.id)
                 .orderBy(orderDetail.quantity.sum().desc())
                 .limit(5)
                 .fetch();
