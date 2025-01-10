@@ -15,8 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import com.querydsl.core.types.dsl.Expressions;
-
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,7 +30,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
         BooleanBuilder whereClause = new BooleanBuilder();
         if (StringUtils.isNotBlank(searchDTO.getProductName())) {
-            whereClause.and(product.productName.like(searchDTO.getProductName()));
+            whereClause.and(product.productName.like("%" + searchDTO.getProductName() + "%"));
         }
         if (ObjectUtils.isNotEmpty(searchDTO.getCategory())) {
             whereClause.and(product.category.eq(searchDTO.getCategory()));
