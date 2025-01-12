@@ -1,7 +1,8 @@
 # API 명세서
 
 ## Swagger API Docs
-![api_swagger.png](image%2Fapi_swagger.png)
+![api_swagger.png](image/api_swagger.png)
+[swagger_api_docs.pdf](swagger_api_docs.pdf)
 
 ## 1. POST /api/v1/users/{userId}/charge - 잔액 충전 
  - **Path Variable**
