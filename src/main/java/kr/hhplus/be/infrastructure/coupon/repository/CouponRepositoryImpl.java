@@ -24,4 +24,10 @@ public class CouponRepositoryImpl implements CouponRepository {
         return couponJpaRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.COUPON_NOT_EXIST));
     }
+
+    @Override
+    public Coupon findByIdForUpdate(Long couponId) {
+        return couponJpaRepository.findByIdForUpdate(couponId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.COUPON_NOT_EXIST));
+    }
 }

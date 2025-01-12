@@ -23,4 +23,12 @@ public class UserRepositoryImpl implements UserRepository {
         return userJpaRepository.findById(id)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
     }
+
+    @Override
+    public User findByIdForUpdate(Long id) {
+        return userJpaRepository.findByIdForUpdate(id)
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_EXIST));
+    }
+
+
 }

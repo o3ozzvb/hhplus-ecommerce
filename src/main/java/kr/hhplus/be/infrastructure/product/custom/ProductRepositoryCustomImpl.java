@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.product.custom;
+package kr.hhplus.be.infrastructure.product;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -31,7 +30,7 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
         BooleanBuilder whereClause = new BooleanBuilder();
         if (StringUtils.isNotBlank(searchDTO.getProductName())) {
-            whereClause.and(product.productName.like(searchDTO.getProductName()));
+            whereClause.and(product.productName.like("%" + searchDTO.getProductName() + "%"));
         }
         if (ObjectUtils.isNotEmpty(searchDTO.getCategory())) {
             whereClause.and(product.category.eq(searchDTO.getCategory()));
@@ -68,16 +67,18 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
         return queryFactory
                 .select(Projections.constructor(TopSalesProductDTO.class,
+                        product.id,
                         product.productName,
                         product.category,
-                        orderDetail.quantity.sum().as("totalQuantity"),
-                        orderDetail.totalAmount.sum().as("totalSalesAmount")
+                        product.price,
+                        orderDetail.quantity.sum().as("soldQuantity"),
+                        orderDetail.totalAmount.sum().as("totalAmount")
                 ))
                 .from(orderDetail)
                 .join(product).on(orderDetail.refProductId.eq(product.id))
                 .join(order).on(orderDetail.refOrderId.eq(order.id))
                 .where(order.orderedAt.after(LocalDateTime.now().minusDays(3)))
-                .groupBy(product.id, product.productName, product.category)
+                .groupBy(product.id)
                 .orderBy(orderDetail.quantity.sum().desc())
                 .limit(5)
                 .fetch();

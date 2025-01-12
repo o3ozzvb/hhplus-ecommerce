@@ -1,0 +1,40 @@
+package kr.hhplus.be.application.order.dto;
+
+import kr.hhplus.be.domain.order.entity.OrderDetail;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class OrderItemInfo {
+    private Long productId;
+    private Integer quantity;
+    private Integer price;
+
+    public OrderDetail toOrderDetail() {
+        int quantity = this.getQuantity();
+        int price = this.getPrice();
+
+        return OrderDetail.builder()
+                .id(null)
+                .refOrderId(null)
+                .refProductId(productId)
+                .quantity(quantity)
+                .price(price)
+                .totalAmount(quantity * price)
+                .build();
+    }
+
+    public static OrderItemInfo from(OrderDetail orderDetail) {
+        OrderItemInfo orderItemInfo = new OrderItemInfo();
+
+        orderItemInfo.productId = orderDetail.getRefProductId();
+        orderItemInfo.quantity = orderDetail.getQuantity();
+        orderItemInfo.price = orderDetail.getPrice();
+
+        return orderItemInfo;
+    }
+}

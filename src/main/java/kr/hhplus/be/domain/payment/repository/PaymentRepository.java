@@ -7,4 +7,6 @@ public interface PaymentRepository {
      * 결제 정보 저장
      */
     Payment save(Payment payment);
+
+    Payment findById(long id);
 }

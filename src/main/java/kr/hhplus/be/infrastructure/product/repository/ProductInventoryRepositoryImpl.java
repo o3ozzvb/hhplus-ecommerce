@@ -24,4 +24,11 @@ public class ProductInventoryRepositoryImpl implements ProductInventoryRepositor
         return productInventoryJpaRepository.findById(productId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PRODUCT_INVENTORY_NOT_EXIST));
     }
+
+    @Override
+    public ProductInventory findByIdForUpdate(Long productId) {
+        return productInventoryJpaRepository.findByIdForUpdate(productId);
+    }
+
+
 }

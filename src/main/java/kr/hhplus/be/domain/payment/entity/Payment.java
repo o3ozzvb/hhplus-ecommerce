@@ -2,14 +2,12 @@ package kr.hhplus.be.domain.payment.entity;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.domain.payment.enumtype.PaymentStatus;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
