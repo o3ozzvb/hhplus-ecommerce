@@ -20,11 +20,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final CouponPublishRepository couponPublishRepository;
 
+
     /**
      * 잔액 충전
      */
-    BalanceDTO charge(long userId, int chargeAmount) {
-        User user = userRepository.findById(userId);
+    public BalanceDTO charge(long userId, int chargeAmount) {
+        User user = userRepository.findByIdForUpdate(userId);
         user.charge(chargeAmount);
         userRepository.save(user);
         return new BalanceDTO(userId, user.getBalance());
@@ -33,7 +34,7 @@ public class UserService {
     /**
      * 잔액 조회
      */
-    BalanceDTO getBalance(long userId) {
+    public BalanceDTO getBalance(long userId) {
         User user = userRepository.findById(userId);
         return new BalanceDTO(userId, user.getBalance());
     }
@@ -41,8 +42,8 @@ public class UserService {
     /**
      * 잔액 차감
      */
-    BalanceDTO useBalance(long userId, int useAmount) {
-        User user = userRepository.findById(userId);
+    public BalanceDTO useBalance(long userId, int useAmount) {
+        User user = userRepository.findByIdForUpdate(userId);
         user.useBalance(useAmount);
         userRepository.save(user);
         return new BalanceDTO(userId, user.getBalance());
@@ -51,9 +52,8 @@ public class UserService {
     /**
      * 보유 쿠폰 목록 조회
      */
-    Page<UserCouponDTO> getUserCoupons(CouponSearchDTO searchDTO, Pageable pageable) {
+    public Page<UserCouponDTO> getUserCoupons(CouponSearchDTO searchDTO, Pageable pageable) {
         log.debug("CouponServiceImpl getUserCouponList - searchDTO: {}", searchDTO);
-
         return couponPublishRepository.findUserCouponsBySearchDTO(searchDTO, pageable);
     }
 }

@@ -24,7 +24,7 @@ class ProductServiceTest {
     ProductInventoryRepository productInventoryRepository;
     
     @InjectMocks
-    ProductServiceImpl productService;
+    ProductService productService;
 
     @Test
     @DisplayName("재고차감 시 차감 수량이 재고보다 크다면 BusinessException이 발생한다.")

@@ -26,7 +26,7 @@ public class ProductService {
      */
     public void deductInventory(long productId, int quantity) {
         // 상품 재고 조회
-        ProductInventory productInventory = productInventoryRepository.findById(productId);
+        ProductInventory productInventory = productInventoryRepository.findByIdForUpdate(productId);
         // 재고 차감
         productInventory.deductInventory(quantity);
         productInventoryRepository.save(productInventory);
@@ -37,7 +37,7 @@ public class ProductService {
      */
     public void increaseInventory(long productId, int quantity) {
         // 상품 재고 조회
-        ProductInventory productInventory = productInventoryRepository.findById(productId);
+        ProductInventory productInventory = productInventoryRepository.findByIdForUpdate(productId);
         // 재고 추가
         productInventory.increaseInventory(quantity);
     }
