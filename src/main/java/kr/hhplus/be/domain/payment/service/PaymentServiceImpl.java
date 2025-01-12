@@ -17,9 +17,9 @@ public class PaymentServiceImpl implements PaymentService {
      * 결제 요청 (결제 정보 저장)
      */
     @Override
-    public Payment pay(long orderId, int payAmount) {
+    public void pay(long orderId, int payAmount) {
         Payment payment = Payment.ofSuccess(orderId, payAmount, generateTransactionId());
-        return paymentRepository.save(payment);
+        paymentRepository.save(payment);
     }
 
     /**
