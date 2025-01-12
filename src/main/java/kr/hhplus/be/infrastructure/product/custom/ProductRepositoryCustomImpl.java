@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.product;
+package kr.hhplus.be.infrastructure.product.custom;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
