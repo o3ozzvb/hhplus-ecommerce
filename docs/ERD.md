@@ -1,6 +1,108 @@
 # ERD(Entity Relationship Diagram)
 
-![img.png](image/erd.png)
+```mermaid  
+erDiagram
+    user {
+        Long id PK
+        varchar username
+        Number balance
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    balance_history {
+        Long id PK
+        Long ref_user_id FK
+        Number balance
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    product {
+        Long id PK
+        varchar product_name
+        varchar category
+        Number price
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    product_inventory {
+        Long ref_product_id PK
+        int inventory
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    coupon {
+        Long id PK
+        varchar coupon_name
+        varchar discount_type
+        varchar discount_value
+        int max_quantity
+        int remain_quantity
+        varchar status "ACTIVE, UNACTIVE"
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    coupon_publish {
+        Long id PK
+        Long ref_coupon_id FK
+        Long ref_user_id FK
+        LocalDate publish_date
+        LocalDate redeem_date
+        LocalDate valid_start_date
+        LocalDate valid_end_date
+        varchar status "AVAILABLE, EXPIRED, REDEEMED"
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    order {
+        Long id PK
+        Long ref_user_id FK
+        Long ref_counpon_publish_id FK
+        LocalDate order_date 
+        Number total_amount
+        Number final_amount
+        varchar status "PENDING, COMPLETED, CANCELED"      
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+
+    order_detail {
+        Long id PK
+        Long ref_order_id FK
+        Long ref_product_id FK
+        int quantity
+        Number price
+        Number total_amount
+    }
+
+    payment {
+        Long id PK
+        Long ref_order_id FK
+        LocalDate pay_date
+        Number pay_amount
+        varchar status "SUCCESS, FAILED"
+        varchar failure_reason
+        varchar payment_gateway
+        varchar transaction_id
+        LocalDateTime created_at
+        LocalDateTime updated_at
+    }
+    
+    user ||--o{ coupon_publish : has
+    user ||--o{ balance_history : history
+    coupon ||--|{ coupon_publish : publish
+    user ||--|{ order : order
+    order ||--|{ order_detail : contains
+    order ||--|| coupon_publish : use
+    product ||--|{ order_detail : is
+    order ||--|| payment : pay
+    product ||--|| product_inventory : inventory
+```
 ## 테이블 설명
 ### 1. USER (사용자)
 |컬럼명|데이터 타입| 제약 조건 | 설명 |
