@@ -1,0 +1,38 @@
+package kr.hhplus.be.application.order.dto;
+
+import kr.hhplus.be.domain.order.entity.Order;
+import kr.hhplus.be.domain.order.entity.OrderDetail;
+import lombok.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class OrderInfo {
+    private Long orderId;
+    private Long userId;
+    private Long couponPublishId;
+    private int totalAmount;
+    private int discountAmount;
+    private int finalAmount;
+    private LocalDateTime orderDateTime;
+    private OrderItems orderItems;
+
+    public static OrderInfo from(Order order, List<OrderDetail> orderDetails) {
+        OrderInfo orderInfo = new OrderInfo();
+
+        orderInfo.orderId = order.getId();
+        orderInfo.userId = order.getRefUserId();
+        orderInfo.couponPublishId = order.getRefCouponPublishId();
+        orderInfo.totalAmount = order.getTotalAmount();
+        orderInfo.discountAmount = order.getDiscountAmount();
+        orderInfo.finalAmount = order.getFinalAmount();
+        orderInfo.orderDateTime = order.getOrderedAt();
+        orderInfo.orderItems = OrderItems.fromOrderDetails(orderDetails);
+
+        return orderInfo;
+    }
+}

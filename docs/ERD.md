@@ -23,43 +23,31 @@
 | created_at      | LocalDateTime | NOT NULL           | 생성 일시                             |
 | updated_at      | LocalDateTime | NOT NULL           | 수정 일시                             |
 ### 3. COUPON_PUBLISH (발행 쿠폰)
-| 컬럼명             | 데이터 타입        | 제약 조건                   | 설명                               |
-|-----------------|---------------|-------------------------|:---------------------------------|
-|id	|Long| 	PRIMARY KEY   | 	쿠폰 발행 ID |                       |
-|ref_coupon_id|	Long| 	FOREIGN KEY , NOT NULL	 |발행된 쿠폰의 ID (coupon 테이블 참조)|
-|ref_user_id	|Long| 	FOREIGN KEY, NOT NULL  |	쿠폰을 발행받은 사용자의 ID (user 테이블 참조)|
-|publish_date| LocalDate | NOT NULL | 쿠폰 발행일자|
-|valid_start_date|	LocalDate	| NOT NULL                |	 유효 시작 날짜|
-|valid_end_date	|LocalDate| NOT NULL                |	 유효 종료 날짜|
-|status	|varchar| 	NOT NULL     |	쿠폰 상태 (AVAILABLE, EXPIRED, REDEEMED)|
-| created_at      | LocalDateTime | NOT NULL                        | 생성 일시                            |
-| updated_at      | LocalDateTime | NOT NULL                        | 수정 일시                            |
-### 4. COUPON_PUBLISH_HISTORY (발행 쿠폰 히스토리)
-| 컬럼명                   | 데이터 타입        | 제약 조건                   | 설명                                    |
-|-----------------------|---------------|-------------------------|:--------------------------------------|
-| id	                   |Long| 	PRIMARY KEY   | 	히스토리 ID                              |                       |
-| ref_coupon_publish_id |	Long| 	FOREIGN KEY , NOT NULL	 | 발행 쿠폰 ID (coupon_publish 테이블 참조)      |
-| ref_coupon_id         |	Long| 	FOREIGN KEY , NOT NULL	 | 쿠폰 ID (coupon 테이블 참조)                 |
-| ref_user_id	          |Long| 	FOREIGN KEY, NOT NULL  | 	쿠폰을 발행받은 사용자의 ID (user 테이블 참조)       |
-| publish_date          | LocalDate | NOT NULL | 쿠폰 발행일자                               |
-| valid_start_date      |	LocalDate	| NOT NULL                | 	 유효 시작 날짜                            |
-| valid_end_date	       |LocalDate| NOT NULL                | 	 유효 종료 날짜                            |
-| status	               |varchar| 	NOT NULL     | 	쿠폰 상태 (AVAILABLE, EXPIRED, REDEEMED) |
-| created_at            | LocalDateTime | NOT NULL                        | 생성 일시                                 |
-| updated_at            | LocalDateTime | NOT NULL                        | 수정 일시                                 |
-### 5. ORDER (주문)
-| 컬럼명                   | 데이터 타입        | 제약 조건                    | 설명                                      |
-|-----------------------|---------------|--------------------------|:----------------------------------------|
-| id                    |	Long|	PRIMARY KEY	| 주문 ID                                   |
-| ref_user_id           |	Long|	FOREIGN, NOT NULL| 	주문을 생성한 사용자의 ID (user 테이블 참조)          |
-| ref_coupon_publish_id |	Long|	FOREIGN, NOT NULL| 	주문에 사용된 쿠폰의 ID (coupon_publish 테이블 참조) |
-| order_date            |	LocalDate|	NOT NULL	| 주문 날짜                                   |
-| total_amount          |	Number|	NOT NULL	| 주문 총액                                   |
-| final_amount          |	Number|	NOT NULL	| 주문 최종 금액 (쿠폰 적용 후)                      |
-| status                |	varchar	|	NOT NULL| 주문 상태 (PENDING, COMPLETED, CANCELED)    |
-| created_at            | LocalDateTime |    NOT NULL                      | 생성 일시                                   |
-| updated_at            | LocalDateTime |  NOT NULL                        | 수정 일시                                   |
-### 6. ORDER_DETAIL (주문 상세)
+| 컬럼명              | 데이터 타입        | 제약 조건                   | 설명                                    |
+|------------------|---------------|-------------------------|:--------------------------------------|
+| id	              |Long| 	PRIMARY KEY   | 	쿠폰 발행 ID                             |                       |
+| ref_coupon_id    |	Long| 	FOREIGN KEY , NOT NULL	 | 발행된 쿠폰의 ID (coupon 테이블 참조)            |
+| ref_user_id	     |Long| 	FOREIGN KEY, NOT NULL  | 	쿠폰을 발행받은 사용자의 ID (user 테이블 참조)       |
+| publish_date     | LocalDate | NOT NULL | 쿠폰 발행일자                               |
+| redeem_date      | LocalDate | NOT NULL | 쿠폰 사용일자                               |
+| valid_start_date |	LocalDate	| NOT NULL                | 	 유효 시작 날짜                            |
+| valid_end_date	  |LocalDate| NOT NULL                | 	 유효 종료 날짜                            |
+| status	          |varchar| 	NOT NULL     | 	쿠폰 상태 (AVAILABLE, EXPIRED, REDEEMED) |
+| created_at       | LocalDateTime | NOT NULL                        | 생성 일시                                 |
+| updated_at       | LocalDateTime | NOT NULL                        | 수정 일시                                 |
+### 4. ORDER (주문)
+| 컬럼명                   | 데이터 타입         | 제약 조건                    | 설명                                      |
+|-----------------------|----------------|--------------------------|:----------------------------------------|
+| id                    | 	Long          |	PRIMARY KEY	| 주문 ID                                   |
+| ref_user_id           | 	Long          |	FOREIGN, NOT NULL| 	주문을 생성한 사용자의 ID (user 테이블 참조)          |
+| ref_coupon_publish_id | 	Long          |	FOREIGN, NOT NULL| 	주문에 사용된 쿠폰의 ID (coupon_publish 테이블 참조) |
+| ordered_at            | 	LocalDateTime |	NOT NULL	| 주문 날짜                                   |
+| total_amount          | 	Number        |	NOT NULL	| 주문 총액                                   |
+| final_amount          | 	Number        |	NOT NULL	| 주문 최종 금액 (쿠폰 적용 후)                      |
+| status                | 	varchar	      |	NOT NULL| 주문 상태 (PENDING, COMPLETED, CANCELED)    |
+| created_at            | LocalDateTime  |    NOT NULL                      | 생성 일시                                   |
+| updated_at            | LocalDateTime  |  NOT NULL                        | 수정 일시                                   |
+### 5. ORDER_DETAIL (주문 상세)
 | 컬럼명             | 데이터 타입        | 제약 조건                   | 설명                          |
 |-----------------|---------------|-------------------------|:----------------------------|
 |id	|Long	|PRIMARY KEY| 	주문 상세 ID                   |
@@ -68,7 +56,7 @@
 |quantity|	int	|NOT NULL	| 상품 수량                       |
 |price	|Number|	NOT NULL	| 상품 단가                       |
 |total_amount|	Number|	NOT NULL	| 상품 총액 (quantity * price)    |
-### 7. PRODUCT (상품)
+### 6. PRODUCT (상품)
 |컬럼명|데이터 타입| 제약 조건 | 설명                                |
 |---|---|------------|-----------------------------------|
 |id|Long| PRIMARY KEY | 상품 ID                             |
@@ -77,7 +65,7 @@
 |price|	Number	|  NOT NULL          | 상품 가격                             |
 |created_at|LocalDateTime|     NOT NULL       | 생성 일시                             |
 |updated_at|LocalDateTime|   NOT NULL         | 수정 일시                             |
-### 8. PAYMENT (결제)
+### 7. PAYMENT (결제)
 | 컬럼명           | 데이터 타입        | 제약 조건                                                               | 설명                        |
 |---------------|---------------|---------------------------------------------------------------------|:--------------------------|
 |id	|Long| 	PRIMARY KEY	                                                       | 결제 고유 ID                  |
@@ -90,21 +78,21 @@
 |transaction_id	|varchar| 		                                                                  | 결제 거래 ID                  |
 |created_at     | LocalDateTime | NOT NULL                  | 생성 일시                                |
 |updated_at     | LocalDateTime | NOT NULL                                                            | 수정 일시                     |
-### 9. PRODUCT_INVENTORY (상품 재고)
+### 8. PRODUCT_INVENTORY (상품 재고)
 | 컬럼명            | 데이터 타입        | 제약 조건 | 설명       |
 |----------------|---------------|------------|----------|
 | ref_product_id | Long          | PRIMARY KEY | 상품 ID    |
 | inventory      | int	          |  NOT NULL          | 상품 재고 수량 |
 | created_at     | LocalDateTime |     NOT NULL       | 생성 일시    |
 | updated_at     | LocalDateTime |   NOT NULL         | 수정 일시    |
-### 10. PRODUCT_INVENTORY_HISTORY (상품 재고 히스토리)
-| 컬럼명           | 데이터 타입        | 제약 조건 | 설명            |
-|---------------|---------------|------------|---------------|
-| id | Long          | PRIMARY KEY | 상품 재고 히스토리 ID |
-| ref_product_id | Long          | PRIMARY KEY | 상품 ID         |
-| inventory     | int	          |  NOT NULL          | 상품 재고 수량      |
-| created_at    | LocalDateTime |     NOT NULL       | 생성 일시         |
-| updated_at    | LocalDateTime |   NOT NULL         | 수정 일시         |
+### 9. BALANCE_HISTORY (잔액 히스토리)
+| 컬럼명         | 데이터 타입        | 제약 조건 | 설명      |
+|-------------|---------------|------------|---------|
+| id          | Long          | PRIMARY KEY | 히스토리 ID |
+| ref_user_id | Long	         |  NOT NULL          | 사용자 ID  |
+| balance     | Number	       |  NOT NULL          | 잔액       |
+| created_at  | LocalDateTime |     NOT NULL       | 생성 일시   |
+| updated_at  | LocalDateTime |   NOT NULL         | 수정 일시   |
 
 ## 주요 관계
 **1. User <-> CouponPublish (1:N)**
@@ -128,11 +116,8 @@
 **7. Order <-> Payment (1:1)**
  - 하나의 주문에 대해 한 번의 결제만 이루어질 수 있음.
 
-**8. CouponPublish <-> CouponPublishHistory (1:N)**
-- 발행 쿠폰 내역의 상태 변경에 따라 여러 내역이 발생할 수 있음.
-
-**9. Product <-> ProductInventory (1:1)**
+**8. Product <-> ProductInventory (1:1)**
 - 상품의 재고가 1:1 관계로 관리됨.
 
-**10. ProductInventory <-> ProductInventoryHistory (1:N)**
-- 상품 재고의 변경에 따라 여러 내역이 발생할 수 있음
+**9. User <-> BalanceHistory (1:N)**
+- 사용자의 잔액 충전/사용에 대한 내역이 1:N 으로 관리됨.

@@ -1,7 +1,7 @@
 package kr.hhplus.be.interfaces.dto.coupon;
 
-import kr.hhplus.be.domain.coupon.CouponStatus;
 import kr.hhplus.be.domain.coupon.DiscountType;
+import kr.hhplus.be.domain.coupon.CouponPublishStatus;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -18,5 +18,5 @@ public class CouponInfo {
     private int discountValue;
     private LocalDate validStartDate;
     private LocalDate validEndDate;
-    private CouponStatus status;
+    private CouponPublishStatus status;
 }

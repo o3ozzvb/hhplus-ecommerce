@@ -38,6 +38,15 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:1.18.28")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
+	// Swagger
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
+
+	/// QueryDSL
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
 	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
 
@@ -52,4 +61,23 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 	systemProperty("user.timezone", "UTC")
+}
+
+/**
+ * QueryDSL Build Options
+ */
+val querydslDir = "src/main/generated"
+
+sourceSets {
+	getByName("main").java.srcDirs(querydslDir)
+}
+
+tasks.withType<JavaCompile> {
+	options.generatedSourceOutputDirectory = file(querydslDir)
+}
+
+tasks.named("clean") {
+	doLast {
+		file(querydslDir).deleteRecursively()
+	}
 }

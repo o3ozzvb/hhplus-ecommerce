@@ -2,6 +2,7 @@ package kr.hhplus.be.interfaces.dto.coupon;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
+import kr.hhplus.be.domain.coupon.dto.CouponPublishDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,4 +25,8 @@ public class CouponPublishRequest {
     @NotNull(message = "유효종료일자는 필수값 입니다.")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     LocalDate validEndDate;
+
+    public CouponPublishDTO toCommand() {
+        return new CouponPublishDTO(this.couponId, this.userId, this.validStartDate, this.validEndDate);
+    }
 }
