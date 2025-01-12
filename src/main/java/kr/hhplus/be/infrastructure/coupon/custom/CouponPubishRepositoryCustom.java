@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.coupon;
+package kr.hhplus.be.infrastructure.coupon.custom;
 
 import kr.hhplus.be.domain.coupon.dto.CouponSearchDTO;
 import kr.hhplus.be.domain.user.dto.UserCouponDTO;

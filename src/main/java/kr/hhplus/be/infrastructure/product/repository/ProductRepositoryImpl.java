@@ -1,9 +1,10 @@
-package kr.hhplus.be.infrastructure.product;
+package kr.hhplus.be.infrastructure.product.repository;
 
 import kr.hhplus.be.domain.product.dto.ProductSearchDTO;
 import kr.hhplus.be.domain.product.dto.TopSalesProductDTO;
 import kr.hhplus.be.domain.product.entity.Product;
 import kr.hhplus.be.domain.product.repository.ProductRepository;
+import kr.hhplus.be.infrastructure.product.jpa.ProductJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

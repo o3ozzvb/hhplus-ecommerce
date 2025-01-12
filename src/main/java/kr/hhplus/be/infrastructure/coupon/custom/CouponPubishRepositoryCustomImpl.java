@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.coupon;
+package kr.hhplus.be.infrastructure.coupon.custom;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;

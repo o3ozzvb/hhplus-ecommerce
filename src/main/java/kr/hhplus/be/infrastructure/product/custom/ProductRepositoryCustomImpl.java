@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.product;
+package kr.hhplus.be.infrastructure.product.custom;
 
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import com.querydsl.core.types.dsl.Expressions;
 
 
 import java.time.LocalDateTime;

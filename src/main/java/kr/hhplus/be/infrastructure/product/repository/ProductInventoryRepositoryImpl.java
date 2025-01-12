@@ -1,7 +1,8 @@
-package kr.hhplus.be.infrastructure.product;
+package kr.hhplus.be.infrastructure.product.repository;
 
 import kr.hhplus.be.domain.product.entity.ProductInventory;
 import kr.hhplus.be.domain.product.repository.ProductInventoryRepository;
+import kr.hhplus.be.infrastructure.product.jpa.ProductInventoryJpaRepository;
 import kr.hhplus.be.support.exception.BusinessException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
