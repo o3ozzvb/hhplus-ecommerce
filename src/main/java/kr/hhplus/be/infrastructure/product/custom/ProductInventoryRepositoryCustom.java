@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.product;
+package kr.hhplus.be.infrastructure.product.custom;
 
 import kr.hhplus.be.domain.product.entity.ProductInventory;
 

@@ -1,7 +1,8 @@
-package kr.hhplus.be.infrastructure.user;
+package kr.hhplus.be.infrastructure.user.repository;
 
 import kr.hhplus.be.domain.user.entity.User;
 import kr.hhplus.be.domain.user.repository.UserRepository;
+import kr.hhplus.be.infrastructure.user.jpa.UserJpaRepository;
 import kr.hhplus.be.support.exception.BusinessException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

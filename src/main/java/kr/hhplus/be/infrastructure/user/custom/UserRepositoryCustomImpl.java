@@ -1,4 +1,4 @@
-package kr.hhplus.be.infrastructure.user;
+package kr.hhplus.be.infrastructure.user.custom;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.LockModeType;
