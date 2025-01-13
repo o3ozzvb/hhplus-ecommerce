@@ -5,7 +5,9 @@ import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.user.dto.UserCouponDTO;
+import kr.hhplus.be.domain.user.entity.BalanceHistory;
 import kr.hhplus.be.domain.user.entity.User;
+import kr.hhplus.be.domain.user.repository.BalanceHistoryRepository;
 import kr.hhplus.be.domain.user.repository.UserRepository;
 import kr.hhplus.be.support.exception.BusinessException;
 import kr.hhplus.be.support.exception.ErrorCode;
@@ -28,7 +30,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -41,6 +43,9 @@ class UserServiceTest {
 
     @Mock
     private CouponPublishRepository couponPublishRepository;
+
+    @Mock
+    private BalanceHistoryRepository balanceHistoryRepository;
 
     @Test
     @DisplayName("잔액충전 시 충전금액이 0이면 BusinessException이 발생한다")
@@ -72,15 +77,16 @@ class UserServiceTest {
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
+        when(userRepository.findByIdForUpdate(id)).thenReturn(user);
         when(userRepository.findById(id)).thenReturn(user);
 
         // when
-        user.charge(chargeAmount);
+        userService.charge(user.getId(), chargeAmount);
 
         // then
         User findUser = userRepository.findById(user.getId());
         assertThat(findUser.getBalance()).isEqualTo(balance + chargeAmount);
-
+        verify(balanceHistoryRepository, times(1)).save(any(BalanceHistory.class));
     }
 
     @Test
@@ -113,15 +119,16 @@ class UserServiceTest {
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
+        when(userRepository.findByIdForUpdate(id)).thenReturn(user);
         when(userRepository.findById(id)).thenReturn(user);
 
         // when
         userService.useBalance(id, useAmount);
 
         // then
-        when(userRepository.findById(id)).thenReturn(user);
         User findUser = userRepository.findById(user.getId());
         assertThat(findUser.getBalance()).isEqualTo(balance - useAmount);
+        verify(balanceHistoryRepository, times(1)).save(any(BalanceHistory.class));
     }
 
     @Test
