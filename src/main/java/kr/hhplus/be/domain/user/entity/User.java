@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import kr.hhplus.be.support.exception.BusinessException;
+import kr.hhplus.be.support.exception.CommerceConflictException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -46,7 +46,7 @@ public class User {
     /** 잔액 충전 */
     public void charge(int chargeAmount) {
         if (chargeAmount <= 0) {
-            throw new BusinessException(ErrorCode.CHARGE_AMOUNT_NOT_VALID);
+            throw new CommerceConflictException(ErrorCode.CHARGE_AMOUNT_NOT_VALID);
         }
 
         this.balance = this.balance + chargeAmount;
@@ -55,7 +55,7 @@ public class User {
     /** 잔액 사용 */
     public void useBalance(int useAmount) {
         if (useAmount > balance) {
-            throw new BusinessException(ErrorCode.INSUFFICIENT_BALANCE);
+            throw new CommerceConflictException(ErrorCode.INSUFFICIENT_BALANCE);
         }
         this.balance = this.balance - useAmount;
     }

@@ -3,7 +3,7 @@ package kr.hhplus.be.domain.coupon.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.domain.coupon.dto.CouponPublishDTO;
 import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
-import kr.hhplus.be.support.exception.BusinessException;
+import kr.hhplus.be.support.exception.CommerceConflictException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.*;
 
@@ -60,10 +60,10 @@ public class CouponPublish {
      */
     public void redeem() {
         if (!this.status.equals(CouponPublishStatus.AVAILABLE)) {
-            throw new BusinessException(ErrorCode.COUPON_NOT_AVAILABLE);
+            throw new CommerceConflictException(ErrorCode.COUPON_NOT_AVAILABLE);
         }
         if (this.validEndDate.compareTo(LocalDate.now()) < 0) {
-            throw new BusinessException(ErrorCode.COUPON_VALID_DATE_EXPIRED);
+            throw new CommerceConflictException(ErrorCode.COUPON_VALID_DATE_EXPIRED);
         }
             this.redeemDate = LocalDate.now();
         this.status = CouponPublishStatus.REDEEMED;

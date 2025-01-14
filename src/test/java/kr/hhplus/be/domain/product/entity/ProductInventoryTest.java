@@ -1,6 +1,6 @@
 package kr.hhplus.be.domain.product.entity;
 
-import kr.hhplus.be.support.exception.BusinessException;
+import kr.hhplus.be.support.exception.CommerceConflictException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ProductInventoryTest {
 
     @Test
-    @DisplayName("재고차감 시 기존재고가 차감재고보다 적다면 BusinessException이 발생한다")
+    @DisplayName("재고차감 시 기존재고가 차감재고보다 적다면 CommerceConflictException이 발생한다")
     void 재고차감_예외_테스트() {
         // given
         int inventory = 20;
@@ -22,7 +22,7 @@ class ProductInventoryTest {
 
         //then
         assertThatThrownBy(() -> productInventory.deductInventory(deductQuantity))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.INSUFFICIENT_INVENTORY.getMessage());
     }
 

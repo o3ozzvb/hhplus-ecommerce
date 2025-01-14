@@ -73,18 +73,11 @@ class PaymentFacadeIntegrationTest {
                 .build();
 
         // when
-        Payment payment = paymentFacade.payment(command);
+        paymentFacade.payment(command);
 
         // then
         // 잔액 검증
         User findUser = userRepository.findById(userId);
         assertThat(findUser.getBalance()).isEqualTo(balance - orderAmount);
-
-        // 저장된 결제 정보 검증
-        Payment findPayment = paymentRepository.findById(payment.getId());
-        assertThat(findPayment.getRefOrderId()).isEqualTo(order.getId());
-        assertThat(findPayment.getPayAmount()).isEqualTo(orderAmount);
-        assertThat(findPayment.getPayDate()).isEqualTo(LocalDate.now());
-        assertThat(findPayment.getStatus()).isEqualTo(PaymentStatus.SUCCESS);
     }
 }

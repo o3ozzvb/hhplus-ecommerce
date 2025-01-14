@@ -3,6 +3,8 @@ package kr.hhplus.be.domain.coupon.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.domain.coupon.enumtype.CouponStatus;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
+import kr.hhplus.be.support.exception.CommerceConflictException;
+import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -37,6 +39,9 @@ public class Coupon {
     private LocalDateTime updatedAt;
 
     public void publish() {
+        if (this.remainQuantity <= 0) { // 잔여수량이 없으면
+            throw new CommerceConflictException(ErrorCode.INSUFFICIENT_COUPON_QUANTITY);
+        }
         this.remainQuantity = this.remainQuantity - 1;
         this.updatedAt = LocalDateTime.now();
     }

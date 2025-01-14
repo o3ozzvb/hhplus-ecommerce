@@ -8,7 +8,7 @@ import kr.hhplus.be.domain.coupon.enumtype.CouponStatus;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
-import kr.hhplus.be.support.exception.BusinessException;
+import kr.hhplus.be.support.exception.CommerceConflictException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 class CouponServiceTest {
 
     @InjectMocks
-    CouponServiceImpl couponService;
+    CouponService couponService;
 
     @Mock
     CouponRepository couponRepository;
@@ -73,7 +73,7 @@ class CouponServiceTest {
     }
 
     @Test
-    @DisplayName("쿠폰 발급 시 잔여발급수량이 없으면 BusinessException이 발생한다.")
+    @DisplayName("쿠폰 발급 시 잔여발급수량이 없으면 CommerceConflictException이 발생한다.")
     void publishCoupon_exception() {
         // given
         long couponPublishId = 1L;
@@ -95,7 +95,7 @@ class CouponServiceTest {
 
         // then
         assertThatThrownBy(() -> couponService.publishCoupon(publishDTO))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.INSUFFICIENT_COUPON_QUANTITY.getMessage());
     }
 

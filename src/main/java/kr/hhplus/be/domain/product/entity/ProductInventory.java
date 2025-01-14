@@ -2,7 +2,7 @@ package kr.hhplus.be.domain.product.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import kr.hhplus.be.support.exception.BusinessException;
+import kr.hhplus.be.support.exception.CommerceConflictException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -40,7 +40,7 @@ public class ProductInventory {
     /** 재고 차감 */
     public void deductInventory(int quantity) {
         if (inventory < quantity) {
-            throw new BusinessException(ErrorCode.INSUFFICIENT_INVENTORY);
+            throw new CommerceConflictException(ErrorCode.INSUFFICIENT_INVENTORY);
         }
         this.inventory = this.inventory - quantity;
     }

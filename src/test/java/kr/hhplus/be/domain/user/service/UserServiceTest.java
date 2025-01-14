@@ -9,7 +9,7 @@ import kr.hhplus.be.domain.user.entity.BalanceHistory;
 import kr.hhplus.be.domain.user.entity.User;
 import kr.hhplus.be.domain.user.repository.BalanceHistoryRepository;
 import kr.hhplus.be.domain.user.repository.UserRepository;
-import kr.hhplus.be.support.exception.BusinessException;
+import kr.hhplus.be.support.exception.CommerceConflictException;
 import kr.hhplus.be.support.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,7 +48,7 @@ class UserServiceTest {
     private BalanceHistoryRepository balanceHistoryRepository;
 
     @Test
-    @DisplayName("잔액충전 시 충전금액이 0이면 BusinessException이 발생한다")
+    @DisplayName("잔액충전 시 충전금액이 0이면 CommerceConflictException이 발생한다")
     void charge_exception() {
         // given
         long id = 1L;
@@ -57,13 +57,13 @@ class UserServiceTest {
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
-        when(userRepository.findById(id)).thenReturn(user);
+        when(userRepository.findByIdForUpdate(anyLong())).thenReturn(user);
 
         // when
 
         // then
         assertThatThrownBy(() -> userService.charge(id, chargeAmount))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.CHARGE_AMOUNT_NOT_VALID.getMessage());
     }
 
@@ -90,7 +90,7 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("잔액사용 시 잔액이 사용금액보다 적다면 BusinessException이 발생한다")
+    @DisplayName("잔액사용 시 잔액이 사용금액보다 적다면 CommerceConflictException이 발생한다")
     void useBalance_exception() {
         // given
         long id = 1L;
@@ -99,13 +99,13 @@ class UserServiceTest {
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
-        when(userRepository.findById(id)).thenReturn(user);
+        when(userRepository.findByIdForUpdate(id)).thenReturn(user);
 
         // when
 
         // then
         assertThatThrownBy(() -> userService.useBalance(id, useAmount))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.INSUFFICIENT_BALANCE.getMessage());
     }
 

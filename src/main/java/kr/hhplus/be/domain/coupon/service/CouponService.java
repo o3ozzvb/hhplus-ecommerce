@@ -7,8 +7,6 @@ import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
-import kr.hhplus.be.support.exception.BusinessException;
-import kr.hhplus.be.support.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,10 +25,6 @@ public class CouponService {
     @Transactional
     public CouponPublish publishCoupon(CouponPublishDTO publishDTO) {
         Coupon coupon = couponRepository.findByIdForUpdate(publishDTO.getCouponId());
-        // 잔여수량이 없으면
-        if (coupon.getRemainQuantity() <= 0) {
-            throw new BusinessException(ErrorCode.INSUFFICIENT_COUPON_QUANTITY);
-        }
         // 쿠폰 발행 - 잔여수량 차감
         coupon.publish();
         couponRepository.save(coupon);
