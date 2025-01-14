@@ -23,6 +23,7 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -48,14 +49,9 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(couponId, "쿠폰", DiscountType.FIXED_RATE, 10, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(couponPublishId, couponId, userId, LocalDate.now(), null, LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
-        when(couponRepository.findById(couponId))
-                .thenReturn(coupon);
-
-        when(couponPublishRepository.findById(couponPublishId))
-                .thenReturn(couponPublish);
-
-        when(couponPublishRepository.save(any(CouponPublish.class)))
-                .thenReturn(couponPublish);
+        when(couponRepository.findByIdForUpdate(couponId)).thenReturn(coupon);
+        when(couponPublishRepository.findById(couponPublishId)).thenReturn(couponPublish);
+        when(couponPublishRepository.save(any(CouponPublish.class))).thenReturn(couponPublish);
 
         // when
         CouponPublishDTO publishDTO = CouponPublishDTO.builder()
@@ -83,8 +79,7 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(couponId, "쿠폰", DiscountType.FIXED_RATE, 10, 30, 0, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(couponPublishId, couponId, userId, LocalDate.now(), null, LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
-        when(couponRepository.findById(couponId))
-                .thenReturn(coupon);
+        when(couponRepository.findByIdForUpdate(couponId)).thenReturn(coupon);
 
         // when
         CouponPublishDTO publishDTO = CouponPublishDTO.builder()
@@ -107,13 +102,10 @@ class CouponServiceTest {
         int totalAmount = 115000;
         LocalDate today = LocalDate.now();
         Coupon coupon = new Coupon(1L, "10% 할인 쿠폰", DiscountType.FIXED_RATE, discountValue, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
-        CouponPublish couponPublish = new CouponPublish(null, 1L, 1L, today, null, today, today.plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
+        CouponPublish couponPublish = new CouponPublish(1L, 1L, 1L, today, null, today, today.plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
-        when(couponRepository.findById(1L))
-                .thenReturn(coupon);
-
-        when(couponPublishRepository.findById(1L))
-                .thenReturn(couponPublish);
+        when(couponRepository.findById(anyLong())).thenReturn(coupon);
+        when(couponPublishRepository.findById(anyLong())).thenReturn(couponPublish);
 
         // when
         int discountAmount = couponService.getDiscountAmount(couponPublish.getId(), totalAmount);
@@ -132,11 +124,8 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(1L, "10% 할인 쿠폰", DiscountType.FIXED_AMOUNT, discountValue, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(null, 1L, 1L, today, null, today, today.plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
-        when(couponRepository.findById(1L))
-                .thenReturn(coupon);
-
-        when(couponPublishRepository.findById(1L))
-                .thenReturn(couponPublish);
+        when(couponRepository.findById(1L)).thenReturn(coupon);
+        when(couponPublishRepository.findById(1L)).thenReturn(couponPublish);
 
         // when
         int discountAmount = couponService.getDiscountAmount(coupon.getId(), totalAmount);

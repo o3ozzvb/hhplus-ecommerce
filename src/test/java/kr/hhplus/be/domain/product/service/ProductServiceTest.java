@@ -35,8 +35,7 @@ class ProductServiceTest {
         int quantity = 5;
 
         ProductInventory productInventory = new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
-        when(productInventoryRepository.findById(productId)).thenReturn(productInventory);
-
+        when(productInventoryRepository.findByIdForUpdate(productId)).thenReturn(productInventory);
         // when
 
         // then
@@ -54,6 +53,7 @@ class ProductServiceTest {
         int quantity = 5;
 
         ProductInventory productInventory = new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
+        when(productInventoryRepository.findByIdForUpdate(productId)).thenReturn(productInventory);
         when(productInventoryRepository.findById(productId)).thenReturn(productInventory);
 
         // when
@@ -73,6 +73,7 @@ class ProductServiceTest {
         int quantity = 5;
 
         ProductInventory productInventory = new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
+        when(productInventoryRepository.findByIdForUpdate(productId)).thenReturn(productInventory);
         when(productInventoryRepository.findById(productId)).thenReturn(productInventory);
 
         // when
