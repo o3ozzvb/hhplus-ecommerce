@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kr.hhplus.be.domain.payment.enumtype.PaymentStatus;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -22,7 +23,7 @@ public class Payment {
 
     private LocalDate payDate;
 
-    private int payAmount;
+    private BigDecimal payAmount;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
@@ -35,7 +36,7 @@ public class Payment {
 
     private LocalDateTime updatedAt;
 
-    public static Payment ofSuccess(long orderId, int payAmount, String transactionId) {
+    public static Payment ofSuccess(long orderId, BigDecimal payAmount, String transactionId) {
         Payment payment = new Payment();
 
         payment.refOrderId = orderId;

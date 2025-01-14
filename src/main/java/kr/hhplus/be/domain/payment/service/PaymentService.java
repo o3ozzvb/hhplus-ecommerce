@@ -5,6 +5,7 @@ import kr.hhplus.be.domain.payment.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Service
@@ -15,7 +16,7 @@ public class PaymentService {
     /**
      * 결제 요청 (결제 정보 저장)
      */
-    public Payment pay(long orderId, int payAmount) {
+    public Payment pay(long orderId, BigDecimal payAmount) {
         Payment payment = Payment.ofSuccess(orderId, payAmount, generateTransactionId());
         return paymentRepository.save(payment);
     }

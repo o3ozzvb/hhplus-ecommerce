@@ -4,6 +4,8 @@ import kr.hhplus.be.domain.product.entity.Product;
 import kr.hhplus.be.domain.product.enumtype.Category;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,7 +14,7 @@ public class ProductResponse {
     private long id;
     private String productName;
     private Category category;
-    private int price;
+    private BigDecimal price;
 
     public static ProductResponse from(Product product) {
         ProductResponse response = new ProductResponse();

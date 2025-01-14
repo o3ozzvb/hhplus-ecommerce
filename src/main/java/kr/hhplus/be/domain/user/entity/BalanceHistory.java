@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,7 +17,7 @@ public class BalanceHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long refUserId;
-    private int balance;
+    private BigDecimal balance;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 

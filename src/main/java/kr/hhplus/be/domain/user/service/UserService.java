@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -29,7 +31,7 @@ public class UserService {
      * 잔액 충전
      */
     @Transactional
-    public BalanceDTO charge(long userId, int chargeAmount) {
+    public BalanceDTO charge(long userId, BigDecimal chargeAmount) {
         User user = userRepository.findByIdForUpdate(userId);
         user.charge(chargeAmount);
         userRepository.save(user);
@@ -49,7 +51,7 @@ public class UserService {
      * 잔액 차감
      */
     @Transactional
-    public BalanceDTO useBalance(long userId, int useAmount) {
+    public BalanceDTO useBalance(long userId, BigDecimal useAmount) {
         User user = userRepository.findByIdForUpdate(userId);
         user.useBalance(useAmount);
         userRepository.save(user);

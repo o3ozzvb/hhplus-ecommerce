@@ -4,6 +4,8 @@ import kr.hhplus.be.domain.product.dto.TopSalesProductDTO;
 import kr.hhplus.be.domain.product.enumtype.Category;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -12,9 +14,9 @@ public class TopSalesProductResponse {
     private long productId;
     private Category category;
     private String productName;
-    private int price;
+    private BigDecimal price;
     private int soldQuantity;
-    private int totalAmount;
+    private BigDecimal totalAmount;
 
     public static TopSalesProductResponse from(TopSalesProductDTO productDTO) {
         TopSalesProductResponse response = new TopSalesProductResponse();

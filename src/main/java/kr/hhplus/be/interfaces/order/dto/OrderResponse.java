@@ -3,6 +3,7 @@ package kr.hhplus.be.interfaces.order.dto;
 import kr.hhplus.be.application.order.dto.OrderInfo;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class OrderResponse {
     private long orderId;
-    private int totalAmount;
+    private BigDecimal totalAmount;
     private LocalDateTime orderDateTime;
 
     public static OrderResponse from(OrderInfo orderInfo) {

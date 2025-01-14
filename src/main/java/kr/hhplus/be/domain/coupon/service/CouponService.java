@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -44,15 +46,15 @@ public class CouponService {
     /**
      * 할인 금액 계산
      */
-    public int getDiscountAmount(long couponPublishId, int totalAmount) {
-        int discountAmount = 0;
+    public BigDecimal getDiscountAmount(long couponPublishId, BigDecimal totalAmount) {
+        BigDecimal discountAmount = BigDecimal.ZERO;
         CouponPublish publishedCoupon = couponPublishRepository.findById(couponPublishId);
         Coupon coupon = couponRepository.findById(publishedCoupon.getRefCouponId());
         if (coupon.getDiscountType().equals(DiscountType.FIXED_RATE)) {
-            discountAmount = totalAmount * coupon.getDiscountValue() / 100;
+            discountAmount = totalAmount.multiply(BigDecimal.valueOf(coupon.getDiscountValue()).divide(BigDecimal.valueOf(100)));
         }
         if (coupon.getDiscountType().equals(DiscountType.FIXED_AMOUNT)) {
-            discountAmount = Math.min(totalAmount, coupon.getDiscountValue());
+            discountAmount = totalAmount.min(BigDecimal.valueOf(coupon.getDiscountValue()));
         }
         return discountAmount;
     }

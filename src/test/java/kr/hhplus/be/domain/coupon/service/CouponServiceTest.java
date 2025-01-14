@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -99,7 +100,7 @@ class CouponServiceTest {
     void getDiscountAmount() {
         // given
         int discountValue = 10;
-        int totalAmount = 115000;
+        BigDecimal totalAmount = BigDecimal.valueOf(115000);
         LocalDate today = LocalDate.now();
         Coupon coupon = new Coupon(1L, "10% 할인 쿠폰", DiscountType.FIXED_RATE, discountValue, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(1L, 1L, 1L, today, null, today, today.plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
@@ -108,10 +109,10 @@ class CouponServiceTest {
         when(couponPublishRepository.findById(anyLong())).thenReturn(couponPublish);
 
         // when
-        int discountAmount = couponService.getDiscountAmount(couponPublish.getId(), totalAmount);
+        BigDecimal discountAmount = couponService.getDiscountAmount(couponPublish.getId(), totalAmount);
 
         // then
-        assertThat(discountAmount).isEqualTo(totalAmount * discountValue / 100);
+        assertThat(discountAmount).isEqualTo(totalAmount.multiply(BigDecimal.valueOf(discountValue).divide(BigDecimal.valueOf(100))));
     }
 
     @Test
@@ -119,18 +120,18 @@ class CouponServiceTest {
     void getDiscountAmount2() {
         // given
         int discountValue = 50000;
-        int totalAmount = 115000;
+        BigDecimal totalAmount = BigDecimal.valueOf(115000);
         LocalDate today = LocalDate.now();
-        Coupon coupon = new Coupon(1L, "10% 할인 쿠폰", DiscountType.FIXED_AMOUNT, discountValue, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+        Coupon coupon = new Coupon(1L, "50000원 할인 쿠폰", DiscountType.FIXED_AMOUNT, discountValue, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(null, 1L, 1L, today, null, today, today.plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
         when(couponRepository.findById(1L)).thenReturn(coupon);
         when(couponPublishRepository.findById(1L)).thenReturn(couponPublish);
 
         // when
-        int discountAmount = couponService.getDiscountAmount(coupon.getId(), totalAmount);
+        BigDecimal discountAmount = couponService.getDiscountAmount(coupon.getId(), totalAmount);
 
         // then
-        assertThat(discountAmount).isEqualTo(discountValue);
+        assertThat(discountAmount).isEqualTo(BigDecimal.valueOf(discountValue));
     }
 }

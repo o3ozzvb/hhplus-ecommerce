@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -44,12 +45,12 @@ public class ProductServiceIntegrationTest {
     public void 상품목록조회_테스트_전체() {
         //given
         // 상품 데이터 세팅
-        productRepository.save(createProduct("하얀 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("노란 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("검은 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("하얀 티셔츠", Category.TOP, 35000));
-        productRepository.save(createProduct("분홍 티셔츠", Category.TOP, 35000));
-        productRepository.save(createProduct("하늘 티셔츠", Category.TOP, 35000));
+        Product whiteSocks = productRepository.save(createProduct("하얀 양말", Category.ETC, BigDecimal.valueOf(3000)));
+        Product yellowSocks = productRepository.save(createProduct("노란 양말", Category.ETC, BigDecimal.valueOf(4000)));
+        Product blackSocks = productRepository.save(createProduct("검은 양말", Category.ETC, BigDecimal.valueOf(5000)));
+        Product whiteTop = productRepository.save(createProduct("하얀 티셔츠", Category.TOP, BigDecimal.valueOf(6000)));
+        Product pinkTop =  productRepository.save(createProduct("분홍 티셔츠", Category.TOP, BigDecimal.valueOf(7000)));
+        Product skyblueTop = productRepository.save(createProduct("하늘 티셔츠", Category.TOP, BigDecimal.valueOf(8000)));
 
         ProductSearchDTO searchDTO = ProductSearchDTO.builder().build();
 
@@ -69,12 +70,12 @@ public class ProductServiceIntegrationTest {
     public void 상품목록조회_테스트_이름조건() {
         //given
         // 상품 데이터 세팅
-        productRepository.save(createProduct("하얀 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("노란 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("검은 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("하얀 티셔츠", Category.TOP, 35000));
-        productRepository.save(createProduct("분홍 티셔츠", Category.TOP, 35000));
-        productRepository.save(createProduct("하늘 티셔츠", Category.TOP, 35000));
+        Product whiteSocks = productRepository.save(createProduct("하얀 양말", Category.ETC, BigDecimal.valueOf(3000)));
+        Product yellowSocks = productRepository.save(createProduct("노란 양말", Category.ETC, BigDecimal.valueOf(4000)));
+        Product blackSocks = productRepository.save(createProduct("검은 양말", Category.ETC, BigDecimal.valueOf(5000)));
+        Product whiteTop = productRepository.save(createProduct("하얀 티셔츠", Category.TOP, BigDecimal.valueOf(6000)));
+        Product pinkTop =  productRepository.save(createProduct("분홍 티셔츠", Category.TOP, BigDecimal.valueOf(7000)));
+        Product skyblueTop = productRepository.save(createProduct("하늘 티셔츠", Category.TOP, BigDecimal.valueOf(8000)));
 
         ProductSearchDTO searchDTO = ProductSearchDTO.builder()
                 .productName("양말")
@@ -96,12 +97,12 @@ public class ProductServiceIntegrationTest {
     public void 상품목록조회_테스트_가격조건() {
         //given
         // 상품 데이터 세팅
-        productRepository.save(createProduct("하얀 양말", Category.ETC, 3000));
-        productRepository.save(createProduct("노란 양말", Category.ETC, 4000));
-        productRepository.save(createProduct("검은 양말", Category.ETC, 5000));
-        productRepository.save(createProduct("하얀 티셔츠", Category.TOP, 6000));
-        productRepository.save(createProduct("분홍 티셔츠", Category.TOP, 7000));
-        productRepository.save(createProduct("하늘 티셔츠", Category.TOP, 8000));
+        Product whiteSocks = productRepository.save(createProduct("하얀 양말", Category.ETC, BigDecimal.valueOf(3000)));
+        Product yellowSocks = productRepository.save(createProduct("노란 양말", Category.ETC, BigDecimal.valueOf(4000)));
+        Product blackSocks = productRepository.save(createProduct("검은 양말", Category.ETC, BigDecimal.valueOf(5000)));
+        Product whiteTop = productRepository.save(createProduct("하얀 티셔츠", Category.TOP, BigDecimal.valueOf(6000)));
+        Product pinkTop =  productRepository.save(createProduct("분홍 티셔츠", Category.TOP, BigDecimal.valueOf(7000)));
+        Product skyblueTop = productRepository.save(createProduct("하늘 티셔츠", Category.TOP, BigDecimal.valueOf(8000)));
 
         ProductSearchDTO searchDTO = ProductSearchDTO.builder()
                 .startPrice(3500)
@@ -113,7 +114,7 @@ public class ProductServiceIntegrationTest {
 
         //then
         assertThat(products).isNotNull();
-        assertThat(products.getTotalElements()).isEqualTo(4); // 전체 상품 수 3개
+        assertThat(products.getTotalElements()).isEqualTo(4); // 전체 상품 수 4개
         assertThat(products.getTotalPages()).isEqualTo(2);  // 페이지 수: 2페이지
         assertThat(products.getNumber()).isEqualTo(0);  // 현재 페이지 번호: 0
         assertThat(products.getSize()).isEqualTo(2);  // 한 페이지 크기: 2개
@@ -124,41 +125,51 @@ public class ProductServiceIntegrationTest {
     @DisplayName("3일간 주문량이 가장 많은 상위 상품 5개가 조회된다.")
     public void 상위_상품목록조회_테스트() {
         //given
-        Product whiteSocks = productRepository.save(createProduct("하얀 양말", Category.ETC, 3000));
-        Product yellowSocks = productRepository.save(createProduct("노란 양말", Category.ETC, 4000));
-        Product blackSocks = productRepository.save(createProduct("검은 양말", Category.ETC, 5000));
-        Product whiteTop = productRepository.save(createProduct("하얀 티셔츠", Category.TOP, 6000));
-        Product pinkTop =  productRepository.save(createProduct("분홍 티셔츠", Category.TOP, 7000));
-        Product skyblueTop = productRepository.save(createProduct("하늘 티셔츠", Category.TOP, 8000));
+        Product whiteSocks = productRepository.save(createProduct("하얀 양말", Category.ETC, BigDecimal.valueOf(3000)));
+        Product yellowSocks = productRepository.save(createProduct("노란 양말", Category.ETC, BigDecimal.valueOf(4000)));
+        Product blackSocks = productRepository.save(createProduct("검은 양말", Category.ETC, BigDecimal.valueOf(5000)));
+        Product whiteTop = productRepository.save(createProduct("하얀 티셔츠", Category.TOP, BigDecimal.valueOf(6000)));
+        Product pinkTop =  productRepository.save(createProduct("분홍 티셔츠", Category.TOP, BigDecimal.valueOf(7000)));
+        Product skyblueTop = productRepository.save(createProduct("하늘 티셔츠", Category.TOP, BigDecimal.valueOf(8000)));
 
         // 주문 데이터 세팅
-        Order order1 = orderRepository.save(new Order(null, 1L, null, LocalDateTime.now().minusDays(2), 106000, 0, 106000, OrderStatus.COMPLETED, LocalDateTime.now(), LocalDateTime.now()));
-        Order order2 = orderRepository.save(new Order(null, 2L, null, LocalDateTime.now().minusDays(1), 90000, 0, 90000, OrderStatus.COMPLETED, LocalDateTime.now(), LocalDateTime.now()));
-        Order order3 = orderRepository.save(new Order(null, 3L, null, LocalDateTime.now(), 73000, 0, 73000, OrderStatus.COMPLETED, LocalDateTime.now(), LocalDateTime.now()));
-        orderDetailRepository.save(new OrderDetail(null, order1.getId(), whiteSocks.getId(), 10, whiteSocks.getPrice(), 10 * whiteSocks.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order1.getId(), yellowSocks.getId(), 9, yellowSocks.getPrice(), 9 * yellowSocks.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order1.getId(), blackSocks.getId(), 8, blackSocks.getPrice(), 8 * blackSocks.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order2.getId(), whiteSocks.getId(), 10, whiteSocks.getPrice(), 10 * whiteSocks.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order2.getId(), whiteTop.getId(), 10, whiteTop.getPrice(), 10 * whiteTop.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order3.getId(), whiteTop.getId(), 5, whiteTop.getPrice(), 5 * whiteTop.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order3.getId(), pinkTop.getId(), 5, pinkTop.getPrice(), 5 * pinkTop.getPrice()));
-        orderDetailRepository.save(new OrderDetail(null, order3.getId(), skyblueTop.getId(), 1, skyblueTop.getPrice(), 1 * skyblueTop.getPrice()));
+        Order order1 = orderRepository.save(new Order(null, 1L, null, LocalDateTime.now().minusDays(2), BigDecimal.valueOf(106000), BigDecimal.ZERO, BigDecimal.valueOf(106000), OrderStatus.COMPLETED, LocalDateTime.now(), LocalDateTime.now()));
+        Order order2 = orderRepository.save(new Order(null, 2L, null, LocalDateTime.now().minusDays(1), BigDecimal.valueOf(90000), BigDecimal.ZERO, BigDecimal.valueOf(90000), OrderStatus.COMPLETED, LocalDateTime.now(), LocalDateTime.now()));
+        Order order3 = orderRepository.save(new Order(null, 3L, null, LocalDateTime.now(), BigDecimal.valueOf(73000), BigDecimal.ZERO, BigDecimal.valueOf(73000), OrderStatus.COMPLETED, LocalDateTime.now(), LocalDateTime.now()));
+        orderDetailRepository.save(new OrderDetail(null, order1.getId(), whiteSocks.getId(), 10, whiteSocks.getPrice(), whiteSocks.getPrice().multiply(BigDecimal.valueOf(10))));
+        orderDetailRepository.save(new OrderDetail(null, order1.getId(), yellowSocks.getId(), 9, yellowSocks.getPrice(), yellowSocks.getPrice().multiply(BigDecimal.valueOf(9))));
+        orderDetailRepository.save(new OrderDetail(null, order1.getId(), blackSocks.getId(), 8, blackSocks.getPrice(), blackSocks.getPrice().multiply(BigDecimal.valueOf(8))));
+        orderDetailRepository.save(new OrderDetail(null, order2.getId(), whiteSocks.getId(), 10, whiteSocks.getPrice(), whiteSocks.getPrice().multiply(BigDecimal.valueOf(10))));
+        orderDetailRepository.save(new OrderDetail(null, order2.getId(), whiteTop.getId(), 10, whiteTop.getPrice(), whiteTop.getPrice().multiply(BigDecimal.valueOf(10))));
+        orderDetailRepository.save(new OrderDetail(null, order3.getId(), whiteTop.getId(), 5, whiteTop.getPrice(), whiteTop.getPrice().multiply(BigDecimal.valueOf(5))));
+        orderDetailRepository.save(new OrderDetail(null, order3.getId(), pinkTop.getId(), 5, pinkTop.getPrice(), pinkTop.getPrice().multiply(BigDecimal.valueOf(5))));
+        orderDetailRepository.save(new OrderDetail(null, order3.getId(), skyblueTop.getId(), 1, skyblueTop.getPrice(), skyblueTop.getPrice().multiply(BigDecimal.valueOf(1))));
 
         //when
         List<TopSalesProductDTO> topSalesProducts = productService.getTopSalesProducts();
 
         //then
         assertThat(topSalesProducts.size()).isEqualTo(5);
-        assertThat(topSalesProducts.get(0)).extracting("productId", "category", "productName", "price", "soldQuantity", "totalAmount")
-                .containsExactly(whiteSocks.getId(), whiteSocks.getCategory(), whiteSocks.getProductName(), whiteSocks.getPrice(), 20, 20 * whiteSocks.getPrice());
-        assertThat(topSalesProducts.get(1)).extracting("productId", "category", "productName", "price", "soldQuantity", "totalAmount")
-                .containsExactly(whiteTop.getId(), whiteTop.getCategory(), whiteTop.getProductName(), whiteTop.getPrice(), 15, 15 * whiteTop.getPrice());
-        assertThat(topSalesProducts.get(2)).extracting("productId", "category", "productName", "price", "soldQuantity", "totalAmount")
-                .containsExactly(yellowSocks.getId(), yellowSocks.getCategory(), yellowSocks.getProductName(), yellowSocks.getPrice(), 9, 9 * yellowSocks.getPrice());
-        assertThat(topSalesProducts.get(3)).extracting("productId", "category", "productName", "price", "soldQuantity", "totalAmount")
-                .containsExactly(blackSocks.getId(), blackSocks.getCategory(), blackSocks.getProductName(), blackSocks.getPrice(), 8, 8 * blackSocks.getPrice());
-        assertThat(topSalesProducts.get(4)).extracting("productId", "category", "productName", "price", "soldQuantity", "totalAmount")
-                .containsExactly(pinkTop.getId(), pinkTop.getCategory(), pinkTop.getProductName(), pinkTop.getPrice(), 5, 5 * pinkTop.getPrice());
+        assertThat(topSalesProducts.get(0))
+                .usingRecursiveComparison()
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .isEqualTo(new TopSalesProductDTO(whiteSocks.getId(), whiteSocks.getProductName(), whiteSocks.getCategory(), whiteSocks.getPrice(), 20, whiteSocks.getPrice().multiply(BigDecimal.valueOf(20))));
+        assertThat(topSalesProducts.get(1))
+                .usingRecursiveComparison()
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .isEqualTo(new TopSalesProductDTO(whiteTop.getId(), whiteTop.getProductName(), whiteTop.getCategory(), whiteTop.getPrice(), 15, whiteTop.getPrice().multiply(BigDecimal.valueOf(15))));
+        assertThat(topSalesProducts.get(2))
+                .usingRecursiveComparison()
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .isEqualTo(new TopSalesProductDTO(yellowSocks.getId(), yellowSocks.getProductName(), yellowSocks.getCategory(), yellowSocks.getPrice(), 9, yellowSocks.getPrice().multiply(BigDecimal.valueOf(9))));
+        assertThat(topSalesProducts.get(3))
+                .usingRecursiveComparison()
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .isEqualTo(new TopSalesProductDTO(blackSocks.getId(), blackSocks.getProductName(), blackSocks.getCategory(), blackSocks.getPrice(), 8, blackSocks.getPrice().multiply(BigDecimal.valueOf(8))));
+        assertThat(topSalesProducts.get(4))
+                .usingRecursiveComparison()
+                .withComparatorForType(BigDecimal::compareTo, BigDecimal.class)
+                .isEqualTo(new TopSalesProductDTO(pinkTop.getId(), pinkTop.getProductName(), pinkTop.getCategory(), pinkTop.getPrice(), 5, pinkTop.getPrice().multiply(BigDecimal.valueOf(5))));
 
     }
 }

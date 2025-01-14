@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -52,8 +53,8 @@ class UserServiceTest {
     void charge_exception() {
         // given
         long id = 1L;
-        int balance = 1000;
-        int chargeAmount = 0;
+        BigDecimal balance = BigDecimal.valueOf(1000);
+        BigDecimal chargeAmount = BigDecimal.ZERO;
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
@@ -72,8 +73,8 @@ class UserServiceTest {
     void charge() {
         // given
         long id = 1L;
-        int balance = 1000;
-        int chargeAmount = 50000;
+        BigDecimal balance = BigDecimal.valueOf(1000);
+        BigDecimal chargeAmount = BigDecimal.valueOf(50000);
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
@@ -85,7 +86,7 @@ class UserServiceTest {
 
         // then
         User findUser = userRepository.findById(user.getId());
-        assertThat(findUser.getBalance()).isEqualTo(balance + chargeAmount);
+        assertThat(findUser.getBalance()).isEqualTo(balance.add(chargeAmount));
         verify(balanceHistoryRepository, times(1)).save(any(BalanceHistory.class));
     }
 
@@ -94,8 +95,8 @@ class UserServiceTest {
     void useBalance_exception() {
         // given
         long id = 1L;
-        int balance = 10000;
-        int useAmount = 50000;
+        BigDecimal balance = BigDecimal.valueOf(10000);
+        BigDecimal useAmount = BigDecimal.valueOf(50000);
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
@@ -114,8 +115,8 @@ class UserServiceTest {
     void useBalance() {
         // given
         long id = 1L;
-        int balance = 10000;
-        int useAmount = 5000;
+        BigDecimal balance = BigDecimal.valueOf(10000);
+        BigDecimal useAmount = BigDecimal.valueOf(5000);
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
@@ -127,7 +128,7 @@ class UserServiceTest {
 
         // then
         User findUser = userRepository.findById(user.getId());
-        assertThat(findUser.getBalance()).isEqualTo(balance - useAmount);
+        assertThat(findUser.getBalance()).isEqualTo(balance.subtract(useAmount));
         verify(balanceHistoryRepository, times(1)).save(any(BalanceHistory.class));
     }
 

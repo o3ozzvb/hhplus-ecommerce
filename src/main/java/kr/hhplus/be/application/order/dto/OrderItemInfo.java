@@ -6,17 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItemInfo {
     private Long productId;
     private Integer quantity;
-    private Integer price;
+    private BigDecimal price;
 
     public OrderDetail toOrderDetail() {
         int quantity = this.getQuantity();
-        int price = this.getPrice();
+        BigDecimal price = this.getPrice();
 
         return OrderDetail.builder()
                 .id(null)
@@ -24,7 +26,7 @@ public class OrderItemInfo {
                 .refProductId(productId)
                 .quantity(quantity)
                 .price(price)
-                .totalAmount(quantity * price)
+                .totalAmount(price.multiply(BigDecimal.valueOf(quantity)))
                 .build();
     }
 

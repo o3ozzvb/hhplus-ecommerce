@@ -4,6 +4,7 @@ import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.entity.OrderDetail;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,9 +16,9 @@ public class OrderInfo {
     private Long orderId;
     private Long userId;
     private Long couponPublishId;
-    private int totalAmount;
-    private int discountAmount;
-    private int finalAmount;
+    private BigDecimal totalAmount;
+    private BigDecimal discountAmount;
+    private BigDecimal finalAmount;
     private LocalDateTime orderDateTime;
     private OrderItems orderItems;
 

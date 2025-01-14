@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -25,14 +26,14 @@ public class User {
 
     private String username;
 
-    private int balance;
+    private BigDecimal balance;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
     // 정적 팩토리 메서드 생성자
-    public static User of(String username, int balance) {
+    public static User of(String username, BigDecimal balance) {
         User user = new User();
 
         user.username = username;
@@ -44,19 +45,19 @@ public class User {
     }
 
     /** 잔액 충전 */
-    public void charge(int chargeAmount) {
-        if (chargeAmount <= 0) {
+    public void charge(BigDecimal chargeAmount) {
+        if (chargeAmount.compareTo(BigDecimal.ZERO) <= 0) {
             throw new CommerceConflictException(ErrorCode.CHARGE_AMOUNT_NOT_VALID);
         }
 
-        this.balance = this.balance + chargeAmount;
+        this.balance = this.balance.add(chargeAmount);
     }
 
     /** 잔액 사용 */
-    public void useBalance(int useAmount) {
-        if (useAmount > balance) {
+    public void useBalance(BigDecimal useAmount) {
+        if (balance.compareTo(useAmount) <= 0) {
             throw new CommerceConflictException(ErrorCode.INSUFFICIENT_BALANCE);
         }
-        this.balance = this.balance - useAmount;
+        this.balance = this.balance.subtract(useAmount);
     }
 }
