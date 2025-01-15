@@ -1,4 +1,4 @@
-package kr.hhplus.be.support.exception;
+package kr.hhplus.be.domain.exception;
 
 import kr.hhplus.be.interfaces.common.ApiResponse;
 import org.springframework.beans.ConversionNotSupportedException;
@@ -6,8 +6,6 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.lang.NonNull;
-import org.springframework.lang.NonNullApi;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.method.MethodValidationException;

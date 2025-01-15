@@ -1,4 +1,4 @@
-package kr.hhplus.be.support.exception;
+package kr.hhplus.be.domain.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

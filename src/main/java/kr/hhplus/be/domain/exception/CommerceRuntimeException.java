@@ -1,4 +1,4 @@
-package kr.hhplus.be.support.exception;
+package kr.hhplus.be.domain.exception;
 
 public class CommerceRuntimeException extends RuntimeException {
     private final ErrorCode errorCode;
