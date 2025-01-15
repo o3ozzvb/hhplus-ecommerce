@@ -24,4 +24,10 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderJpaRepository.findById(id)
                 .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.ORDER_NOT_EXIST));
     }
+
+    @Override
+    public Order findByIdWithOrderDetails(Long id) {
+        return orderJpaRepository.findByIdWithOrderDetails(id)
+                .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.ORDER_NOT_EXIST));
+    }
 }

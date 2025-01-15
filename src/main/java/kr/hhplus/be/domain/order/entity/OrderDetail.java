@@ -1,9 +1,6 @@
 package kr.hhplus.be.domain.order.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -19,7 +16,9 @@ public class OrderDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long refOrderId;
+    @ManyToOne
+    @JoinColumn(name = "ref_order_id", nullable = false)
+    private Order order;
 
     private Long refProductId;
 
@@ -29,7 +28,7 @@ public class OrderDetail {
 
     private BigDecimal totalAmount;
 
-    public void setRefOrderId(Long refOrderId) {
-        this.refOrderId = refOrderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

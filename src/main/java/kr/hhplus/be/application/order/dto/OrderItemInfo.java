@@ -22,7 +22,7 @@ public class OrderItemInfo {
 
         return OrderDetail.builder()
                 .id(null)
-                .refOrderId(null)
+                .order(null)
                 .refProductId(productId)
                 .quantity(quantity)
                 .price(price)

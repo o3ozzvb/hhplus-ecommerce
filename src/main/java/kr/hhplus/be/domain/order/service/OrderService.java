@@ -6,10 +6,12 @@ import kr.hhplus.be.domain.order.entity.OrderDetail;
 import kr.hhplus.be.domain.order.repository.OrderDetailRepository;
 import kr.hhplus.be.domain.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -21,14 +23,13 @@ public class OrderService {
      * 주문 생성 (주문정보 저장)
      */
     public OrderInfo order(Order order, List<OrderDetail> orderDetails) {
-        Order savedOrder = orderRepository.save(order);
-
         for (OrderDetail orderDetail : orderDetails) {
-            orderDetail.setRefOrderId(savedOrder.getId());
-            orderDetailRepository.save(orderDetail);
+            orderDetail.setOrder(order);
         }
+        order.setOrderDetails(orderDetails);
 
-        return OrderInfo.from(order, orderDetails);
+        orderRepository.save(order);
+        return OrderInfo.from(order);
     }
 
     /**
@@ -36,9 +37,8 @@ public class OrderService {
      */
     public OrderInfo getOrderInfo(long orderId) {
         Order order = orderRepository.findById(orderId);
-        List<OrderDetail> orderDetails = orderDetailRepository.findByRefOrderId(orderId);
 
-        return OrderInfo.from(order, orderDetails);
+        return OrderInfo.from(order);
     }
 
     /**

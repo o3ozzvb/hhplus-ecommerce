@@ -1,5 +1,6 @@
 package kr.hhplus.be.infrastructure.order.repository;
 
+import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.entity.OrderDetail;
 import kr.hhplus.be.domain.order.repository.OrderDetailRepository;
 import kr.hhplus.be.infrastructure.order.jpa.OrderDetailJpaRepository;
@@ -20,7 +21,7 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
     }
 
     @Override
-    public List<OrderDetail> findByRefOrderId(long orderId) {
-        return orderDetailJpaRepository.findByRefOrderId(orderId);
+    public List<OrderDetail> findByOrder(Order findOrder) {
+        return orderDetailJpaRepository.findByOrder(findOrder);
     }
 }

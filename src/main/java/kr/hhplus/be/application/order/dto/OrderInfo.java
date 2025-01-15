@@ -22,7 +22,7 @@ public class OrderInfo {
     private LocalDateTime orderDateTime;
     private OrderItems orderItems;
 
-    public static OrderInfo from(Order order, List<OrderDetail> orderDetails) {
+    public static OrderInfo from(Order order) {
         OrderInfo orderInfo = new OrderInfo();
 
         orderInfo.orderId = order.getId();
@@ -32,7 +32,7 @@ public class OrderInfo {
         orderInfo.discountAmount = order.getDiscountAmount();
         orderInfo.finalAmount = order.getFinalAmount();
         orderInfo.orderDateTime = order.getOrderedAt();
-        orderInfo.orderItems = OrderItems.fromOrderDetails(orderDetails);
+        orderInfo.orderItems = OrderItems.fromOrderDetails(order.getOrderDetails());
 
         return orderInfo;
     }
