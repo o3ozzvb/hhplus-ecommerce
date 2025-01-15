@@ -40,4 +40,22 @@ public class OrderService {
 
         return OrderInfo.from(order, orderDetails);
     }
+
+    /**
+     * 주문 완료 처리
+     */
+    public void completeOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId);
+        order.complete();
+        orderRepository.save(order);
+    }
+
+    /**
+     * 주문 취소 처리
+     */
+    public void cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId);
+        order.cancel();
+        orderRepository.save(order);
+    }
 }

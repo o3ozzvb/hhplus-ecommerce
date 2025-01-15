@@ -1,26 +1,34 @@
 package kr.hhplus.be.application.payment;
 
 import kr.hhplus.be.application.payment.dto.PaymentCommand;
+import kr.hhplus.be.application.platform.PlatformService;
 import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.entity.OrderDetail;
 import kr.hhplus.be.domain.order.enumtype.OrderStatus;
 import kr.hhplus.be.domain.order.repository.OrderDetailRepository;
 import kr.hhplus.be.domain.order.repository.OrderRepository;
+import kr.hhplus.be.domain.payment.entity.Payment;
+import kr.hhplus.be.domain.payment.enumtype.PaymentStatus;
 import kr.hhplus.be.domain.payment.repository.PaymentRepository;
 import kr.hhplus.be.domain.user.entity.User;
 import kr.hhplus.be.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Testcontainers
+@ExtendWith(MockitoExtension.class)
 class PaymentFacadeIntegrationTest {
 
     @Autowired
@@ -37,6 +45,9 @@ class PaymentFacadeIntegrationTest {
 
     @Autowired
     PaymentRepository paymentRepository;
+
+    @Mock
+    PlatformService platformService;
 
     /**
      * 결제
@@ -67,11 +78,27 @@ class PaymentFacadeIntegrationTest {
                 .build();
 
         // when
-        paymentFacade.payment(command);
+        // when(platformService.send(any(OrderInfo.class))).thenReturn(true);
+        Payment payment = paymentFacade.payment(command);
 
         // then
         // 잔액 검증
         User findUser = userRepository.findById(userId);
-        assertThat(findUser.getBalance()).isEqualTo(balance.subtract(orderAmount));
+        assertThat(findUser.getBalance().compareTo(balance.subtract(orderAmount))).isEqualTo(0);
+
+        // 저장된 결제 정보 검증
+        Payment findPayment = paymentRepository.findById(payment.getId());
+        assertThat(findPayment.getRefOrderId()).isEqualTo(order.getId());
+        assertThat(findPayment.getPayAmount().compareTo(orderAmount)).isEqualTo(0);
+        assertThat(findPayment.getPayDate()).isEqualTo(LocalDate.now());
+        assertThat(findPayment.getStatus()).isEqualTo(PaymentStatus.SUCCESS);
+
+        // 주문 상태 검증
+        Order findOrder = orderRepository.findById(payment.getRefOrderId());
+        assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.COMPLETED);
+
+        // 데이터 플랫폼 전송 검증
+//        assertThat(platformService.send(any(OrderInfo.class))).isTrue();
+//        verify(platformService).send(any(OrderInfo.class));
     }
 }
