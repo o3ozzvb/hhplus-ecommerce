@@ -3,8 +3,8 @@ package kr.hhplus.be.domain.coupon.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.domain.coupon.dto.CouponPublishDTO;
 import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
-import kr.hhplus.be.support.exception.CommerceConflictException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceConflictException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.*;
 
 import java.time.LocalDate;

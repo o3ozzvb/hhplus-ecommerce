@@ -3,8 +3,8 @@ package kr.hhplus.be.infrastructure.user.repository;
 import kr.hhplus.be.domain.user.entity.User;
 import kr.hhplus.be.domain.user.repository.UserRepository;
 import kr.hhplus.be.infrastructure.user.jpa.UserJpaRepository;
-import kr.hhplus.be.support.exception.CommerceNotFoundException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceNotFoundException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

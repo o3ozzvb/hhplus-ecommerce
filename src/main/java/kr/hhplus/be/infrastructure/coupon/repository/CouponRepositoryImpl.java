@@ -3,8 +3,8 @@ package kr.hhplus.be.infrastructure.coupon.repository;
 import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
 import kr.hhplus.be.infrastructure.coupon.jpa.CouponJpaRepository;
-import kr.hhplus.be.support.exception.CommerceNotFoundException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceNotFoundException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

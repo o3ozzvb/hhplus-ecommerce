@@ -3,8 +3,8 @@ package kr.hhplus.be.infrastructure.order.repository;
 import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.repository.OrderRepository;
 import kr.hhplus.be.infrastructure.order.jpa.OrderJpaRepository;
-import kr.hhplus.be.support.exception.CommerceNotFoundException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceNotFoundException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

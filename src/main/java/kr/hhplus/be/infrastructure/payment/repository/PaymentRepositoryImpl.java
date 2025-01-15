@@ -3,8 +3,8 @@ package kr.hhplus.be.infrastructure.payment.repository;
 import kr.hhplus.be.domain.payment.entity.Payment;
 import kr.hhplus.be.domain.payment.repository.PaymentRepository;
 import kr.hhplus.be.infrastructure.payment.jpa.PaymentJpaRepository;
-import kr.hhplus.be.support.exception.CommerceNotFoundException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceNotFoundException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

@@ -2,8 +2,8 @@ package kr.hhplus.be.domain.product.service;
 
 import kr.hhplus.be.domain.product.entity.ProductInventory;
 import kr.hhplus.be.domain.product.repository.ProductInventoryRepository;
-import kr.hhplus.be.support.exception.CommerceConflictException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceConflictException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

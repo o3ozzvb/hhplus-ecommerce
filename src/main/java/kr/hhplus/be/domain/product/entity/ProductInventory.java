@@ -2,8 +2,8 @@ package kr.hhplus.be.domain.product.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import kr.hhplus.be.support.exception.CommerceConflictException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceConflictException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
