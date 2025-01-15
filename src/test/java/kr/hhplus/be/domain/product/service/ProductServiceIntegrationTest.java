@@ -1,5 +1,6 @@
 package kr.hhplus.be.domain.product.service;
 
+import kr.hhplus.be.DatabaseCleanup;
 import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.entity.OrderDetail;
 import kr.hhplus.be.domain.order.enumtype.OrderStatus;
@@ -10,6 +11,7 @@ import kr.hhplus.be.domain.product.dto.TopSalesProductDTO;
 import kr.hhplus.be.domain.product.entity.Product;
 import kr.hhplus.be.domain.product.enumtype.Category;
 import kr.hhplus.be.domain.product.repository.ProductRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,14 @@ public class ProductServiceIntegrationTest {
 
     @Autowired
     OrderDetailRepository orderDetailRepository;
+
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+
+    @BeforeEach
+    void cleanUpDatabase() {
+        databaseCleanup.execute();
+    }
 
     @Test
     public void 상품목록조회_테스트_전체() {
