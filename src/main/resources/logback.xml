@@ -7,7 +7,7 @@
     </appender>
 
     <!-- 기본 로그 레벨 -->
-    <root level="DEBUG"> <!-- DEBUG로 변경 -->
+    <root level="INFO">
         <appender-ref ref="CONSOLE" />
     </root>
 

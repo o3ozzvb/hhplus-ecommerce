@@ -1,4 +1,4 @@
-package kr.hhplus.be.support.filter;
+package kr.hhplus.be.interfaces.common.filter;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
