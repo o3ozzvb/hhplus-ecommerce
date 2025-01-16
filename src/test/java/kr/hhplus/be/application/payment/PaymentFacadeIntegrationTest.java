@@ -21,9 +21,9 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 @Testcontainers
@@ -95,6 +95,7 @@ class PaymentFacadeIntegrationTest {
         assertThat(findOrder.getStatus()).isEqualTo(OrderStatus.COMPLETED);
 
         // 데이터 플랫폼 전송 검증
-        assertThat(dataPlatformClient.send(any(OrderInfo.class))).isTrue();
+        OrderInfo info = OrderInfo.from(order, List.of(orderDetail1, orderDetail2));
+        assertThat(dataPlatformClient.send(info)).isTrue();
     }
 }
