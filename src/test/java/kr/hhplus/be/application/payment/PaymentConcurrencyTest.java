@@ -37,7 +37,7 @@ public class PaymentConcurrencyTest {
     OrderRepository orderRepository;
 
     @Test
-    @DisplayName("잔액이 10만원인 사용자가 7만원 결제를 동시에 2번 시도 하면 결제가 실패한다.")
+    @DisplayName("잔액이 10만원인 사용자가 7만원 결제를 동시에 2번 시도 하면 1번의 결제만 성공한다. 그리고 검증에서는 잔액이 3만원임을 검증한다")
     public void 결제_잔액_동시성테스트() throws Exception {
         // given
         // 사용자 데이터 세팅
