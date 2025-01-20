@@ -29,7 +29,6 @@ public class UserAuthenticationInterceptor implements AsyncHandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String userId = request.getHeader("x-user-id");
         if (StringUtils.isBlank(userId)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "header parameter is missing.");
             throw new CommerceBadRequestException(ErrorCode.PARAMETER_IS_MISSING);
         }
 
@@ -38,7 +37,6 @@ public class UserAuthenticationInterceptor implements AsyncHandlerInterceptor {
         try {
             userRepository.findById(parseUserId);
         } catch (CommerceNotFoundException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "this user does not have authentication.");
             throw new CommerceNotFoundException(ErrorCode.USER_NOT_EXIST);
         }
         return true;
