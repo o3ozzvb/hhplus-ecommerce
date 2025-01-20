@@ -2,8 +2,8 @@ package kr.hhplus.be.domain.coupon.entity;
 
 import kr.hhplus.be.domain.coupon.dto.CouponPublishDTO;
 import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
-import kr.hhplus.be.support.exception.BusinessException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceConflictException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -51,7 +51,7 @@ class CouponPublishTest {
     }
 
     @Test
-    @DisplayName("쿠폰 사용 시 쿠폰 상태가 AVAILABLE이 아니라면 BusinessException이 발생한다.")
+    @DisplayName("쿠폰 사용 시 쿠폰 상태가 AVAILABLE이 아니라면 CommerceConflictException이 발생한다.")
     void redeem_exception() {
         // given
         LocalDate today = LocalDate.now();
@@ -61,12 +61,12 @@ class CouponPublishTest {
 
         // then
         assertThatThrownBy(() -> couponPublish.redeem())
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.COUPON_NOT_AVAILABLE.getMessage());
     }
 
     @Test
-    @DisplayName("쿠폰 사용 시 쿠폰 상태가 AVAILABLE이 아니라면 BusinessException이 발생한다.")
+    @DisplayName("쿠폰 사용 시 쿠폰 상태가 AVAILABLE이 아니라면 CommerceConflictException이 발생한다.")
     void redeem_exception2() {
         // given
         LocalDate today = LocalDate.now();
@@ -76,7 +76,7 @@ class CouponPublishTest {
 
         // then
         assertThatThrownBy(() -> couponPublish.redeem())
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.COUPON_VALID_DATE_EXPIRED.getMessage());
     }
 }

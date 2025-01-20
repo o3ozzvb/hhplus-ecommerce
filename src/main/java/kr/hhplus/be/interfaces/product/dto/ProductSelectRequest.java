@@ -3,11 +3,11 @@ package kr.hhplus.be.interfaces.product.dto;
 import jakarta.validation.constraints.NotNull;
 import kr.hhplus.be.domain.product.dto.ProductSearchDTO;
 import kr.hhplus.be.domain.product.enumtype.Category;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
+@Setter
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductSelectRequest {
     private String productName;

@@ -5,10 +5,12 @@ import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.user.dto.UserCouponDTO;
+import kr.hhplus.be.domain.user.entity.BalanceHistory;
 import kr.hhplus.be.domain.user.entity.User;
+import kr.hhplus.be.domain.user.repository.BalanceHistoryRepository;
 import kr.hhplus.be.domain.user.repository.UserRepository;
-import kr.hhplus.be.support.exception.BusinessException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceConflictException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -28,7 +31,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
@@ -42,23 +45,26 @@ class UserServiceTest {
     @Mock
     private CouponPublishRepository couponPublishRepository;
 
+    @Mock
+    private BalanceHistoryRepository balanceHistoryRepository;
+
     @Test
-    @DisplayName("잔액충전 시 충전금액이 0이면 BusinessException이 발생한다")
+    @DisplayName("잔액충전 시 충전금액이 0이면 CommerceConflictException이 발생한다")
     void charge_exception() {
         // given
         long id = 1L;
-        int balance = 1000;
-        int chargeAmount = 0;
+        BigDecimal balance = BigDecimal.valueOf(1000);
+        BigDecimal chargeAmount = BigDecimal.ZERO;
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
-        when(userRepository.findById(id)).thenReturn(user);
+        when(userRepository.findByIdForUpdate(anyLong())).thenReturn(user);
 
         // when
 
         // then
         assertThatThrownBy(() -> userService.charge(id, chargeAmount))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.CHARGE_AMOUNT_NOT_VALID.getMessage());
     }
 
@@ -67,39 +73,40 @@ class UserServiceTest {
     void charge() {
         // given
         long id = 1L;
-        int balance = 1000;
-        int chargeAmount = 50000;
+        BigDecimal balance = BigDecimal.valueOf(1000);
+        BigDecimal chargeAmount = BigDecimal.valueOf(50000);
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
+        when(userRepository.findByIdForUpdate(id)).thenReturn(user);
         when(userRepository.findById(id)).thenReturn(user);
 
         // when
-        user.charge(chargeAmount);
+        userService.charge(user.getId(), chargeAmount);
 
         // then
         User findUser = userRepository.findById(user.getId());
-        assertThat(findUser.getBalance()).isEqualTo(balance + chargeAmount);
-
+        assertThat(findUser.getBalance()).isEqualTo(balance.add(chargeAmount));
+        verify(balanceHistoryRepository, times(1)).save(any(BalanceHistory.class));
     }
 
     @Test
-    @DisplayName("잔액사용 시 잔액이 사용금액보다 적다면 BusinessException이 발생한다")
+    @DisplayName("잔액사용 시 잔액이 사용금액보다 적다면 CommerceConflictException이 발생한다")
     void useBalance_exception() {
         // given
         long id = 1L;
-        int balance = 10000;
-        int useAmount = 50000;
+        BigDecimal balance = BigDecimal.valueOf(10000);
+        BigDecimal useAmount = BigDecimal.valueOf(50000);
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
-        when(userRepository.findById(id)).thenReturn(user);
+        when(userRepository.findByIdForUpdate(id)).thenReturn(user);
 
         // when
 
         // then
         assertThatThrownBy(() -> userService.useBalance(id, useAmount))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.INSUFFICIENT_BALANCE.getMessage());
     }
 
@@ -108,20 +115,21 @@ class UserServiceTest {
     void useBalance() {
         // given
         long id = 1L;
-        int balance = 10000;
-        int useAmount = 5000;
+        BigDecimal balance = BigDecimal.valueOf(10000);
+        BigDecimal useAmount = BigDecimal.valueOf(5000);
 
         User user = new User(id, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
 
+        when(userRepository.findByIdForUpdate(id)).thenReturn(user);
         when(userRepository.findById(id)).thenReturn(user);
 
         // when
         userService.useBalance(id, useAmount);
 
         // then
-        when(userRepository.findById(id)).thenReturn(user);
         User findUser = userRepository.findById(user.getId());
-        assertThat(findUser.getBalance()).isEqualTo(balance - useAmount);
+        assertThat(findUser.getBalance()).isEqualTo(balance.subtract(useAmount));
+        verify(balanceHistoryRepository, times(1)).save(any(BalanceHistory.class));
     }
 
     @Test

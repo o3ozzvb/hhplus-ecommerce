@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +56,8 @@ class OrderFacadeIntegrationTest {
         int socksInitInventory = 20, socksOrderQuantity = 2;
         int topInitInventory = 10, topOrderQuantity = 1;
         // 상품 데이터 세팅
-        Product socks = productRepository.save(createProduct("양말", Category.ETC, 5000));
-        Product top = productRepository.save(createProduct("티셔츠", Category.TOP, 35000));
+        Product socks = productRepository.save(createProduct("양말", Category.ETC, BigDecimal.valueOf(5000)));
+        Product top = productRepository.save(createProduct("티셔츠", Category.TOP, BigDecimal.valueOf(10000)));
         // 상품재고 데이터 세팅
         productInventoryRepository.save(createProductInventory(socks.getId(), socksInitInventory));
         productInventoryRepository.save(createProductInventory(top.getId(), topInitInventory));
@@ -96,8 +97,8 @@ class OrderFacadeIntegrationTest {
         long userId = 1L;
 
         // 상품 데이터 세팅
-        Product socks = productRepository.save(createProduct("양말", Category.ETC, 5000));
-        Product top = productRepository.save(createProduct("티셔츠", Category.TOP, 35000));
+        Product socks = productRepository.save(createProduct("양말", Category.ETC, BigDecimal.valueOf(5000)));
+        Product top = productRepository.save(createProduct("티셔츠", Category.TOP, BigDecimal.valueOf(35000)));
         // 상품재고 데이터 세팅
         productInventoryRepository.save(createProductInventory(socks.getId(), 20));
         productInventoryRepository.save(createProductInventory(top.getId(), 10));
@@ -120,12 +121,12 @@ class OrderFacadeIntegrationTest {
         OrderInfo orderInfo = orderFacade.order(command);
 
         // then
-        int totalAmount = socks.getPrice() * 2 + top.getPrice() * 1;
-        int discountAmount = totalAmount * coupon.getDiscountValue() / 100;
+        BigDecimal totalAmount = socks.getPrice().multiply(BigDecimal.valueOf(2)).add(top.getPrice());
+        BigDecimal discountAmount = totalAmount.multiply(BigDecimal.valueOf(coupon.getDiscountValue()).divide(BigDecimal.valueOf(100)));
 
         assertThat(orderInfo.getUserId()).isEqualTo(userId);
         assertThat(orderInfo.getTotalAmount()).isEqualTo(totalAmount);
-        assertThat(orderInfo.getFinalAmount()).isEqualTo(totalAmount - discountAmount);
+        assertThat(orderInfo.getFinalAmount()).isEqualTo(totalAmount.subtract(discountAmount));
         assertThat(orderInfo.getOrderItems().getOrderItems()).hasSize(2)
                 .extracting("productId", "quantity", "price")
                 .containsExactly(

@@ -1,6 +1,7 @@
 package kr.hhplus.be.interfaces.product.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import kr.hhplus.be.domain.product.dto.TopSalesProductDTO;
 import kr.hhplus.be.domain.product.entity.Product;
 import kr.hhplus.be.domain.product.service.ProductService;
@@ -32,14 +33,12 @@ public class ProductController {
      */
     @Operation(summary = "상품 목록 조회", description = "상품 목록을 조회합니다.")
     @GetMapping("/products")
-    public ApiResponse<Page<ProductResponse>> getProducts(ProductSelectRequest request) {
-        List<ProductResponse> productResponses = new ArrayList<>();
-
+    public ApiResponse<Page<ProductResponse>> getProducts(@Valid ProductSelectRequest request) {
         Page<Product> products = productService.getProducts(request.toDTO(), PageRequest.of(request.getPage(), request.getSize()));
 
         List<Product> productList = products.getContent();
         List<ProductResponse> response = productList.stream()
-                .map(product -> ProductResponse.from(product))
+                .map(ProductResponse::from)
                 .collect(Collectors.toList());
 
         return ApiResponse.success(new PageImpl<>(response, products.getPageable(), products.getTotalElements()));

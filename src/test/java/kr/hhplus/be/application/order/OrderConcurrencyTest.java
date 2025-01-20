@@ -7,12 +7,13 @@ import kr.hhplus.be.domain.product.entity.Product;
 import kr.hhplus.be.domain.product.enumtype.Category;
 import kr.hhplus.be.domain.product.repository.ProductInventoryRepository;
 import kr.hhplus.be.domain.product.repository.ProductRepository;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -42,7 +43,7 @@ public class OrderConcurrencyTest {
     public void 주문_재고_동시성테스트() throws InterruptedException {
         // given
         // 상품 데이터 세팅
-        Product socks = productRepository.save(createProduct("양말", Category.ETC, 5000));
+        Product socks = productRepository.save(createProduct("양말", Category.ETC, BigDecimal.valueOf(5000)));
         // 상품재고 데이터 세팅
         productInventoryRepository.save(createProductInventory(socks.getId(), 5));
         // Order

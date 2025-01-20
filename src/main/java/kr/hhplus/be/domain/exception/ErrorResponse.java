@@ -1,4 +1,4 @@
-package kr.hhplus.be.support.exception;
+package kr.hhplus.be.domain.exception;
 
 public class ErrorResponse {
     private final String code;

@@ -2,8 +2,8 @@ package kr.hhplus.be.domain.product.service;
 
 import kr.hhplus.be.domain.product.entity.ProductInventory;
 import kr.hhplus.be.domain.product.repository.ProductInventoryRepository;
-import kr.hhplus.be.support.exception.BusinessException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceConflictException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ class ProductServiceTest {
     ProductService productService;
 
     @Test
-    @DisplayName("재고차감 시 차감 수량이 재고보다 크다면 BusinessException이 발생한다.")
+    @DisplayName("재고차감 시 차감 수량이 재고보다 크다면 CommerceConflictException이 발생한다.")
     void deductInventory_exception() {
         // given
         long productId = 1L;
@@ -35,13 +35,12 @@ class ProductServiceTest {
         int quantity = 5;
 
         ProductInventory productInventory = new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
-        when(productInventoryRepository.findById(productId)).thenReturn(productInventory);
-
+        when(productInventoryRepository.findByIdForUpdate(productId)).thenReturn(productInventory);
         // when
 
         // then
         assertThatThrownBy(() -> productService.deductInventory(productId, quantity))
-                .isInstanceOf(BusinessException.class)
+                .isInstanceOf(CommerceConflictException.class)
                 .hasMessage(ErrorCode.INSUFFICIENT_INVENTORY.getMessage());
     }
     
@@ -54,6 +53,7 @@ class ProductServiceTest {
         int quantity = 5;
 
         ProductInventory productInventory = new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
+        when(productInventoryRepository.findByIdForUpdate(productId)).thenReturn(productInventory);
         when(productInventoryRepository.findById(productId)).thenReturn(productInventory);
 
         // when
@@ -73,6 +73,7 @@ class ProductServiceTest {
         int quantity = 5;
 
         ProductInventory productInventory = new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
+        when(productInventoryRepository.findByIdForUpdate(productId)).thenReturn(productInventory);
         when(productInventoryRepository.findById(productId)).thenReturn(productInventory);
 
         // when

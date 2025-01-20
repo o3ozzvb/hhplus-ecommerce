@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -23,9 +25,9 @@ public class OrderDetail {
 
     private int quantity;
 
-    private int price;
+    private BigDecimal price;
 
-    private int totalAmount;
+    private BigDecimal totalAmount;
 
     public void setRefOrderId(Long refOrderId) {
         this.refOrderId = refOrderId;

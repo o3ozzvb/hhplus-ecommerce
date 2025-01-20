@@ -3,8 +3,8 @@ package kr.hhplus.be.infrastructure.payment.repository;
 import kr.hhplus.be.domain.payment.entity.Payment;
 import kr.hhplus.be.domain.payment.repository.PaymentRepository;
 import kr.hhplus.be.infrastructure.payment.jpa.PaymentJpaRepository;
-import kr.hhplus.be.support.exception.BusinessException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceNotFoundException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +25,6 @@ public class PaymentRepositoryImpl implements PaymentRepository {
     @Override
     public Payment findById(long id) {
         return paymentJpaRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PAYMENT_NOT_EXIST));
+                .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.PAYMENT_NOT_EXIST));
     }
 }

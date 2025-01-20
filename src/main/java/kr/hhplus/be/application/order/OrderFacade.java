@@ -12,6 +12,8 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @RequiredArgsConstructor
 @Service
 public class OrderFacade {
@@ -34,8 +36,8 @@ public class OrderFacade {
             productService.deductInventory(orderItem.getProductId(), orderItem.getQuantity());
         }
         // 총 금액, 할인 금액
-        int totalAmount = orderItems.getTotalAmount();
-        int discountAmount = 0;
+        BigDecimal totalAmount = orderItems.getTotalAmount();
+        BigDecimal discountAmount = BigDecimal.ZERO;
         // 쿠폰 사용처리
         if (!ObjectUtils.isEmpty(orderCommand.getCouponPublishId())) {
             couponService.redeemCoupon(orderCommand.getCouponPublishId());

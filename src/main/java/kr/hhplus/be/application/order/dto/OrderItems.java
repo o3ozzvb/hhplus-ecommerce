@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +16,11 @@ import java.util.List;
 public class OrderItems {
     private List<OrderItemInfo> orderItems;
 
-    public int getTotalAmount() {
-        int totalAmount = 0;
+    public BigDecimal getTotalAmount() {
+        BigDecimal totalAmount = BigDecimal.ZERO;
         for (OrderItemInfo orderItem : this.orderItems) {
-            totalAmount += orderItem.getQuantity() * orderItem.getPrice();
+            BigDecimal itemTotalPrice = orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()));
+            totalAmount = totalAmount.add(itemTotalPrice);
         }
         return totalAmount;
     }

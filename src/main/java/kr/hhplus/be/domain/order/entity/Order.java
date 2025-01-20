@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import kr.hhplus.be.domain.order.enumtype.OrderStatus;
 import lombok.*;
 
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,11 +24,11 @@ public class Order {
 
     private LocalDateTime orderedAt;
 
-    private int totalAmount;
+    private BigDecimal totalAmount;
 
-    private int discountAmount;
+    private BigDecimal discountAmount;
 
-    private int finalAmount;
+    private BigDecimal finalAmount;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
@@ -36,4 +36,12 @@ public class Order {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public void complete() {
+        this.status = OrderStatus.COMPLETED;
+    }
+
+    public void cancel() {
+        this.status = OrderStatus.CANCELED;
+    }
 }

@@ -1,4 +1,4 @@
-package kr.hhplus.be.support.exception;
+package kr.hhplus.be.domain.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,7 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    // USER
+    PARAMETER_IS_MISSING("PARAMETER_IS_MISSING", "파라미터 값이 없습니다."),
+    // USER,
     INSUFFICIENT_BALANCE("INSUFFICIENT_BALANCE", "잔액이 부족합니다."),
     CHARGE_AMOUNT_NOT_VALID("CHARGE_AMOUNT_NOT_VALID", "충전금액이 유효하지 않습니다."),
     USER_NOT_EXIST("USER_NOT_EXIST", "존재하지 않는 사용자입니다."),

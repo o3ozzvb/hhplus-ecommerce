@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotNull;
 import kr.hhplus.be.application.payment.dto.PaymentCommand;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,7 +18,7 @@ public class PaymentRequest {
     private Long orderId;
 
     @NotNull(message = "결제금액은 필수값 입니다.")
-    private Integer payAmount;
+    private BigDecimal payAmount;
 
     public PaymentCommand toPaymentCommand() {
         return new PaymentCommand(this.userId, this.orderId, this.payAmount);

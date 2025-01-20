@@ -5,8 +5,8 @@ import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.user.dto.UserCouponDTO;
 import kr.hhplus.be.infrastructure.coupon.jpa.CouponPublishJpaRepository;
-import kr.hhplus.be.support.exception.BusinessException;
-import kr.hhplus.be.support.exception.ErrorCode;
+import kr.hhplus.be.domain.exception.CommerceNotFoundException;
+import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,7 +26,7 @@ public class CouponPublishRepositoryImpl implements CouponPublishRepository {
     @Override
     public CouponPublish findById(long id) {
         return couponPublishJpaRepository.findById(id)
-                .orElseThrow(() -> new BusinessException(ErrorCode.COUPON_NOT_AVAILABLE));
+                .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.COUPON_NOT_AVAILABLE));
     }
 
     @Override

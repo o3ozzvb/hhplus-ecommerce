@@ -1,9 +1,9 @@
-package kr.hhplus.be.support.exception;
+package kr.hhplus.be.domain.exception;
 
-public class BusinessException extends RuntimeException {
+public class CommerceRuntimeException extends RuntimeException {
     private final ErrorCode errorCode;
 
-    public BusinessException(ErrorCode errorCode) {
+    public CommerceRuntimeException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

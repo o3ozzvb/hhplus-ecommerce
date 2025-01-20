@@ -4,13 +4,18 @@ import kr.hhplus.be.domain.coupon.dto.CouponSearchDTO;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.user.dto.BalanceDTO;
 import kr.hhplus.be.domain.user.dto.UserCouponDTO;
+import kr.hhplus.be.domain.user.entity.BalanceHistory;
 import kr.hhplus.be.domain.user.entity.User;
+import kr.hhplus.be.domain.user.repository.BalanceHistoryRepository;
 import kr.hhplus.be.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
 
 @Slf4j
 @Service
@@ -19,15 +24,18 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final CouponPublishRepository couponPublishRepository;
+    private final BalanceHistoryRepository balanceHistoryRepository;
 
 
     /**
      * 잔액 충전
      */
-    public BalanceDTO charge(long userId, int chargeAmount) {
+    @Transactional
+    public BalanceDTO charge(long userId, BigDecimal chargeAmount) {
         User user = userRepository.findByIdForUpdate(userId);
         user.charge(chargeAmount);
         userRepository.save(user);
+        balanceHistoryRepository.save(BalanceHistory.from(user));
         return new BalanceDTO(userId, user.getBalance());
     }
 
@@ -42,10 +50,12 @@ public class UserService {
     /**
      * 잔액 차감
      */
-    public BalanceDTO useBalance(long userId, int useAmount) {
+    @Transactional
+    public BalanceDTO useBalance(long userId, BigDecimal useAmount) {
         User user = userRepository.findByIdForUpdate(userId);
         user.useBalance(useAmount);
         userRepository.save(user);
+        balanceHistoryRepository.save(BalanceHistory.from(user));
         return new BalanceDTO(userId, user.getBalance());
     }
 

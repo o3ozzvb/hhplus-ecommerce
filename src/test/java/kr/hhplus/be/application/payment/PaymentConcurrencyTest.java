@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -39,17 +40,17 @@ public class PaymentConcurrencyTest {
     public void 결제_잔액_동시성테스트() throws Exception {
         // given
         // 사용자 데이터 세팅
-        int balance = 100000;
+        BigDecimal balance = BigDecimal.valueOf(100000);
         User user = new User(null, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
         User savedUser = userRepository.save(user);
         // 주문 정보 세팅
         // 주문 정보 세팅
         long userId = 1L;
-        int orderAmount = 130000;
-        Order orderInfo = new Order(null, userId, null, LocalDateTime.now(), orderAmount, 0, orderAmount, OrderStatus.PENDING, LocalDateTime.now(), LocalDateTime.now());
+        BigDecimal orderAmount = BigDecimal.valueOf(130000);
+        Order orderInfo = new Order(null, userId, null, LocalDateTime.now(), orderAmount, BigDecimal.ZERO, orderAmount, OrderStatus.PENDING, LocalDateTime.now(), LocalDateTime.now());
         Order order = orderRepository.save(orderInfo);
 
-        int payAmount = 70000;
+        BigDecimal payAmount = BigDecimal.valueOf(70000);
 
         int numberOfThreads = 2;
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
@@ -68,7 +69,6 @@ public class PaymentConcurrencyTest {
                     paymentFacade.payment(command);
                     successCount.incrementAndGet();  // 성공 카운트 증가
                 } catch (Exception e) {
-                    e.printStackTrace();
                     failCount.incrementAndGet();
                 } finally {
                     latch.countDown();  // latch 감소
