@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -43,7 +44,6 @@ public class PaymentConcurrencyTest {
         BigDecimal balance = BigDecimal.valueOf(100000);
         User user = new User(null, "김유저", balance, LocalDateTime.now(), LocalDateTime.now());
         User savedUser = userRepository.save(user);
-        // 주문 정보 세팅
         // 주문 정보 세팅
         long userId = 1L;
         BigDecimal orderAmount = BigDecimal.valueOf(130000);
@@ -80,7 +80,9 @@ public class PaymentConcurrencyTest {
         executorService.shutdown();
 
         // then
+        User findUser = userRepository.findById(savedUser.getId());
         assertThat(successCount.get()).isEqualTo(1);
         assertThat(failCount.get()).isEqualTo(1);
+        assertThat(findUser.getBalance().setScale(0, RoundingMode.DOWN)).isEqualTo(balance.subtract(payAmount)); // 잔액 검증
     }
 }
