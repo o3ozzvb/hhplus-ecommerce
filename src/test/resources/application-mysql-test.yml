@@ -1,0 +1,5 @@
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 9999 # Redis를 비활성화할 임의의 값 설정

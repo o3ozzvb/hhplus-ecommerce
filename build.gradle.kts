@@ -49,13 +49,23 @@ dependencies {
 
 	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
+	implementation("com.h2database:h2:2.2.222")
 
-    // Test
+	// redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.redisson:redisson-spring-boot-starter:3.20.1")
+
+
+	// Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	// redis test
+	testImplementation("org.testcontainers:testcontainers:1.19.0")
+	testImplementation("com.redis.testcontainers:testcontainers-redis:1.6.4")
 }
 
 tasks.withType<Test> {

@@ -1,6 +1,6 @@
 package kr.hhplus.be.domain.product.service;
 
-import kr.hhplus.be.DatabaseCleanup;
+import kr.hhplus.be.config.DatabaseCleanup;
 import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.entity.OrderDetail;
 import kr.hhplus.be.domain.order.enumtype.OrderStatus;

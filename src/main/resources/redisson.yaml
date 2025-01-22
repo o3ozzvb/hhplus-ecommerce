@@ -1,0 +1,6 @@
+singleServerConfig:
+  address: "redis://localhost:6379" # Redis 서버 주소
+  connectionMinimumIdleSize: 10
+  connectionPoolSize: 64
+threads: 16
+nettyThreads: 32

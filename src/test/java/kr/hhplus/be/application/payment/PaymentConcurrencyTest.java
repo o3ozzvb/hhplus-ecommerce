@@ -1,6 +1,7 @@
 package kr.hhplus.be.application.payment;
 
 import kr.hhplus.be.application.payment.dto.PaymentCommand;
+import kr.hhplus.be.config.TestcontainersConfiguration;
 import kr.hhplus.be.domain.order.entity.Order;
 import kr.hhplus.be.domain.order.enumtype.OrderStatus;
 import kr.hhplus.be.domain.order.repository.OrderRepository;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
@@ -24,8 +26,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Testcontainers
-public class PaymentConcurrencyTest {
+@ActiveProfiles("mysql-test")
+public class PaymentConcurrencyTest extends TestcontainersConfiguration {
 
     @Autowired
     PaymentFacade paymentFacade;

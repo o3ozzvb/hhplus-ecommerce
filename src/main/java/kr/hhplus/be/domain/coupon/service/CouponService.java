@@ -7,6 +7,7 @@ import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.infrastructure.redisson.RedissonLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class CouponService {
     /**
      * 쿠폰 발급
      */
+    @RedissonLock(key = "couponLock")
     @Transactional
     public CouponPublish publishCoupon(CouponPublishDTO publishDTO) {
         Coupon coupon = couponRepository.findByIdForUpdate(publishDTO.getCouponId());
