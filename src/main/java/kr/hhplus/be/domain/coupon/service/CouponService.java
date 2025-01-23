@@ -7,10 +7,10 @@ import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.support.aop.annotation.RedissonLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
@@ -24,9 +24,9 @@ public class CouponService {
     /**
      * 쿠폰 발급
      */
-    @Transactional
+    @RedissonLock(value = "#publishDTO.couponId")
     public CouponPublish publishCoupon(CouponPublishDTO publishDTO) {
-        Coupon coupon = couponRepository.findByIdForUpdate(publishDTO.getCouponId());
+        Coupon coupon = couponRepository.findById(publishDTO.getCouponId());
         // 쿠폰 발행 - 잔여수량 차감
         coupon.publish();
         couponRepository.save(coupon);

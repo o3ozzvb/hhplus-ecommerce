@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class CouponFixture {
 
     public static Coupon createCoupon(String name, DiscountType discountType, int discountValue, int remainQuantiy) {
-        return new Coupon(null, name, discountType, discountValue, 30, remainQuantiy, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
+        return Coupon.of(name, discountType, discountValue, 30);
     }
 
     public static CouponPublish createCouponPublish(long couponId, long userId) {
