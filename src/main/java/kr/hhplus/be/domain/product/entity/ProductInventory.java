@@ -2,6 +2,7 @@ package kr.hhplus.be.domain.product.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Version;
 import kr.hhplus.be.domain.exception.CommerceConflictException;
 import kr.hhplus.be.domain.exception.ErrorCode;
 import lombok.AccessLevel;
@@ -25,6 +26,9 @@ public class ProductInventory {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @Version
+    private Integer version = 0;
 
     public static ProductInventory of(long refProductId,int inventory) {
         ProductInventory productInventory = new ProductInventory();

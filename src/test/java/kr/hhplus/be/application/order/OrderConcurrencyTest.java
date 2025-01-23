@@ -7,6 +7,7 @@ import kr.hhplus.be.domain.product.entity.Product;
 import kr.hhplus.be.domain.product.enumtype.Category;
 import kr.hhplus.be.domain.product.repository.ProductInventoryRepository;
 import kr.hhplus.be.domain.product.repository.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import static kr.hhplus.be.fixture.ProductFixture.createProduct;
 import static kr.hhplus.be.fixture.ProductFixture.createProductInventory;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Slf4j
 @SpringBootTest
 @Testcontainers
 public class OrderConcurrencyTest {
@@ -76,6 +78,8 @@ public class OrderConcurrencyTest {
 
         latch.await(10, TimeUnit.SECONDS);  // 모든 스레드가 완료될 때까지 대기
         executorService.shutdown();
+
+        log.debug("successCount : {}, failCount: {}", successCount, failCount);
 
         // then
         assertThat(successCount.get()).isEqualTo(5);  // 성공 주문 수는 재고량과 동일해야 함

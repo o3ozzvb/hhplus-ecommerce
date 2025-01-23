@@ -14,6 +14,6 @@ public class ProductFixture {
     }
 
     public static ProductInventory createProductInventory(long productId, int inventory) {
-        return new ProductInventory(productId, inventory, LocalDateTime.now(), LocalDateTime.now());
+        return ProductInventory.of(productId, inventory);
     }
 }

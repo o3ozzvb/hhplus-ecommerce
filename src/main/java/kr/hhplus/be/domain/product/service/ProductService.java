@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,9 +26,10 @@ public class ProductService {
     /**
      * 재고 차감
      */
+    @Transactional
     public void deductInventory(long productId, int quantity) {
-        // 상품 재고 조회
-        ProductInventory productInventory = productInventoryRepository.findByIdForUpdate(productId);
+        // 상품 재고 조회 (낙관적 락)
+        ProductInventory productInventory = productInventoryRepository.findById(productId);
         // 재고 차감
         productInventory.deductInventory(quantity);
         productInventoryRepository.save(productInventory);
