@@ -15,4 +15,6 @@ public interface ProductRepository {
     Page<Product> findProductsBySearchDTO(ProductSearchDTO searchDTO, Pageable pageable);
 
     List<TopSalesProductDTO> findTopSalesProducts();
+
+    void deleteAll();
 }

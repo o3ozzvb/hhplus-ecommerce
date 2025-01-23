@@ -30,4 +30,16 @@ public class Product {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public static Product of(String productName, Category category, BigDecimal price) {
+        Product product = new Product();
+
+        product.productName = productName;
+        product.category = category;
+        product.price = price;
+        product.createdAt = LocalDateTime.now();
+        product.updatedAt = LocalDateTime.now();
+
+        return product;
+    }
 }

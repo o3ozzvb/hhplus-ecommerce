@@ -30,5 +30,10 @@ public class ProductInventoryRepositoryImpl implements ProductInventoryRepositor
         return productInventoryJpaRepository.findByIdForUpdate(productId);
     }
 
+    @Override
+    public void deleteAll() {
+        productInventoryJpaRepository.deleteAll();
+    }
+
 
 }

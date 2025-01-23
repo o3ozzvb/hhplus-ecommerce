@@ -8,4 +8,5 @@ public interface CouponRepository {
     Coupon findById(long id);
 
     Coupon findByIdForUpdate(Long couponId);
+    void deleteAll();
 }

@@ -31,5 +31,10 @@ public class UserRepositoryImpl implements UserRepository {
                 .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.USER_NOT_EXIST));
     }
 
+    @Override
+    public void deleteAll() {
+        userJpaRepository.deleteAll();
+    }
+
 
 }

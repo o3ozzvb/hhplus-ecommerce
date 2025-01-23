@@ -30,4 +30,9 @@ public class CouponRepositoryImpl implements CouponRepository {
         return couponJpaRepository.findByIdForUpdate(couponId)
                 .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.COUPON_NOT_EXIST));
     }
+
+    @Override
+    public void deleteAll() {
+        couponJpaRepository.deleteAll();
+    }
 }

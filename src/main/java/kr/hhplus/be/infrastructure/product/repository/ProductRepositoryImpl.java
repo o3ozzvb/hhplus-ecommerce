@@ -32,4 +32,9 @@ public class ProductRepositoryImpl implements ProductRepository {
     public List<TopSalesProductDTO> findTopSalesProducts() {
         return productJpaRepository.findTopSalesProducts();
     }
+
+    @Override
+    public void deleteAll() {
+        productJpaRepository.deleteAll();
+    }
 }

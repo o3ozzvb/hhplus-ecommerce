@@ -17,7 +17,6 @@ public class OrderRequest {
     @NotNull(message = "사용자 ID는 필수값 입니다.")
     private Long userId;
 
-    @NotNull(message = "발행쿠폰 ID는 필수값 입니다.")
     private Long couponPublishId; // 사용할 발행쿠폰 ID
 
     @NotNull(message = "주문 상품 리스트는 필수값 입니다.")

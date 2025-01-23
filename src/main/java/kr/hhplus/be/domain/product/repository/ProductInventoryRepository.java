@@ -8,4 +8,6 @@ public interface ProductInventoryRepository {
     ProductInventory findById(Long productId);
 
     ProductInventory findByIdForUpdate(Long productId);
+
+    void deleteAll();
 }

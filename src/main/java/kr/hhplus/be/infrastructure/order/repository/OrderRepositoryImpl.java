@@ -24,4 +24,9 @@ public class OrderRepositoryImpl implements OrderRepository {
         return orderJpaRepository.findById(id)
                 .orElseThrow(() -> new CommerceNotFoundException(ErrorCode.ORDER_NOT_EXIST));
     }
+
+    @Override
+    public void deleteAll() {
+        orderJpaRepository.deleteAll();
+    }
 }

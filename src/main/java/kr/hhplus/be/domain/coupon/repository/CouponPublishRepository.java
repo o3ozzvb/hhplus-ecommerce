@@ -12,4 +12,6 @@ public interface CouponPublishRepository {
     CouponPublish findById(long id);
 
     Page<UserCouponDTO> findUserCouponsBySearchDTO(CouponSearchDTO searchDTO, Pageable pageable);
+
+    void deleteAll();
 }

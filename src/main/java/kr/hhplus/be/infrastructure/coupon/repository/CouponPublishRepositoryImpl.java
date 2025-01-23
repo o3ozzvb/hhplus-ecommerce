@@ -33,4 +33,9 @@ public class CouponPublishRepositoryImpl implements CouponPublishRepository {
     public Page<UserCouponDTO> findUserCouponsBySearchDTO(CouponSearchDTO searchDTO, Pageable pageable) {
         return couponPublishJpaRepository.findCouponsBySearchDTO(searchDTO, pageable);
     }
+
+    @Override
+    public void deleteAll() {
+        couponPublishJpaRepository.deleteAll();
+    }
 }

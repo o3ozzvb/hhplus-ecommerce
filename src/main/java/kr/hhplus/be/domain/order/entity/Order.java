@@ -44,4 +44,19 @@ public class Order {
     public void cancel() {
         this.status = OrderStatus.CANCELED;
     }
+
+    public static Order of(long refUserId, long refCouponPublishId, LocalDateTime orderedAt, BigDecimal totalAmount, BigDecimal discountAmount, BigDecimal finalAmount, OrderStatus status) {
+        Order order = new Order();
+
+        order.refUserId = refUserId;
+        order.refCouponPublishId = refCouponPublishId;
+        order.orderedAt = LocalDateTime.now();
+        order.totalAmount = totalAmount;
+        order.discountAmount = discountAmount;
+        order.finalAmount = finalAmount;
+        order.createdAt = LocalDateTime.now();
+        order.updatedAt = LocalDateTime.now();
+
+        return order;
+    }
 }
