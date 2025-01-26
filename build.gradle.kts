@@ -38,6 +38,9 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:1.18.28")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
+	implementation("org.slf4j:slf4j-api")
+	implementation("ch.qos.logback:logback-classic")
+
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
 
@@ -63,12 +66,7 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	// redis test
-	testImplementation("org.testcontainers:testcontainers:1.19.0")
-	testImplementation("com.redis.testcontainers:testcontainers-redis:1.6.4")
-
-	// embedded redis
-	testImplementation("it.ozimov:embedded-redis:0.7.2")
-	testImplementation("org.redisson:redisson-spring-boot-starter:3.20.1")
+	testImplementation("com.redis:testcontainers-redis:2.2.2")
 }
 
 tasks.withType<Test> {
