@@ -8,7 +8,7 @@
 [**5. 동시성 이슈 분석 및 제어 방식 비교**](https://developer-ek.tistory.com/138)
 ---
 ### 회고록
-[**CHAPTER 2 회고록**](docs/Chapter2_review.md) 
+- [**CHAPTER 2 회고록**](docs/Chapter2_review.md) 
 
 ---
 ## Getting Started
