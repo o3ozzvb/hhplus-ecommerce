@@ -38,6 +38,9 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok:1.18.28")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
+	implementation("org.slf4j:slf4j-api")
+	implementation("ch.qos.logback:logback-classic")
+
 	// Swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.0")
 
@@ -49,13 +52,21 @@ dependencies {
 
 	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
+	runtimeOnly("io.netty:netty-resolver-dns-native-macos")
 
-    // Test
+	// redis
+	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+	implementation("org.redisson:redisson-spring-boot-starter:3.20.1")
+
+	// Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	// redis test
+	testImplementation("com.redis:testcontainers-redis:2.2.2")
 }
 
 tasks.withType<Test> {

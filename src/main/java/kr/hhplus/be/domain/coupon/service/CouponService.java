@@ -7,6 +7,7 @@ import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.support.aop.annotation.DistributedLock;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,14 +25,18 @@ public class CouponService {
     /**
      * 쿠폰 발급
      */
+    @DistributedLock(value = "#publishDTO.couponId")
     @Transactional
     public CouponPublish publishCoupon(CouponPublishDTO publishDTO) {
-        Coupon coupon = couponRepository.findByIdForUpdate(publishDTO.getCouponId());
+        log.info("publishCoupon transaction start: {}", publishDTO);
+        Coupon coupon = couponRepository.findById(publishDTO.getCouponId());
         // 쿠폰 발행 - 잔여수량 차감
         coupon.publish();
         couponRepository.save(coupon);
         // 쿠폰 발행 내역 저장
-        return couponPublishRepository.save(CouponPublish.publishNow(publishDTO));
+        CouponPublish couponPublish = couponPublishRepository.save(CouponPublish.publishNow(publishDTO));
+        log.info("publishCoupon transaction end");
+        return couponPublish;
     }
 
     /**

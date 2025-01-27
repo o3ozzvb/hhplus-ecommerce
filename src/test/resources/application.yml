@@ -9,3 +9,9 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: create-drop  # 테스트용 DB를 매번 초기화
+---
+spring:
+  data:
+    redis:
+      host: localhost
+      port: 6379
