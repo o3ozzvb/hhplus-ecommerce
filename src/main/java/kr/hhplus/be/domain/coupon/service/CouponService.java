@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -28,14 +29,12 @@ public class CouponService {
     @DistributedLock(value = "#publishDTO.couponId")
     @Transactional
     public CouponPublish publishCoupon(CouponPublishDTO publishDTO) {
-        log.info("publishCoupon transaction start: {}", publishDTO);
         Coupon coupon = couponRepository.findById(publishDTO.getCouponId());
         // 쿠폰 발행 - 잔여수량 차감
         coupon.publish();
         couponRepository.save(coupon);
         // 쿠폰 발행 내역 저장
         CouponPublish couponPublish = couponPublishRepository.save(CouponPublish.publishNow(publishDTO));
-        log.info("publishCoupon transaction end");
         return couponPublish;
     }
 
@@ -62,5 +61,19 @@ public class CouponService {
             discountAmount = totalAmount.min(BigDecimal.valueOf(coupon.getDiscountValue()));
         }
         return discountAmount;
+    }
+
+    /**
+     * 쿠폰 발급 요청 시 대기열에 요청 저장
+     */
+    public void addCouponPublishRequest(CouponPublishDTO publishDTO) {
+        couponPublishRepository.savePublishRequest(publishDTO);
+    }
+
+    /**
+     * 쿠폰 발급 요청 목록 대기열에서 조회
+     */
+    public List<CouponPublishDTO> getCouponPublishRequests(long couponId, int requestCount) {
+        return couponPublishRepository.getPublishRequest(couponId, requestCount);
     }
 }
