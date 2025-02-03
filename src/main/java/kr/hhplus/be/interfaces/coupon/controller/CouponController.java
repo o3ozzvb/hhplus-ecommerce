@@ -30,9 +30,11 @@ public class CouponController {
     public ApiResponse<CouponPublishResponse> publishCoupon(@RequestBody @Valid CouponPublishRequest request) {
         log.debug("CouponController publishCoupon - request: {}", request);
 
-        CouponPublish couponPublish = couponService.publishCoupon(request.toCommand());
+        //CouponPublish couponPublish = couponService.publishCoupon(request.toCommand());
+        couponService.addCouponPublishRequest(request.toCommand());
 
-        return ApiResponse.success(CouponPublishResponse.from(couponPublish));
+//        return ApiResponse.success(CouponPublishResponse.from(couponPublish));
+        return ApiResponse.success(null);
     }
 
 }
