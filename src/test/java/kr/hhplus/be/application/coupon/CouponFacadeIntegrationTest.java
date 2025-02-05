@@ -1,13 +1,16 @@
 package kr.hhplus.be.application.coupon;
 
+import kr.hhplus.be.DatabaseCleanup;
 import kr.hhplus.be.domain.coupon.dto.CouponPublishDTO;
 import kr.hhplus.be.domain.coupon.entity.Coupon;
 import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
 import kr.hhplus.be.domain.coupon.repository.CouponRepository;
+import kr.hhplus.be.domain.coupon.service.CouponService;
 import kr.hhplus.be.domain.exception.CommerceConflictException;
 import kr.hhplus.be.domain.exception.ErrorCode;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,16 +31,27 @@ class CouponFacadeIntegrationTest {
     private CouponFacade couponFacade;
 
     @Autowired
+    private CouponService couponService;
+
+    @Autowired
     private CouponRepository couponRepository;
 
     @Autowired
     private CouponPublishRepository couponPublishRepository;
 
+    @Autowired
+    private DatabaseCleanup databaseCleanup;
+
+    @BeforeEach
+    void cleanUpDatabase() {
+        databaseCleanup.execute();
+    }
+
     @Test
     @DisplayName("레디스에서 쿠폰발급 요청 N건을 가져와 발급요청하면 쿠폰이 발급된다")
     void publishPendingRequestsTest() {
         // given
-        Coupon coupon = couponRepository.save(Coupon.of("선착순쿠폰", DiscountType.FIXED_AMOUNT, 10000, 10));
+        Coupon coupon = couponService.saveCoupon(Coupon.of("선착순쿠폰", DiscountType.FIXED_AMOUNT, 10000, 10));
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now().plusDays(30);
         // 쿠폰 발급 요청 10건 (레디스에 저장)
@@ -60,7 +74,7 @@ class CouponFacadeIntegrationTest {
     @DisplayName("잔여수량 3건인 쿠폰을 레디스에서 쿠폰발급 요청 5건을 가져와 발급요청하면 CommerceConflictException이 발생하고 3건은 발급에 성공한다")
     void publishPendingRequestsExceptionTest() {
         // given
-        Coupon coupon = couponRepository.save(Coupon.of("선착순쿠폰", DiscountType.FIXED_AMOUNT, 10000, 3));
+        Coupon coupon = couponService.saveCoupon(Coupon.of("선착순쿠폰", DiscountType.FIXED_AMOUNT, 10000, 3));
         LocalDate startDate = LocalDate.now();
         LocalDate endDate = LocalDate.now().plusDays(30);
         // 쿠폰 발급 요청 10건 (레디스에 저장)

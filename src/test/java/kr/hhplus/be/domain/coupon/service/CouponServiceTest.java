@@ -50,7 +50,7 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(couponId, "쿠폰", DiscountType.FIXED_RATE, 10, 30, 30, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(couponPublishId, couponId, userId, LocalDate.now(), null, LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
-        when(couponRepository.findByIdForUpdate(couponId)).thenReturn(coupon);
+        when(couponRepository.findById(couponId)).thenReturn(coupon);
         when(couponPublishRepository.findById(couponPublishId)).thenReturn(couponPublish);
         when(couponPublishRepository.save(any(CouponPublish.class))).thenReturn(couponPublish);
 
@@ -80,7 +80,7 @@ class CouponServiceTest {
         Coupon coupon = new Coupon(couponId, "쿠폰", DiscountType.FIXED_RATE, 10, 30, 0, CouponStatus.ACTIVE, LocalDateTime.now(), LocalDateTime.now());
         CouponPublish couponPublish = new CouponPublish(couponPublishId, couponId, userId, LocalDate.now(), null, LocalDate.now(), LocalDate.now().plusDays(30), CouponPublishStatus.AVAILABLE, LocalDateTime.now(), LocalDateTime.now());
 
-        when(couponRepository.findByIdForUpdate(couponId)).thenReturn(coupon);
+        when(couponRepository.findById(couponId)).thenReturn(coupon);
 
         // when
         CouponPublishDTO publishDTO = CouponPublishDTO.builder()
