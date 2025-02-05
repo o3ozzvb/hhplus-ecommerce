@@ -14,4 +14,6 @@ public interface CouponPubishRepositoryCustom {
     Page<UserCouponDTO> findCouponsBySearchDTO(CouponSearchDTO searchDTO, Pageable pageable);
 
     Optional<Coupon> findByIdForUpdate(Long couponId);
+
+    void decreaseRemainQuantity(Long couponId);
 }

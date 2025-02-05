@@ -21,12 +21,27 @@ public interface CouponPublishRepository {
     List<CouponPublish> findAllByRefCouponId(long couponId);
 
     /**
-     * 쿠폰 발급 요청 대기열 저장
+     * 쿠폰 발급 요청 대기열 저장 & 발급 요청 유저 저장
      */
-    public void savePublishRequest(CouponPublishDTO publishDTO);
+    void savePublishRequest(CouponPublishDTO publishDTO);
 
     /**
      * 쿠폰 발급 요청 대기열 조회
      */
-    public List<CouponPublishDTO> getPublishRequest(long couponId, int n);
+    List<CouponPublishDTO> getPublishRequest(long couponId, int n);
+
+    /**
+     * 쿠폰 발급 유저 조회 (set)
+     */
+    boolean isCouponPublishRequested(long couponId, long userId);
+
+    /**
+     * 쿠폰 발급 건 수 조회
+     */
+    Integer getCouponPublishCount(long couponId);
+
+    /**
+     * 쿠폰 발급 요청 유저 조회
+     */
+
 }

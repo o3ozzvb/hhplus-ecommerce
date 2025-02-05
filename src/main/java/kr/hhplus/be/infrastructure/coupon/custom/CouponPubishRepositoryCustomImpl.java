@@ -92,4 +92,15 @@ public class CouponPubishRepositoryCustomImpl implements CouponPubishRepositoryC
                 .fetchOne()
         );
     }
+
+    @Override
+    public void decreaseRemainQuantity(Long couponId) {
+        QCoupon coupon = QCoupon.coupon;
+
+        queryFactory
+                .update(coupon)
+                .set(coupon.remainQuantity, coupon.remainQuantity.subtract(1))
+                .where(coupon.id.eq(couponId))
+                .execute();
+    }
 }

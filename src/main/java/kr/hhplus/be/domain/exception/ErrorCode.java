@@ -19,6 +19,7 @@ public enum ErrorCode {
     COUPON_NOT_EXIST("COUPON_NOT_EXIST", "존재하지 않는 쿠폰입니다."),
     COUPON_NOT_AVAILABLE("COUPON_NOT_AVAILABLE", "쿠폰을 사용할 수 없습니다."),
     COUPON_VALID_DATE_EXPIRED("COUPON_VALID_DATE_EXPIRED", "쿠폰 유효 기간이 만료되었습니다."),
+    ALREAY_REQUESTED_COUPON("ALREAY_REQUESTED_COUPON", "발급 요청 횟수를 초과하였습니다."),
     // ORDER
     ORDER_NOT_EXIST("ORDER_NOT_EXIST", "존재하지 않는 주문입니다."),
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR", "서버 에러 입니다."),

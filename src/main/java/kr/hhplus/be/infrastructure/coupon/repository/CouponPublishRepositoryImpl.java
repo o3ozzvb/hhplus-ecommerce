@@ -4,10 +4,10 @@ import kr.hhplus.be.domain.coupon.dto.CouponPublishDTO;
 import kr.hhplus.be.domain.coupon.dto.CouponSearchDTO;
 import kr.hhplus.be.domain.coupon.entity.CouponPublish;
 import kr.hhplus.be.domain.coupon.repository.CouponPublishRepository;
-import kr.hhplus.be.domain.user.dto.UserCouponDTO;
-import kr.hhplus.be.infrastructure.coupon.jpa.CouponPublishJpaRepository;
 import kr.hhplus.be.domain.exception.CommerceNotFoundException;
 import kr.hhplus.be.domain.exception.ErrorCode;
+import kr.hhplus.be.domain.user.dto.UserCouponDTO;
+import kr.hhplus.be.infrastructure.coupon.jpa.CouponPublishJpaRepository;
 import kr.hhplus.be.infrastructure.coupon.redis.CouponPublishRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -65,4 +65,21 @@ public class CouponPublishRepositoryImpl implements CouponPublishRepository {
     public List<CouponPublishDTO> getPublishRequest(long couponId, int n) {
         return couponPublishRedisRepository.getPublishRequest(couponId, n);
     }
+
+    /**
+     * 쿠폰 발급 유저 조회 (set)
+     */
+    @Override
+    public boolean isCouponPublishRequested(long couponId, long userId) {
+        return couponPublishRedisRepository.isCouponPublishRequested(couponId, userId);
+    }
+
+    /**
+     * 쿠폰 발급 건 수 조회
+     */
+    @Override
+    public Integer getCouponPublishCount(long couponId) {
+        return couponPublishRedisRepository.getCouponPublishCount(couponId);
+    }
+
 }
