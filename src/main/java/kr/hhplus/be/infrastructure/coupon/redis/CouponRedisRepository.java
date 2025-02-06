@@ -35,7 +35,7 @@ public class CouponRedisRepository {
         return null;
     }
 
-    public void decreateRemainQuantity(Long couponId) {
+    public void decreaseRemainQuantity(Long couponId) {
         redisTemplate.opsForHash().increment(COUPON_QUANTITY, String.valueOf(couponId), -1);
     }
 }

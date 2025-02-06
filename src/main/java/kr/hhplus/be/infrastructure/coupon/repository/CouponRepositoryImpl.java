@@ -55,6 +55,6 @@ public class CouponRepositoryImpl implements CouponRepository {
 
     @Override
     public void decreaseCacheRemainQuantity(Long couponId) {
-        couponRedisRepository.decreateRemainQuantity(couponId);
+        couponRedisRepository.decreaseRemainQuantity(couponId);
     }
 }
