@@ -30,10 +30,21 @@ public class CouponController {
     public ApiResponse<CouponPublishResponse> publishCoupon(@RequestBody @Valid CouponPublishRequest request) {
         log.debug("CouponController publishCoupon - request: {}", request);
 
-        //CouponPublish couponPublish = couponService.publishCoupon(request.toCommand());
+        CouponPublish couponPublish = couponService.publishCoupon(request.toCommand());
+
+        return ApiResponse.success(CouponPublishResponse.from(couponPublish));
+    }
+
+    /**
+     * 쿠폰 발급 요청 with Redis
+     */
+    @Operation(summary = "쿠폰 발급 요청", description = "쿠폰 발급을 요청합니다.")
+    @PostMapping("/coupons/publish-redis")
+    public ApiResponse<CouponPublishResponse> publishCouponWithRedis(@RequestBody @Valid CouponPublishRequest request) {
+        log.debug("CouponController publishCoupon - request: {}", request);
+
         couponService.addCouponPublishRequest(request.toCommand());
 
-//        return ApiResponse.success(CouponPublishResponse.from(couponPublish));
         return ApiResponse.success(null);
     }
 
