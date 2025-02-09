@@ -1,10 +1,11 @@
-package kr.hhplus.be;
+package kr.hhplus.be.support;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +14,7 @@ import org.testcontainers.shaded.com.google.common.base.CaseFormat;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Service
-@ActiveProfiles("test")
+@Component
 public class DatabaseCleanup implements InitializingBean {
 
     @PersistenceContext
