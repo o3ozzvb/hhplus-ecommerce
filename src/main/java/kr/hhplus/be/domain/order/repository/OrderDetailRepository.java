@@ -8,4 +8,6 @@ public interface OrderDetailRepository {
     OrderDetail save(OrderDetail orderDetail);
 
     List<OrderDetail> findByRefOrderId(long orderId);
+
+    void deleteAll();
 }

@@ -57,6 +57,8 @@ dependencies {
 	// redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.redisson:redisson-spring-boot-starter:3.20.1")
+	implementation("io.lettuce:lettuce-core")
+	implementation("org.springframework.boot:spring-boot-starter-cache")
 
 	// Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
