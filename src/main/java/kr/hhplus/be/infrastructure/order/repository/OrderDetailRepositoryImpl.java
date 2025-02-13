@@ -23,4 +23,9 @@ public class OrderDetailRepositoryImpl implements OrderDetailRepository {
     public List<OrderDetail> findByRefOrderId(long orderId) {
         return orderDetailJpaRepository.findByRefOrderId(orderId);
     }
+
+    @Override
+    public void deleteAll() {
+        orderDetailJpaRepository.deleteAll();
+    }
 }

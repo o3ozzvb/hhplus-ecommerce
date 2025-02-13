@@ -11,8 +11,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ProductSelectRequest {
     private String productName;
-    private int startPrice;
-    private int endPrice;
+    private Integer startPrice;
+    private Integer endPrice;
     private Category category;
 
     // paging info

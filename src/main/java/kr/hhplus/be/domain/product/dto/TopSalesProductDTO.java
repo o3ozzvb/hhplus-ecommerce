@@ -6,12 +6,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TopSalesProductDTO {
+public class TopSalesProductDTO implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private long productId;
     private String productName;
     private Category category;
