@@ -16,6 +16,7 @@ import kr.hhplus.be.domain.product.repository.ProductInventoryRepository;
 import kr.hhplus.be.domain.product.repository.ProductRepository;
 import kr.hhplus.be.domain.user.entity.User;
 import kr.hhplus.be.domain.user.repository.UserRepository;
+import kr.hhplus.be.infrastructure.coupon.redis.CouponRedisRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
@@ -32,6 +33,7 @@ public class DatabaseInitializer {
 
     private final UserRepository userRepository;
     private final CouponRepository couponRepository;
+    private final CouponRedisRepository couponRedisRepository;
     private final CouponPublishRepository couponPublishRepository;
     private final ProductRepository productRepository;
     private final ProductInventoryRepository productInventoryRepository;
@@ -42,6 +44,7 @@ public class DatabaseInitializer {
     public DatabaseInitializer(
             UserRepository userRepository,
             CouponRepository couponRepository,
+            CouponRedisRepository couponRedisRepository,
             CouponPublishRepository couponPublishRepository,
             ProductRepository productRepository,
             ProductInventoryRepository productInventoryRepository,
@@ -50,6 +53,7 @@ public class DatabaseInitializer {
             JdbcTemplate jdbcTemplate) {
         this.userRepository = userRepository;
         this.couponRepository = couponRepository;
+        this.couponRedisRepository = couponRedisRepository;
         this.couponPublishRepository = couponPublishRepository;
         this.productRepository = productRepository;
         this.productInventoryRepository = productInventoryRepository;
@@ -88,8 +92,8 @@ public class DatabaseInitializer {
             userRepository.save(User.of("User" + i, BigDecimal.valueOf(10000)));
         }
         // 선착순 발급 쿠폰
-        couponRepository.save(Coupon.of("선착순 30명 발급 쿠폰", DiscountType.FIXED_AMOUNT, 5000, 30));
-
+        Coupon coupon = couponRepository.save(Coupon.of("선착순 30명 발급 쿠폰", DiscountType.FIXED_AMOUNT, 5000, 30));
+        couponRedisRepository.cacheCouponQuantity(coupon.getId(), coupon.getRemainQuantity());
         // 상품 등록
         Product whiteSocks = productRepository.save(Product.of("하얀 양말", Category.ETC, BigDecimal.valueOf(3000)));
         Product yellowSocks = productRepository.save(Product.of("노란 양말", Category.ETC, BigDecimal.valueOf(4000)));

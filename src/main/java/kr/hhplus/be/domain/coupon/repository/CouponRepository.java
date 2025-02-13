@@ -8,5 +8,14 @@ public interface CouponRepository {
     Coupon findById(long id);
 
     Coupon findByIdForUpdate(Long couponId);
+
     void deleteAll();
+
+    void decreaseRemainQuantity(Long couponId);
+
+    void cacheCouponQuantity(long couponId, int quantity);
+
+    Integer getCacheRemainQuantity(long couponId);
+
+    void decreaseCacheRemainQuantity(Long couponId);
 }

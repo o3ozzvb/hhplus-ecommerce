@@ -57,7 +57,6 @@ public class Coupon {
         if (this.remainQuantity <= 0) { // 잔여수량이 없으면
             throw new CommerceConflictException(ErrorCode.INSUFFICIENT_COUPON_QUANTITY);
         }
-        this.remainQuantity = this.remainQuantity - 1;
         this.updatedAt = LocalDateTime.now();
     }
 }
