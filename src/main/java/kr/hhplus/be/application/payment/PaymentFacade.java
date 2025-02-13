@@ -2,7 +2,8 @@ package kr.hhplus.be.application.payment;
 
 import kr.hhplus.be.application.order.dto.OrderInfo;
 import kr.hhplus.be.application.payment.dto.PaymentCommand;
-import kr.hhplus.be.domain.order.client.PlatformClient;
+import kr.hhplus.be.domain.event.PaymentSuccessEvent;
+import kr.hhplus.be.domain.event.PaymentEventPublisher;
 import kr.hhplus.be.domain.order.service.OrderService;
 import kr.hhplus.be.domain.payment.entity.Payment;
 import kr.hhplus.be.domain.payment.service.PaymentService;
@@ -20,12 +21,14 @@ public class PaymentFacade {
     private final UserService userService;
     private final OrderService orderService;
     private final PaymentService paymentService;
-    private final PlatformClient platformClient;
+    private final PaymentEventPublisher paymentEventPublisher;
 
     /**
      * 결제
-     * 1. 잔액 확인/차감
+     * 1. 잔액 확인/차감(결제)
      * 2. 결제 정보 저장
+     * 3. 주문 상태 변경
+     * 4. 주문 정보 데이터플랫폼 전송
      */
     @Transactional
     public Payment payment(PaymentCommand command) {
@@ -38,9 +41,8 @@ public class PaymentFacade {
 
         // 데이터 플랫폼 주문 정보 전송
         OrderInfo orderInfo = orderService.getOrderInfo(command.getOrderId());
-        log.debug("before send");
-        platformClient.send(orderInfo);
-        log.debug("after send");
+        // 결제 성공 이벤트 발행
+        paymentEventPublisher.success(new PaymentSuccessEvent(orderInfo));
 
         return payment;
     }
