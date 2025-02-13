@@ -11,6 +11,19 @@ services:
       - MYSQL_DATABASE=hhplus
     volumes:
       - ./data/mysql/:/var/lib/mysql
+  mysql2:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=application
+      - MYSQL_PASSWORD=application
+      - MYSQL_DATABASE=hhplus
+    volumes:
+      - ./data/mysql2/:/var/lib/mysql2
   redis:
     image: redis:latest
     ports:
