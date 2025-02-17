@@ -1,6 +1,5 @@
-package kr.hhplus.be.domain.event;
+package kr.hhplus.be.infrastructure.event;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,7 @@ public class PaymentEventPublisher {
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
-    public void success(PaymentSuccessEvent event) {
+    public void send(PaymentSuccessEvent event) {
         applicationEventPublisher.publishEvent(event);
     }
 }

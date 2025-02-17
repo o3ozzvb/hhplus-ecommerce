@@ -1,4 +1,4 @@
-package kr.hhplus.be.domain.event;
+package kr.hhplus.be.infrastructure.event;
 
 import kr.hhplus.be.application.order.dto.OrderInfo;
 import lombok.AllArgsConstructor;
