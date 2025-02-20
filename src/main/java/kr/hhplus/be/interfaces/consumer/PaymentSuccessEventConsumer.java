@@ -37,7 +37,7 @@ public class PaymentSuccessEventConsumer {
 
         } catch (Exception e) {
             log.error(e.getMessage());
-            PaymentOutbox outbox = outboxService.findById(record.key());
+            PaymentOutbox outbox = outboxService.getOutboxById(record.key());
             outboxService.save(outbox.fail());
         }
     }
@@ -45,7 +45,7 @@ public class PaymentSuccessEventConsumer {
     @KafkaListener(topics = "${commerce-api.payment.topic-name}", groupId = "payment-outbox")
     public void consumeOutbox(ConsumerRecord<String, byte[]> record) {
         log.info("[payment-outbox] key: {}", record.key());
-        PaymentOutbox outbox = outboxService.findById(record.key());
+        PaymentOutbox outbox = outboxService.getOutboxById(record.key());
         outboxService.save(outbox.success());
     }
 

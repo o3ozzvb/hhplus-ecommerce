@@ -7,6 +7,7 @@ import kr.hhplus.be.domain.outbox.entity.PaymentOutbox;
 import kr.hhplus.be.domain.outbox.enumtype.OutboxStatus;
 import kr.hhplus.be.domain.outbox.repository.OutboxRepository;
 import kr.hhplus.be.infrastructure.kafka.KafkaProducer;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +39,7 @@ public class PaymentSuccessEventConsumerTest {
     String topic;
 
     @Test
+    @DisplayName("결제 성공 이벤트가 발행되면 outbox의 상태가 SUCCESS로 업데이트 된다.")
     public void paymentSuccessEventConsumerTest() {
         //given
         long orderId = 1L;
