@@ -1,6 +1,8 @@
 spring:
+  application:
+    name: hhplus-test
   datasource:
-    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: test
     password: test
   jpa:
@@ -15,3 +17,19 @@ spring:
     redis:
       host: localhost
       port: 6379
+---
+spring:
+  kafka:
+#    bootstrap-servers: ${spring.kafka.bootstrap-servers} #${spring.embedded.kafka.brokers}
+    consumer:
+      group-id: test-group
+      auto-offset-reset: earliest
+    producer:
+      acks: all
+      retries: 5
+    listener:
+      missing-topics-fatal: false
+---
+commerce-api:
+  payment:
+    topic-name: commerce.payment-success-test-event.v1
