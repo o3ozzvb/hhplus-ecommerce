@@ -1,6 +1,5 @@
 package kr.hhplus.be.infrastructure.kafka;
 
-import kr.hhplus.be.support.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -26,7 +25,7 @@ public class KafkaProducer {
                 log.error("[Produce Fail] message: {}", throwable.getMessage(), throwable);
             } else {
                 RecordMetadata recordMetadata = result.getRecordMetadata();
-                log.info("[Produce Success] topic:{}, value: {}, offset: {}",
+                log.debug("[Produce Success] topic:{}, value: {}, offset: {}",
                         recordMetadata.topic(),
                         result.getProducerRecord().value(),
                         recordMetadata.offset());

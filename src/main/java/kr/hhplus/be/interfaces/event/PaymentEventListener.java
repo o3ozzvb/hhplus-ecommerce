@@ -1,8 +1,14 @@
 package kr.hhplus.be.interfaces.event;
 
+import kr.hhplus.be.domain.outbox.entity.PaymentOutbox;
+import kr.hhplus.be.domain.outbox.enumtype.OutboxStatus;
+import kr.hhplus.be.domain.outbox.service.OutboxService;
 import kr.hhplus.be.infrastructure.event.PaymentSuccessEvent;
-import kr.hhplus.be.domain.order.client.PlatformClient;
+import kr.hhplus.be.infrastructure.kafka.KafkaProducer;
+import kr.hhplus.be.support.util.JsonUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
@@ -10,23 +16,24 @@ import org.springframework.transaction.event.TransactionalEventListener;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class PaymentEventListener {
 
-    private final PlatformClient platformClient;
+    private final OutboxService outboxService;
+    private final KafkaProducer kafkaProducer;
 
-    public PaymentEventListener(PlatformClient platformClient) {
-        this.platformClient = platformClient;
-    }
+    @Value("${commerce-api.payment.topic-name}")
+    String topic;
 
     @Async
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void paymentSuccessHandler(PaymentSuccessEvent event) {
-        PaymentSuccessEvent successEvent = new PaymentSuccessEvent(event.getOrderInfo());
-        try {
-            platformClient.send(event.getOrderInfo());
-            log.info("데이터 플랫폼 전송 성공. orderId: {}", event.getOrderInfo().getOrderId());
-        } catch (Exception e) {
-            log.error("데이터 플랫폼 전송 실패. orderId: {}", event.getOrderInfo().getOrderId(), e);
-        }
+        Long orderId = event.getOrderInfo().getOrderId();
+        kafkaProducer.send(topic, orderId.toString(), event);
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    public void saveOutbox(PaymentSuccessEvent event) {
+        outboxService.save(PaymentOutbox.of(event.getOrderInfo().getOrderId().toString(), OutboxStatus.INIT, JsonUtil.toJson(event)));
     }
 }

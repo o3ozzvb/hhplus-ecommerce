@@ -1,11 +1,18 @@
 package kr.hhplus.be.infrastructure.event;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kr.hhplus.be.application.order.dto.OrderInfo;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
-@AllArgsConstructor
-public class PaymentSuccessEvent {
-    private final OrderInfo orderInfo;
+public class PaymentSuccessEvent implements Serializable {
+    private OrderInfo orderInfo;
+
+    @JsonCreator
+    public PaymentSuccessEvent(@JsonProperty("orderInfo") OrderInfo orderInfo) {
+        this.orderInfo = orderInfo;
+    }
 }

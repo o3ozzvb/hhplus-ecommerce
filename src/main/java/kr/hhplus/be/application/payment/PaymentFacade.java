@@ -2,12 +2,12 @@ package kr.hhplus.be.application.payment;
 
 import kr.hhplus.be.application.order.dto.OrderInfo;
 import kr.hhplus.be.application.payment.dto.PaymentCommand;
-import kr.hhplus.be.domain.event.PaymentSuccessEvent;
-import kr.hhplus.be.domain.event.PaymentEventPublisher;
 import kr.hhplus.be.domain.order.service.OrderService;
 import kr.hhplus.be.domain.payment.entity.Payment;
 import kr.hhplus.be.domain.payment.service.PaymentService;
 import kr.hhplus.be.domain.user.service.UserService;
+import kr.hhplus.be.infrastructure.event.PaymentEventPublisher;
+import kr.hhplus.be.infrastructure.event.PaymentSuccessEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -42,7 +42,7 @@ public class PaymentFacade {
         // 데이터 플랫폼 주문 정보 전송
         OrderInfo orderInfo = orderService.getOrderInfo(command.getOrderId());
         // 결제 성공 이벤트 발행
-        paymentEventPublisher.success(new PaymentSuccessEvent(orderInfo));
+        paymentEventPublisher.send(new PaymentSuccessEvent(orderInfo));
 
         return payment;
     }

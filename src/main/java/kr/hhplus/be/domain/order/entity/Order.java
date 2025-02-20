@@ -54,6 +54,7 @@ public class Order {
         order.totalAmount = totalAmount;
         order.discountAmount = discountAmount;
         order.finalAmount = finalAmount;
+        order.status = status;
         order.createdAt = LocalDateTime.now();
         order.updatedAt = LocalDateTime.now();
 

@@ -60,6 +60,10 @@ dependencies {
 	implementation("io.lettuce:lettuce-core")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
 
+	// kafka
+	implementation("org.springframework.kafka:spring-kafka")
+	implementation("com.fasterxml.jackson.core:jackson-core:2.18.2")
+
 	// Test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
@@ -69,6 +73,11 @@ dependencies {
 
 	// redis test
 	testImplementation("com.redis:testcontainers-redis:2.2.2")
+
+	// kafka test
+	testImplementation("org.testcontainers:kafka:1.19.3")
+	testImplementation("org.springframework.kafka:spring-kafka-test:3.3.2")
+
 }
 
 tasks.withType<Test> {
