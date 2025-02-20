@@ -18,6 +18,36 @@ spring:
       host: localhost
       port: 6379
 ---
+# implementation("org.springframework.kafka:spring-kafka")
+# spring-kafka 라이브러리에 yaml 의 spring.kafka.* 기반의 AutoConfiguration 이 들어있음.
+#spring:
+#  kafka:
+#    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9094}
+#    properties:
+#      security.protocol: PLAINTEXT
+#      request.timeout.ms: 20000
+#      retry.backoff.ms: 500
+#      auto:
+#        offset.reset: earliest
+#        register.schemas: false
+#        create.topics.enable: false
+#      use.latest.version: true
+#      basic.auth.credentials.source: USER_INFO
+#    producer:
+#      client-id: ${spring.application.name}
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      retries: 5
+#    consumer:
+#      group-id: test-group #${spring.application.name}
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.ByteArrayDeserializer
+#      properties:
+#        enable-auto-commit: false
+#    listener:
+#      ack-mode: manual
+#      missing-topics-fatal: false # 토픽이 없으면 자동 생성
+---
 spring:
   kafka:
 #    bootstrap-servers: ${spring.kafka.bootstrap-servers} #${spring.embedded.kafka.brokers}
