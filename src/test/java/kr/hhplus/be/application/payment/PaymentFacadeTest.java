@@ -4,12 +4,12 @@ import kr.hhplus.be.application.order.dto.OrderInfo;
 import kr.hhplus.be.application.order.dto.OrderItemInfo;
 import kr.hhplus.be.application.order.dto.OrderItems;
 import kr.hhplus.be.application.payment.dto.PaymentCommand;
-import kr.hhplus.be.domain.event.PaymentEventPublisher;
-import kr.hhplus.be.domain.event.PaymentSuccessEvent;
 import kr.hhplus.be.domain.order.service.OrderService;
 import kr.hhplus.be.domain.payment.entity.Payment;
 import kr.hhplus.be.domain.payment.service.PaymentService;
 import kr.hhplus.be.domain.user.service.UserService;
+import kr.hhplus.be.infrastructure.event.PaymentEventPublisher;
+import kr.hhplus.be.infrastructure.event.PaymentSuccessEvent;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -72,7 +72,7 @@ public class PaymentFacadeTest {
         paymentFacade.payment(command);
 
         // Then
-        verify(eventPublisher, times(1)).success(eventCaptor.capture());
+        verify(eventPublisher, times(1)).send(eventCaptor.capture());
         PaymentSuccessEvent publishedEvent = eventCaptor.getValue();
 
         assertThat(publishedEvent).isNotNull();
