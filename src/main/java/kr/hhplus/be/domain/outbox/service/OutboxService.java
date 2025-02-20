@@ -5,6 +5,8 @@ import kr.hhplus.be.domain.outbox.repository.OutboxRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class OutboxService {
@@ -15,7 +17,11 @@ public class OutboxService {
         return outboxRepository.save(outbox);
     }
 
-    public PaymentOutbox findById(String id) {
+    public PaymentOutbox getOutboxById(String id) {
         return outboxRepository.findById(id);
+    }
+
+    public List<PaymentOutbox> getUnSuccessedEventList(int limit) {
+        return outboxRepository.findUnSuccessedEventList(limit);
     }
 }

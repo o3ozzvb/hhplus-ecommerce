@@ -8,6 +8,8 @@ import kr.hhplus.be.infrastructure.outbox.jpa.OutboxJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class OutboxRepositoryImpl implements OutboxRepository {
@@ -22,5 +24,15 @@ public class OutboxRepositoryImpl implements OutboxRepository {
     @Override
     public PaymentOutbox findById(String id) {
         return outboxJpaRepository.findById(id).orElseThrow(() -> new CommerceNotFoundException(ErrorCode.OUTBOX_NOT_EXIST));
+    }
+
+    @Override
+    public List<PaymentOutbox> findAll() {
+        return outboxJpaRepository.findAll();
+    }
+
+    @Override
+    public List<PaymentOutbox> findUnSuccessedEventList(int limit) {
+        return outboxJpaRepository.findUnSuccessedEvents(limit);
     }
 }
