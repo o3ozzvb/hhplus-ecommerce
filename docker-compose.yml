@@ -1,4 +1,25 @@
+version: '3.8'
 services:
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=application
+      - MYSQL_PASSWORD=application
+      - MYSQL_DATABASE=hhplus
+    volumes:
+      - ./data/mysql/:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    volumes:
+      - ./data:/data
+    ports:
+      - "6379:6379"
+
   kafka:
     image: public.ecr.aws/bitnami/kafka:3.5.1
     ports:
@@ -28,8 +49,9 @@ services:
     image: provectuslabs/kafka-ui
     container_name: kafka-ui
     ports:
-      - "8989:8080"
+        - "8989:8080"
     restart: always
     environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=kafka:9092
+        - KAFKA_CLUSTERS_0_NAME=local
+        - KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS=kafka:9092
+
