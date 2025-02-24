@@ -15,14 +15,14 @@ spring:
     show-sql: false
     hibernate:
       ddl-auto: update
+      dialect: org.hibernate.dialect.MySQL8Dialect
     properties:
       hibernate.timezone.default_storage: NORMALIZE_UTC
-      hibernate.jdbc.time_zone: UTC
-
+      hibernate.jdbc.time_zone: Asia/Seoul
 ---
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/hhplus?characterEncoding=UTF-8
     username: application
     password: application
     driver-class-name: com.mysql.cj.jdbc.Driver
