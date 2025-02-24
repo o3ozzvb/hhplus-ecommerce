@@ -1,11 +1,13 @@
 package kr.hhplus.be.application.order.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import kr.hhplus.be.domain.order.entity.OrderDetail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +15,8 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderItems {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class OrderItems implements Serializable {
     private List<OrderItemInfo> orderItems;
 
     public BigDecimal getTotalAmount() {

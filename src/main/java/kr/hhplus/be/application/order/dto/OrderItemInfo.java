@@ -1,17 +1,16 @@
 package kr.hhplus.be.application.order.dto;
 
 import kr.hhplus.be.domain.order.entity.OrderDetail;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
+@ToString
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderItemInfo {
+public class OrderItemInfo implements Serializable {
     private Long productId;
     private Integer quantity;
     private BigDecimal price;
