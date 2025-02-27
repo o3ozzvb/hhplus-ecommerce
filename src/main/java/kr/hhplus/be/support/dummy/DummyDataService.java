@@ -1,12 +1,15 @@
 package kr.hhplus.be.support.dummy;
 
+import kr.hhplus.be.domain.coupon.enumtype.CouponPublishStatus;
+import kr.hhplus.be.domain.coupon.enumtype.CouponStatus;
+import kr.hhplus.be.domain.coupon.enumtype.DiscountType;
 import kr.hhplus.be.domain.order.enumtype.OrderStatus;
 import kr.hhplus.be.domain.product.enumtype.Category;
+import kr.hhplus.be.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.math.BigDecimal;
 import java.sql.Connection;
@@ -33,25 +36,31 @@ public class DummyDataService {
     private final JdbcTemplate jdbcTemplate;
     private final Random random = new Random();
 
-    private static final int BATCH_SIZE = 100_000; // 배치 크기 설정
-    private static final int USER_CNT = 500;
-    private static final int PRODUCT_CNT = 4_900_000;
+    private static final int BATCH_SIZE = 1000; // 배치 크기 설정
+    private static final int USER_CNT = 10000;
+    private static final int COUPON_CNT = 1000;
+    private static final int COUPON_PUBLISH_CNT = 10000;
+    private static final int PRODUCT_CNT = 100000;
     private static final int ORDER_CNT = 1_500_000;
     private static final int ORDER_DETAIL_CNT = 5_000_000;
-    private static final int THREAD_CNT = 10;
+    private static final int THREAD_CNT = 1;
 
     Map<Long, BigDecimal> products = new HashMap<>();
     Map<Long, BigDecimal> orderDetails = new HashMap<>();
 
     public void initializeData() throws InterruptedException, SQLException {
-//        deleteAllData();
-        insertProductsMultiThreaded();
+        deleteAllData();
+//        inserUsersMultiThreaded();
+        inserCouponMultiThreaded();
+        inserCouponPublishMultiThreaded();
+//        insertProductsMultiThreaded();
+//        insertProductInventoryMultiThreaded();
 //        insertOrderDetailMultiThreaded();
 //        insertOrderMultiThreaded();
     }
 
     private void deleteAllData() throws SQLException {
-        String[] tables = {"product"}; //, "orders"}; //{"product", "orders", "order_detail"};
+        String[] tables = {"product_inventory"}; //, "orders"}; //{"product", "orders", "order_detail"};
         try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection()) {
             connection.setAutoCommit(false);
             for (String table : tables) {
@@ -63,6 +72,73 @@ public class DummyDataService {
             connection.commit();
         }
     }
+
+    public void inserUsersMultiThreaded() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_CNT);
+
+        int rangePerThread = USER_CNT / THREAD_CNT;
+
+        for (int i = 0; i < THREAD_CNT; i++) {
+            final long start = i * rangePerThread + 1;
+            final long end = (i == THREAD_CNT - 1) ? USER_CNT : (i + 1) * rangePerThread;
+
+            executorService.submit(() -> {
+                try {
+                    insertUsers(start, end);
+                } catch (SQLException e) {
+                    log.error("Error inserting users for range " + start + " to " + end, e);
+                }
+            });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    public void inserCouponMultiThreaded() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_CNT);
+
+        int rangePerThread = COUPON_CNT / THREAD_CNT;
+
+        for (int i = 0; i < THREAD_CNT; i++) {
+            final long start = i * rangePerThread + 1;
+            final long end = (i == THREAD_CNT - 1) ? COUPON_CNT : (i + 1) * rangePerThread;
+
+            executorService.submit(() -> {
+                try {
+                    insertCoupon(start, end);
+                } catch (SQLException e) {
+                    log.error("Error inserting coupon for range " + start + " to " + end, e);
+                }
+            });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    public void inserCouponPublishMultiThreaded() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_CNT);
+
+        int rangePerThread = COUPON_PUBLISH_CNT / THREAD_CNT;
+
+        for (int i = 0; i < THREAD_CNT; i++) {
+            final long start = i * rangePerThread + 1;
+            final long end = (i == THREAD_CNT - 1) ? COUPON_PUBLISH_CNT : (i + 1) * rangePerThread;
+
+            executorService.submit(() -> {
+                try {
+                    insertCouponPublish(start, end);
+                } catch (SQLException e) {
+                    log.error("Error inserting coupon publish for range " + start + " to " + end, e);
+                }
+            });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.HOURS);
+    }
+
 
     public void insertProductsMultiThreaded() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(THREAD_CNT);
@@ -78,6 +154,28 @@ public class DummyDataService {
                     insertProducts(start, end);
                 } catch (SQLException e) {
                     log.error("Error inserting products for range " + start + " to " + end, e);
+                }
+            });
+        }
+
+        executorService.shutdown();
+        executorService.awaitTermination(1, TimeUnit.HOURS);
+    }
+
+    public void insertProductInventoryMultiThreaded() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(THREAD_CNT);
+
+        int rangePerThread = PRODUCT_CNT / THREAD_CNT;
+
+        for (int i = 0; i < THREAD_CNT; i++) {
+            final long start = i * rangePerThread + 1;
+            final long end = (i == THREAD_CNT - 1) ? PRODUCT_CNT : (i + 1) * rangePerThread;
+
+            executorService.submit(() -> {
+                try {
+                    insertProductInventory(start, end);
+                } catch (SQLException e) {
+                    log.error("Error inserting product_inventory for range " + start + " to " + end, e);
                 }
             });
         }
@@ -131,6 +229,119 @@ public class DummyDataService {
         executorService.awaitTermination(1, TimeUnit.HOURS);
     }
 
+    private void insertUsers(long startId, long endId) throws SQLException {
+        String sql = "INSERT INTO users (id, username, balance, created_at, updated_at) VALUES (?, ?, ?, ?, ?)";
+        try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+
+            int batchCounter = 0;
+            int totalBatchCounter = 0;
+            for (long i = startId; i <= endId; i++) {
+                preparedStatement.setLong(1, i);
+                preparedStatement.setString(2, "User" + i);
+                preparedStatement.setBigDecimal(3, getRandomBigDecimal());
+                preparedStatement.setString(4, getCurrentDateTime());
+                preparedStatement.setString(5, getCurrentDateTime());
+                preparedStatement.addBatch();
+
+                batchCounter++;
+                if (batchCounter % BATCH_SIZE == 0) {
+                    preparedStatement.executeBatch();
+                    connection.commit();
+
+                    totalBatchCounter += batchCounter;
+                    log.info("[USERS] 삽입된 데이터 건수: " + totalBatchCounter + "/" + PRODUCT_CNT);
+                    batchCounter = 0;
+                }
+            }
+
+            if (batchCounter > 0) {
+                preparedStatement.executeBatch();
+                connection.commit();
+            }
+        }
+    }
+
+    private void insertCoupon(long startId, long endId) throws SQLException {
+        String sql = "INSERT INTO coupon (id, coupon_name, discount_type, discount_value, max_quantity, remain_quantity, status, created_at, updated_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+
+            int batchCounter = 0;
+            int totalBatchCounter = 0;
+            for (long i = startId; i <= endId; i++) {
+                preparedStatement.setLong(1, i);
+                preparedStatement.setString(2, "Coupon" + i);
+                preparedStatement.setString(3, getRandomCouponDiscountType(random));
+                preparedStatement.setInt(4, getRandomInt(random, 99));
+                Integer maxQuantity = getRandomInt(random, 50);
+                preparedStatement.setInt(5, maxQuantity);
+                preparedStatement.setInt(6, maxQuantity);
+                preparedStatement.setString(7, getRandomCouponStatus(random));
+                preparedStatement.setString(8, getCurrentDateTime());
+                preparedStatement.setString(9, getCurrentDateTime());
+                preparedStatement.addBatch();
+
+                batchCounter++;
+                if (batchCounter % BATCH_SIZE == 0) {
+                    preparedStatement.executeBatch();
+                    connection.commit();
+
+                    totalBatchCounter += batchCounter;
+                    log.info("[COUPON] 삽입된 데이터 건수: " + totalBatchCounter + "/" + PRODUCT_CNT);
+                    batchCounter = 0;
+                }
+            }
+
+            if (batchCounter > 0) {
+                preparedStatement.executeBatch();
+                connection.commit();
+            }
+        }
+    }
+
+    private void insertCouponPublish(long startId, long endId) throws SQLException {
+        String sql = "INSERT INTO coupon_publish (id, ref_coupon_id, ref_user_id, publish_date, status, valid_start_date, valid_end_date, created_at, updated_at) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+
+            int batchCounter = 0;
+            int totalBatchCounter = 0;
+            for (long i = startId; i <= endId; i++) {
+                preparedStatement.setLong(1, i);
+                preparedStatement.setLong(2, getRandomLong(random, COUPON_CNT));
+                preparedStatement.setLong(3, getRandomLong(random, USER_CNT));
+                preparedStatement.setString(4, getCurrentDate());
+                preparedStatement.setString(5, getRandomCouponPublishStatus(random));
+                preparedStatement.setString(6, getLocalDate(2025, 02, 27));
+                preparedStatement.setString(7, getLocalDate(2026, 02, 27));
+                preparedStatement.setString(8, getCurrentDateTime());
+                preparedStatement.setString(9, getCurrentDateTime());
+                preparedStatement.addBatch();
+
+                batchCounter++;
+                if (batchCounter % BATCH_SIZE == 0) {
+                    preparedStatement.executeBatch();
+                    connection.commit();
+
+                    totalBatchCounter += batchCounter;
+                    log.info("[COUPON_PUBLSIH] 삽입된 데이터 건수: " + totalBatchCounter + "/" + PRODUCT_CNT);
+                    batchCounter = 0;
+                }
+            }
+
+            if (batchCounter > 0) {
+                preparedStatement.executeBatch();
+                connection.commit();
+            }
+        }
+    }
+
     private void insertProducts(long startId, long endId) throws SQLException {
         String sql = "INSERT INTO product (id, product_name, category, price, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
@@ -141,7 +352,7 @@ public class DummyDataService {
             int totalBatchCounter = 0;
             for (long i = startId; i <= endId; i++) {
 
-                BigDecimal price = getPrice();
+                BigDecimal price = getRandomBigDecimal();
                 products.put(i, price);
 
                 preparedStatement.setLong(1, i);
@@ -170,6 +381,43 @@ public class DummyDataService {
         }
     }
 
+    private void insertProductInventory(long startId, long endId) throws SQLException {
+        String sql = "INSERT INTO product_inventory (ref_product_id, inventory, created_at, updated_at) VALUES (?, ?, ?, ?)";
+        try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            connection.setAutoCommit(false);
+
+            int batchCounter = 0;
+            int totalBatchCounter = 0;
+            for (long i = startId; i <= endId; i++) {
+
+                BigDecimal price = getRandomBigDecimal();
+                products.put(i, price);
+
+                preparedStatement.setLong(1, i);
+                preparedStatement.setInt(2, getRandomInt(random, 100));
+                preparedStatement.setString(3, getCurrentDateTime());
+                preparedStatement.setString(4, getCurrentDateTime());
+                preparedStatement.addBatch();
+
+                batchCounter++;
+                if (batchCounter % BATCH_SIZE == 0) {
+                    preparedStatement.executeBatch();
+                    connection.commit();
+
+                    totalBatchCounter += batchCounter;
+                    log.info("[PRODUCT_INVENTORY] 삽입된 데이터 건수: " + totalBatchCounter + "/" + PRODUCT_CNT);
+                    batchCounter = 0;
+                }
+            }
+
+            if (batchCounter > 0) {
+                preparedStatement.executeBatch();
+                connection.commit();
+            }
+        }
+    }
+
     private void insertOrderDetails(long startId, long endId) throws SQLException {
         String sql = "INSERT INTO order_detail (id, ref_order_id, ref_product_id, quantity, price, total_amount) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
@@ -186,7 +434,7 @@ public class DummyDataService {
                 long productId = getRandomLong(random, PRODUCT_CNT);
                 int quantity = getRandomInt(random, 1000);
                 BigDecimal price = products.get(productId);
-                price = (price == null) ? getPrice() : price;
+                price = (price == null) ? getRandomBigDecimal() : price;
                 preparedStatement.setLong(3, productId);
                 preparedStatement.setInt(4, quantity);
                 preparedStatement.setBigDecimal(5, price);
@@ -235,7 +483,7 @@ public class DummyDataService {
                 preparedStatement.setLong(2, getRandomLong(random, USER_CNT));
                 preparedStatement.setString(3, null);
                 preparedStatement.setString(4, getRandomDateTime(random));
-                BigDecimal amount = getPrice();
+                BigDecimal amount = getRandomBigDecimal();
                 preparedStatement.setBigDecimal(5, amount);
                 preparedStatement.setBigDecimal(6, BigDecimal.ZERO);
                 preparedStatement.setBigDecimal(7, amount);
@@ -261,8 +509,16 @@ public class DummyDataService {
         }
     }
 
+    private String getCurrentDate() {
+        return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
     private String getCurrentDateTime() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    private String getLocalDate(int year, int month, int day) {
+        return LocalDate.of(year, month, day).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     private String getRandomDateTime(Random random) {
@@ -279,7 +535,7 @@ public class DummyDataService {
         return categories[randomIndex].name();
     }
 
-    private BigDecimal getPrice() {
+    private BigDecimal getRandomBigDecimal() {
         int minMultiplier = 1000 / 1000;   // 10
         int maxMultiplier = 990000 / 1000; // 9900
 
@@ -302,5 +558,23 @@ public class DummyDataService {
         OrderStatus[] orderStatuses = OrderStatus.values();
         int randomIndex = ThreadLocalRandom.current().nextInt(orderStatuses.length);
         return orderStatuses[randomIndex].name();
+    }
+
+    private String getRandomCouponDiscountType(Random random) {
+        DiscountType[] discountTypes = DiscountType.values();
+        int randomIndex = ThreadLocalRandom.current().nextInt(discountTypes.length);
+        return discountTypes[randomIndex].name();
+    }
+
+    private String getRandomCouponStatus(Random random) {
+        CouponStatus[] couponStatus = CouponStatus.values();
+        int randomIndex = ThreadLocalRandom.current().nextInt(couponStatus.length);
+        return couponStatus[randomIndex].name();
+    }
+
+    private String getRandomCouponPublishStatus(Random random) {
+        CouponPublishStatus[] couponPublishStatuses = CouponPublishStatus.values();
+        int randomIndex = ThreadLocalRandom.current().nextInt(couponPublishStatuses.length);
+        return couponPublishStatuses[randomIndex].name();
     }
 }
