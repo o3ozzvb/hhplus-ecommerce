@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.sql.SQLException;
 
-@ActiveProfiles("dummy")
+//@ActiveProfiles("dummy")
 @SpringBootTest
 class DummyDataServiceTest {
 

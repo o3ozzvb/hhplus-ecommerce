@@ -2,6 +2,7 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0
+    container_name: mysql
     ports:
       - "3306:3306"
     environment:
@@ -10,18 +11,42 @@ services:
       - MYSQL_PASSWORD=application
       - MYSQL_DATABASE=hhplus
     volumes:
-      - ./data/mysql/:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
+    networks:
+      - eknetwork
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: hhplus-ecommerce
+    container_name: ecommerce-app
+    depends_on: [mysql, redis, kafka]
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/hhplus?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: application
+      SPRING_DATASOURCE_PASSWORD: application
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    ports:
+      - "8080:8080"
+    networks:
+      eknetwork:
 
   redis:
     image: redis:latest
     container_name: redis
     volumes:
-      - ./data:/data
+      - ./redis-data:/data
     ports:
       - "6379:6379"
+    networks:
+      - eknetwork
 
   kafka:
     image: public.ecr.aws/bitnami/kafka:3.5.1
+    container_name: kafka
     ports:
       - "9094:9094"
     volumes:
@@ -30,17 +55,19 @@ services:
       KAFKA_CFG_NODE_ID: 0
       KAFKA_CFG_PROCESS_ROLES: controller,broker
       KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,EXTERNAL://kafka:9094
       KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
       KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@127.0.0.1:9093
       KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+    networks:
+      - eknetwork
 
 volumes:
   kafka-zookeeper-data:
   kafka-data:
 
 networks:
-  default:
+  eknetwork:
     driver: bridge
 
 ---
